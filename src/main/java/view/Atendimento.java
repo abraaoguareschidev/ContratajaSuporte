@@ -46,19 +46,18 @@ public class Atendimento extends javax.swing.JFrame {
         lblTelefoneCliente.setText(telefone);
         try {
             chat = new ChatWebSocketClient(idChamado);
-    chat.setAoReceberMensagem(json -> {
+chat.setAoReceberMensagem(json -> {
     javax.swing.SwingUtilities.invokeLater(() -> {
-
         com.google.gson.JsonObject mensagem =
                 com.google.gson.JsonParser.parseString(json).getAsJsonObject();
 
         int idRemetente = mensagem.get("idRemetente").getAsInt();
+        String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
         String conteudo = mensagem.get("conteudo").getAsString();
+        String dataEnvio = mensagem.get("dataEnvio").getAsString();
 
-        System.out.println("ID do remetente: " + idRemetente);
-        System.out.println("Conteúdo: " + conteudo);
-
-        adicionarMensagem(conteudo, idRemetente);
+        
+        adicionarMensagem(nomeRemetente,conteudo,dataEnvio,idRemetente);
     });
 });
     chat.connect();
@@ -560,8 +559,7 @@ public class Atendimento extends javax.swing.JFrame {
 
         String json = api.listarMensagens(idChamado);
 
-        com.google.gson.JsonArray mensagens =
-                com.google.gson.JsonParser.parseString(json).getAsJsonArray();
+        com.google.gson.JsonArray mensagens = com.google.gson.JsonParser.parseString(json).getAsJsonArray();
 
         for (com.google.gson.JsonElement elemento : mensagens) {
 
@@ -569,8 +567,10 @@ public class Atendimento extends javax.swing.JFrame {
 
             int idRemetente = mensagem.get("idRemetente").getAsInt();
             String conteudo = mensagem.get("conteudo").getAsString();
+            String nomeRemetente = mensagem.get("nomeRemente").getAsString();
+            String dataEnvio = mensagem.get("dataEnvio").getAsString();
 
-            adicionarMensagem(conteudo, idRemetente);
+            adicionarMensagem(nomeRemetente, conteudo, dataEnvio, idRemetente);
         }
 
     } catch (Exception e) {
@@ -578,7 +578,11 @@ public class Atendimento extends javax.swing.JFrame {
     }
 }
     
-    private void adicionarMensagem(String conteudo, int idRemetente) {
+    private void adicionarMensagem(
+        String nomeRemetente,
+        String conteudo,
+        String dataEnvio,
+        int idRemetente) {
 
     javax.swing.JPanel linha = new javax.swing.JPanel(
             new java.awt.FlowLayout(
@@ -588,15 +592,27 @@ public class Atendimento extends javax.swing.JFrame {
             )
     );
 
-    javax.swing.JLabel bolha = new javax.swing.JLabel(conteudo);
-    bolha.setOpaque(true);
+    javax.swing.JPanel bolha = new javax.swing.JPanel();
+    bolha.setLayout(new javax.swing.BoxLayout(
+            bolha, javax.swing.BoxLayout.Y_AXIS));
+
     bolha.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
+    javax.swing.JLabel lblNome = new javax.swing.JLabel(nomeRemetente);
+    javax.swing.JLabel lblConteudo = new javax.swing.JLabel(conteudo);
+    javax.swing.JLabel lblData = new javax.swing.JLabel(dataEnvio);
+
+    bolha.add(lblNome);
+    bolha.add(lblConteudo);
+    bolha.add(lblData);
+
     linha.add(bolha);
-linha.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-linha.setMaximumSize(
-    new java.awt.Dimension(Integer.MAX_VALUE, linha.getPreferredSize().height)
-);
+
+    linha.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+    linha.setMaximumSize(new java.awt.Dimension(
+            Integer.MAX_VALUE,
+            linha.getPreferredSize().height));
+
     jPanelMensagens.add(linha);
     jPanelMensagens.revalidate();
     jPanelMensagens.repaint();
