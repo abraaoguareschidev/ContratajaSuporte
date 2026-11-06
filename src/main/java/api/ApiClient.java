@@ -24,15 +24,12 @@ public class ApiClient {
             .GET()
             .build();
 
-    HttpResponse<String> response = client.send(
-            request,
-            HttpResponse.BodyHandlers.ofString()
-    );
+    HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
     return response.body();
 }
     
-    
+  
     
 public static void main(String[] args) {
     try {

@@ -567,7 +567,7 @@ chat.setAoReceberMensagem(json -> {
 
             int idRemetente = mensagem.get("idRemetente").getAsInt();
             String conteudo = mensagem.get("conteudo").getAsString();
-            String nomeRemetente = mensagem.get("nomeRemente").getAsString();
+            String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
             String dataEnvio = mensagem.get("dataEnvio").getAsString();
 
             adicionarMensagem(nomeRemetente, conteudo, dataEnvio, idRemetente);
@@ -578,23 +578,13 @@ chat.setAoReceberMensagem(json -> {
     }
 }
     
-    private void adicionarMensagem(
-        String nomeRemetente,
-        String conteudo,
-        String dataEnvio,
-        int idRemetente) {
+    private void adicionarMensagem(String nomeRemetente,String conteudo,String dataEnvio,int idRemetente) {
 
-    javax.swing.JPanel linha = new javax.swing.JPanel(
-            new java.awt.FlowLayout(
-                    idRemetente == 2
-                            ? java.awt.FlowLayout.RIGHT
-                            : java.awt.FlowLayout.LEFT
-            )
+    javax.swing.JPanel linha = new javax.swing.JPanel(new java.awt.FlowLayout(idRemetente == 2 ? java.awt.FlowLayout.RIGHT : java.awt.FlowLayout.LEFT)
     );
 
     javax.swing.JPanel bolha = new javax.swing.JPanel();
-    bolha.setLayout(new javax.swing.BoxLayout(
-            bolha, javax.swing.BoxLayout.Y_AXIS));
+    bolha.setLayout(new javax.swing.BoxLayout(bolha, javax.swing.BoxLayout.Y_AXIS));
 
     bolha.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
