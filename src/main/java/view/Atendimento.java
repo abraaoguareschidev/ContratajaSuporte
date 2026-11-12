@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class Atendimento extends javax.swing.JFrame {
 
     private int idChamado;
-    private String assunto,  descricao,  data,  status,nome;
+    private String assunto, descricao, data, status, nome;
     private ChatWebSocketClient chat;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Atendimento.class.getName());
@@ -27,10 +27,11 @@ public class Atendimento extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email,String telefone) {
+    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone) {
         initComponents();
         jPanelMensagens.setLayout(new javax.swing.BoxLayout(jPanelMensagens, javax.swing.BoxLayout.Y_AXIS));
         this.idChamado = idChamado;
+        marcarMensagensComoLidas();
         carregarHistorico();
         this.assunto = assunto;
         this.descricao = descricao;
@@ -46,25 +47,32 @@ public class Atendimento extends javax.swing.JFrame {
         lblTelefoneCliente.setText(telefone);
         try {
             chat = new ChatWebSocketClient(idChamado);
-chat.setAoReceberMensagem(json -> {
-    javax.swing.SwingUtilities.invokeLater(() -> {
-        com.google.gson.JsonObject mensagem =
-                com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+            chat.setAoReceberMensagem(json -> {
+                javax.swing.SwingUtilities.invokeLater(() -> {
 
-        int idRemetente = mensagem.get("idRemetente").getAsInt();
-        String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
-        String conteudo = mensagem.get("conteudo").getAsString();
-        String dataEnvio = mensagem.get("dataEnvio").getAsString();
+                    com.google.gson.JsonObject mensagem
+                            = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
 
-        
-        adicionarMensagem(nomeRemetente,conteudo,dataEnvio,idRemetente);
-    });
-});
-    chat.connect();
-} catch (Exception e) {
-    System.out.println("Erro ao conectar ao chat: " + e.getMessage());
-}
-        
+                    int idRemetente = mensagem.get("idRemetente").getAsInt();
+                    String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
+                    String conteudo = mensagem.get("conteudo").getAsString();
+                    String dataEnvio = mensagem.get("dataEnvio").getAsString();
+                    boolean statusLeitura = mensagem.get("statusLeitura").getAsBoolean();
+
+                    adicionarMensagem(
+                            nomeRemetente,
+                            conteudo,
+                            dataEnvio,
+                            idRemetente,
+                            statusLeitura
+                    );
+                });
+            });
+            chat.connect();
+        } catch (Exception e) {
+            System.out.println("Erro ao conectar ao chat: " + e.getMessage());
+        }
+
     }
 
     /**
@@ -526,90 +534,140 @@ chat.setAoReceberMensagem(json -> {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-         String conteudo = txtAreaMensagem.getText().trim();
+        String conteudo = txtAreaMensagem.getText().trim();
 
-    if (conteudo.isEmpty()) {
-        return;
-    }
-
-    if (chat != null && chat.isOpen()) {
-
-        chat.enviarMensagem(conteudo, 2);
-
-        txtAreaMensagem.setText("");
-    }
-    }//GEN-LAST:event_btnEnviarActionPerformed
-
-    private void adicionarMensagem(String conteudo) {
-    javax.swing.JLabel mensagem = new javax.swing.JLabel(conteudo);
-
-    jPanelMensagens.add(mensagem);
-    jPanelMensagens.revalidate();
-    jPanelMensagens.repaint();
-
-    javax.swing.SwingUtilities.invokeLater(() -> {
-        jScrollPane1.getVerticalScrollBar().setValue(
-                jScrollPane1.getVerticalScrollBar().getMaximum()
-        );
-    });
-}
-    private void carregarHistorico() {
-    try {
-        ApiClient api = new ApiClient();
-
-        String json = api.listarMensagens(idChamado);
-
-        com.google.gson.JsonArray mensagens = com.google.gson.JsonParser.parseString(json).getAsJsonArray();
-
-        for (com.google.gson.JsonElement elemento : mensagens) {
-
-            com.google.gson.JsonObject mensagem = elemento.getAsJsonObject();
-
-            int idRemetente = mensagem.get("idRemetente").getAsInt();
-            String conteudo = mensagem.get("conteudo").getAsString();
-            String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
-            String dataEnvio = mensagem.get("dataEnvio").getAsString();
-
-            adicionarMensagem(nomeRemetente, conteudo, dataEnvio, idRemetente);
+        if (conteudo.isEmpty()) {
+            return;
         }
 
-    } catch (Exception e) {
-        e.printStackTrace();
+        if (chat != null && chat.isOpen()) {
+
+            chat.enviarMensagem(conteudo, 2);
+
+            txtAreaMensagem.setText("");
+        }
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void adicionarMensagem(
+            String nomeRemetente,
+            String conteudo,
+            String dataEnvio,
+            int idRemetente,
+            boolean statusLeitura) {
+
+        javax.swing.JPanel linha = new javax.swing.JPanel(
+                new java.awt.FlowLayout(
+                        idRemetente == 2
+                                ? java.awt.FlowLayout.RIGHT
+                                : java.awt.FlowLayout.LEFT
+                )
+        );
+
+        javax.swing.JPanel bolha = new javax.swing.JPanel();
+        bolha.setLayout(new javax.swing.BoxLayout(
+                bolha, javax.swing.BoxLayout.Y_AXIS));
+
+        bolha.setBorder(javax.swing.BorderFactory.createEmptyBorder(
+                10, 15, 10, 15));
+
+        javax.swing.JLabel lblNome = new javax.swing.JLabel(nomeRemetente);
+        javax.swing.JLabel lblConteudo = new javax.swing.JLabel(conteudo);
+        javax.swing.JLabel lblData = new javax.swing.JLabel(dataEnvio);
+
+        bolha.add(lblNome);
+        bolha.add(lblConteudo);
+        bolha.add(lblData);
+
+        if (idRemetente == 2 && statusLeitura) {
+            javax.swing.JLabel lblLeitura = new javax.swing.JLabel("Lido");
+            bolha.add(lblLeitura);
+        }
+
+        linha.add(bolha);
+
+        linha.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        linha.setMaximumSize(new java.awt.Dimension(
+                Integer.MAX_VALUE,
+                linha.getPreferredSize().height));
+
+        jPanelMensagens.add(linha);
+        jPanelMensagens.revalidate();
+        jPanelMensagens.repaint();
     }
-}
-    
-    private void adicionarMensagem(String nomeRemetente,String conteudo,String dataEnvio,int idRemetente) {
 
-    javax.swing.JPanel linha = new javax.swing.JPanel(new java.awt.FlowLayout(idRemetente == 2 ? java.awt.FlowLayout.RIGHT : java.awt.FlowLayout.LEFT)
-    );
+    private void carregarHistorico() {
+        try {
+            ApiClient api = new ApiClient();
 
-    javax.swing.JPanel bolha = new javax.swing.JPanel();
-    bolha.setLayout(new javax.swing.BoxLayout(bolha, javax.swing.BoxLayout.Y_AXIS));
+            String json = api.listarMensagens(idChamado);
 
-    bolha.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
+            com.google.gson.JsonArray mensagens = com.google.gson.JsonParser.parseString(json).getAsJsonArray();
 
-    javax.swing.JLabel lblNome = new javax.swing.JLabel(nomeRemetente);
-    javax.swing.JLabel lblConteudo = new javax.swing.JLabel(conteudo);
-    javax.swing.JLabel lblData = new javax.swing.JLabel(dataEnvio);
+            for (com.google.gson.JsonElement elemento : mensagens) {
 
-    bolha.add(lblNome);
-    bolha.add(lblConteudo);
-    bolha.add(lblData);
+                com.google.gson.JsonObject mensagem = elemento.getAsJsonObject();
 
-    linha.add(bolha);
+                int idRemetente = mensagem.get("idRemetente").getAsInt();
+                String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
+                String conteudo = mensagem.get("conteudo").getAsString();
+                String dataEnvio = mensagem.get("dataEnvio").getAsString();
+                boolean statusLeitura = mensagem.get("statusLeitura").getAsBoolean();
 
-    linha.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-    linha.setMaximumSize(new java.awt.Dimension(
-            Integer.MAX_VALUE,
-            linha.getPreferredSize().height));
+                adicionarMensagem(
+                        nomeRemetente,
+                        conteudo,
+                        dataEnvio,
+                        idRemetente,
+                        statusLeitura
+                );
+            }
 
-    jPanelMensagens.add(linha);
-    jPanelMensagens.revalidate();
-    jPanelMensagens.repaint();
-}
-    
-    
-    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void adicionarMensagem(String nomeRemetente, String conteudo, String dataEnvio, int idRemetente) {
+
+        javax.swing.JPanel linha = new javax.swing.JPanel(new java.awt.FlowLayout(idRemetente == 2 ? java.awt.FlowLayout.RIGHT : java.awt.FlowLayout.LEFT)
+        );
+
+        javax.swing.JPanel bolha = new javax.swing.JPanel();
+        bolha.setLayout(new javax.swing.BoxLayout(bolha, javax.swing.BoxLayout.Y_AXIS));
+
+        bolha.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        javax.swing.JLabel lblNome = new javax.swing.JLabel(nomeRemetente);
+        javax.swing.JLabel lblConteudo = new javax.swing.JLabel(conteudo);
+        javax.swing.JLabel lblData = new javax.swing.JLabel(dataEnvio);
+
+        bolha.add(lblNome);
+        bolha.add(lblConteudo);
+        bolha.add(lblData);
+
+        linha.add(bolha);
+
+        linha.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        linha.setMaximumSize(new java.awt.Dimension(
+                Integer.MAX_VALUE,
+                linha.getPreferredSize().height));
+
+        jPanelMensagens.add(linha);
+        jPanelMensagens.revalidate();
+        jPanelMensagens.repaint();
+    }
+
+    private void marcarMensagensComoLidas() {
+        try {
+            ApiClient api = new ApiClient();
+
+            api.marcarMensagensComoLidas(idChamado, 2);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

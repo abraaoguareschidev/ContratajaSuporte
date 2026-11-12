@@ -28,6 +28,25 @@ public class ApiClient {
 
     return response.body();
 }
+    public void marcarMensagensComoLidas(int idChamado, int idUsuario) throws Exception {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(
+                    "http://localhost:8080/mensagens-suporte/chamado/"
+                    + idChamado + "/lidas?idUsuario=" + idUsuario)).PUT(HttpRequest.BodyPublishers.noBody()).build();
+
+    HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+        throw new RuntimeException(
+                "Erro ao marcar mensagens como lidas: "
+                + response.statusCode()
+        );
+    }
+}
     
   
     
