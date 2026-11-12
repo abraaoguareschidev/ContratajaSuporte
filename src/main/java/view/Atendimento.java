@@ -17,7 +17,7 @@ public class Atendimento extends javax.swing.JFrame {
     private int idChamado;
     private String assunto, descricao, data, status, nome;
     private ChatWebSocketClient chat;
-
+    private final java.util.List<javax.swing.JLabel> indicadoresLeitura = new java.util.ArrayList<>();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Atendimento.class.getName());
 
     /**
@@ -68,6 +68,22 @@ public class Atendimento extends javax.swing.JFrame {
                     );
                 });
             });
+            chat.setAoReceberLeitura(idUsuario -> {
+
+    javax.swing.SwingUtilities.invokeLater(() -> {
+
+        // Verifica se quem leu foi o cliente (ID 1)
+        if (idUsuario == 1) {
+
+            for (javax.swing.JLabel indicador : indicadoresLeitura) {
+                indicador.setText("Lido");
+            }
+
+            jPanelMensagens.revalidate();
+            jPanelMensagens.repaint();
+        }
+    });
+});
             chat.connect();
         } catch (Exception e) {
             System.out.println("Erro ao conectar ao chat: " + e.getMessage());
@@ -578,10 +594,16 @@ public class Atendimento extends javax.swing.JFrame {
         bolha.add(lblConteudo);
         bolha.add(lblData);
 
-        if (idRemetente == 2 && statusLeitura) {
-            javax.swing.JLabel lblLeitura = new javax.swing.JLabel("Lido");
-            bolha.add(lblLeitura);
-        }
+        if (idRemetente == 2) {
+
+    javax.swing.JLabel lblLeitura = new javax.swing.JLabel(
+            statusLeitura ? "Lido" : ""
+    );
+
+    bolha.add(lblLeitura);
+
+    indicadoresLeitura.add(lblLeitura);
+}
 
         linha.add(bolha);
 
