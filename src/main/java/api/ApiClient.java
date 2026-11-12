@@ -48,6 +48,28 @@ public class ApiClient {
     }
 }
     
+    public void encerrarChamado(int idChamado) throws Exception {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(
+                    "http://localhost:8080/chamados/"
+                    + idChamado + "/encerrar"
+            ))
+            .PUT(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+    HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+        throw new RuntimeException(
+                "Erro ao encerrar chamado: " + response.statusCode()
+        );
+    }
+}
+    
   
     
 public static void main(String[] args) {
