@@ -31,26 +31,71 @@ public class TelaCadastro extends javax.swing.JFrame {
      * Creates new form TelaCadastro
      */
     public TelaCadastro() {
-        initComponents();
-        jPanelDadosPessoais.setVisible(true);
-        jPanelEndereco.setVisible(false);
-        jLabelMsgErroNome.setVisible(false);
-        jLabelMsgErroCPF.setVisible(false);
-        jLabelMsgErroEmail.setVisible(false);
-        jLabelMsgErroTelefone.setVisible(false);
-        jLabelDataNascimento.setVisible(false);
-        jLabelMsgErroBairro.setVisible(false);
-        jLabelMsgErroCEP.setVisible(false);
-        jLabelMsgErroCidade.setVisible(false);
-        jLabelMsgErroComplemento.setVisible(false);
-        jLabelMsgErroNumero.setVisible(false);
-        jLabelMsgErroRua.setVisible(false);
-        jLabelMsgErroUF.setVisible(false);
-        jLabelMsgErroConfirmarSenha.setVisible(false);
-        jLabelMsgErroSenha.setVisible(false);
-        
+    initComponents();
 
+    // Localiza a imagem dentro da pasta resources
+    java.net.URL caminhoImagem = getClass().getResource(
+            "/imagens/telacadastro/background1.png"
+    );
+
+    // Verifica se a imagem foi encontrada
+    if (caminhoImagem == null) {
+        throw new RuntimeException(
+                "Imagem não encontrada: /imagens/telacadastro/background1.png"
+        );
     }
+
+    // Carrega a imagem
+    final java.awt.Image imagemFundo =
+            new javax.swing.ImageIcon(caminhoImagem).getImage();
+
+    // Guarda a borda original do painel
+    javax.swing.border.Border bordaOriginal =
+            jPanelCadastro.getBorder();
+
+    // Cria uma borda personalizada para desenhar o background
+    javax.swing.border.Border bordaImagem =
+            new javax.swing.border.Border() {
+
+        @Override
+        public void paintBorder(
+                java.awt.Component c,
+                java.awt.Graphics g,
+                int x,
+                int y,
+                int largura,
+                int altura) {
+
+            g.drawImage(imagemFundo,x,y,largura,altura,c);
+        }
+
+        @Override
+        public java.awt.Insets getBorderInsets(
+                java.awt.Component c) {
+
+            return new java.awt.Insets(0, 0, 0, 0);
+        }
+
+        @Override
+        public boolean isBorderOpaque() {
+            return false;
+        }
+    };
+
+    // Permite que o background seja desenhado
+    jPanelCadastro.setOpaque(false);
+
+    // Aplica a imagem como fundo do painel
+    jPanelCadastro.setBorder(
+            javax.swing.BorderFactory.createCompoundBorder(
+                    bordaImagem,
+                    bordaOriginal
+            )
+    );
+
+    jPanelCadastro.repaint();
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,383 +106,435 @@ public class TelaCadastro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelDadosPessoais = new javax.swing.JPanel();
-        jLabelLogo = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextFieldNome = new javax.swing.JTextField();
-        jTextFieldEmail = new javax.swing.JTextField();
-        jButtonAvancar = new javax.swing.JButton();
-        jFormattedTextFieldCpf = new javax.swing.JFormattedTextField();
-        jFormattedTextFieldTelefone = new javax.swing.JFormattedTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabelLogin1 = new javax.swing.JLabel();
-        jLabelMsgErroNome = new javax.swing.JLabel();
-        jLabelMsgErroCPF = new javax.swing.JLabel();
-        jLabelMsgErroEmail = new javax.swing.JLabel();
-        jLabelMsgErroTelefone = new javax.swing.JLabel();
-        jLabelDataNascimento = new javax.swing.JLabel();
-        jPasswordFieldConfirmarSenha = new javax.swing.JPasswordField();
-        jPasswordFieldSenha = new javax.swing.JPasswordField();
-        jLabelMsgErroSenha = new javax.swing.JLabel();
-        jLabelMsgErroConfirmarSenha = new javax.swing.JLabel();
-        jLabelOlhoConfirmarSenha = new javax.swing.JLabel();
-        jLabelOlhoCriarSenha = new javax.swing.JLabel();
-        jDateChooserDataNascimento = new com.toedter.calendar.JDateChooser();
-        jComboBoxTipoDeConta = new javax.swing.JComboBox<>();
+        jPanelCadastro = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        lblFoneSuporte = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jPanelEndereco = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jFormattedTextField4 = new javax.swing.JFormattedTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField2 = new javax.swing.JPasswordField();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldCidade = new javax.swing.JTextField();
-        jTextFieldRua = new javax.swing.JTextField();
-        jComboBoxEstado = new javax.swing.JComboBox<>();
-        jFormattedCep = new javax.swing.JFormattedTextField();
-        jTextFieldComplemento = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabelLogin = new javax.swing.JLabel();
-        jButtonCadastrar = new javax.swing.JButton();
-        jButtonVoltar = new javax.swing.JButton();
-        jLabelMsgErroCEP = new javax.swing.JLabel();
-        jLabelMsgErroUF = new javax.swing.JLabel();
-        jLabelMsgErroCidade = new javax.swing.JLabel();
-        jLabelMsgErroBairro = new javax.swing.JLabel();
-        jLabelMsgErroComplemento = new javax.swing.JLabel();
-        jLabelMsgErroRua = new javax.swing.JLabel();
-        jLabelMsgErroNumero = new javax.swing.JLabel();
-        jTextFieldBairro = new javax.swing.JTextField();
-        jTextFieldNumero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanelDadosPessoais.setBackground(new java.awt.Color(255, 255, 255));
-        jPanelDadosPessoais.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelCadastro.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Logo.png"))); // NOI18N
-        jLabelLogo.setText(" ");
-        jPanelDadosPessoais.add(jLabelLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 170, 126));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 0, 255));
-        jLabel1.setText("Dados Pessoais");
-        jPanelDadosPessoais.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, -1, 37));
+        lblFoneSuporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/fonesup.png"))); // NOI18N
+        lblFoneSuporte.setText("jLabel5");
 
-        jTextFieldNome.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "      Digite seu nome:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelDadosPessoais.add(jTextFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 190, 40));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 40)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel5.setText("Cadastro de suporte");
 
-        jTextFieldEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "     Digite seu email:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelDadosPessoais.add(jTextFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 190, -1));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/user.png"))); // NOI18N
+        jLabel6.setText("jLabel6");
 
-        jButtonAvancar.setBackground(new java.awt.Color(51, 0, 255));
-        jButtonAvancar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonAvancar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonAvancar.setText("Avançar");
-        jButtonAvancar.setBorder(null);
-        jButtonAvancar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonAvancar.addActionListener(this::jButtonAvancarActionPerformed);
-        jPanelDadosPessoais.add(jButtonAvancar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 590, 100, 30));
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 844, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1, Short.MAX_VALUE)
+        );
 
-        jFormattedTextFieldCpf.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "     Digite seu CPF:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel7.setText("Nome completo");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel8.setText("CPF");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel10.setText("Data de nascimento");
+
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+
         try {
-            jFormattedTextFieldCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextFieldCpf.setText("");
-        jPanelDadosPessoais.add(jFormattedTextFieldCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 190, 40));
+        jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jFormattedTextFieldTelefone.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "     Digite seu telefone:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         try {
-            jFormattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanelDadosPessoais.add(jFormattedTextFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 190, 40));
+        jFormattedTextField2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Ja possui conta?");
-        jPanelDadosPessoais.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 640, -1, 20));
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel9.setText("Telefone");
 
-        jLabelLogin1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelLogin1.setForeground(new java.awt.Color(51, 0, 255));
-        jLabelLogin1.setText("Login");
-        jLabelLogin1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabelLogin1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelLogin1MouseClicked(evt);
-            }
-        });
-        jPanelDadosPessoais.add(jLabelLogin1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 640, -1, -1));
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel11.setText("Dados Pessoais ");
 
-        jLabelMsgErroNome.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroNome.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroNome.setText("Digite seu nome *");
-        jPanelDadosPessoais.add(jLabelMsgErroNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, -1, 30));
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/home.png"))); // NOI18N
 
-        jLabelMsgErroCPF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroCPF.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroCPF.setText("CPF inválido *");
-        jPanelDadosPessoais.add(jLabelMsgErroCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 100, 30));
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel13.setText("Endereço");
 
-        jLabelMsgErroEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroEmail.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroEmail.setText("Email inválido *");
-        jPanelDadosPessoais.add(jLabelMsgErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 100, 30));
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel14.setText("CEP");
 
-        jLabelMsgErroTelefone.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroTelefone.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroTelefone.setText("Telefone inválido *");
-        jPanelDadosPessoais.add(jLabelMsgErroTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 380, 110, 30));
-
-        jLabelDataNascimento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelDataNascimento.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelDataNascimento.setText("Data de nascimento inválida *");
-        jPanelDadosPessoais.add(jLabelDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 190, 30));
-
-        jPasswordFieldConfirmarSenha.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Confirme a sua senha:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelDadosPessoais.add(jPasswordFieldConfirmarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 530, 190, -1));
-
-        jPasswordFieldSenha.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Crie sua senha:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPasswordFieldSenha.addActionListener(this::jPasswordFieldSenhaActionPerformed);
-        jPanelDadosPessoais.add(jPasswordFieldSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 190, -1));
-
-        jLabelMsgErroSenha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroSenha.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroSenha.setText("Digite sua senha *");
-        jPanelDadosPessoais.add(jLabelMsgErroSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 480, 110, 30));
-
-        jLabelMsgErroConfirmarSenha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroConfirmarSenha.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroConfirmarSenha.setText("As senhas não coicidem ");
-        jPanelDadosPessoais.add(jLabelMsgErroConfirmarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 200, 30));
-
-        jLabelOlhoConfirmarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/visivel.png"))); // NOI18N
-        jLabelOlhoConfirmarSenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabelOlhoConfirmarSenha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelOlhoConfirmarSenhaMouseClicked(evt);
-            }
-        });
-        jPanelDadosPessoais.add(jLabelOlhoConfirmarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 540, 30, 40));
-
-        jLabelOlhoCriarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/visivel.png"))); // NOI18N
-        jLabelOlhoCriarSenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabelOlhoCriarSenha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelOlhoCriarSenhaMouseClicked(evt);
-            }
-        });
-        jPanelDadosPessoais.add(jLabelOlhoCriarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 490, 30, 40));
-
-        jDateChooserDataNascimento.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Digite sua data de nascimento:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jDateChooserDataNascimento.setDateFormatString("dd/MM/yyyy");
-        jDateChooserDataNascimento.setMinSelectableDate(new java.util.Date(-62135755112000L));
-        jPanelDadosPessoais.add(jDateChooserDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, 190, -1));
-        jDateChooserDataNascimento.getAccessibleContext().setAccessibleDescription("");
-
-        jComboBoxTipoDeConta.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jComboBoxTipoDeConta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuário", "Profissional" }));
-        jPanelDadosPessoais.add(jComboBoxTipoDeConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("Tipo de conta:");
-        jPanelDadosPessoais.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 190, 90, 20));
-
-        jPanelEndereco.setBackground(new java.awt.Color(255, 255, 255));
-        jPanelEndereco.setPreferredSize(new java.awt.Dimension(440, 666));
-        jPanelEndereco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Logo.png"))); // NOI18N
-        jLabel2.setText("img");
-        jPanelEndereco.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 0, 170, 120));
-        jLabel2.getAccessibleContext().setAccessibleDescription("");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 0, 255));
-        jLabel3.setText("Endereço");
-        jPanelEndereco.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 80, 32));
-
-        jTextFieldCidade.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Cidade:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelEndereco.add(jTextFieldCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 420, 200, -1));
-
-        jTextFieldRua.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Rua:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelEndereco.add(jTextFieldRua, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 470, 200, -1));
-
-        jComboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UF", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
-        jComboBoxEstado.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Selecione o estado:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jComboBoxEstado.addActionListener(this::jComboBoxEstadoActionPerformed);
-        jPanelEndereco.add(jComboBoxEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 290, 200, -1));
-
-        jFormattedCep.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "CEP:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         try {
-            jFormattedCep.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+            jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanelEndereco.add(jFormattedCep, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 130, -1));
+        jFormattedTextField3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jTextFieldComplemento.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Complemento:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelEndereco.add(jTextFieldComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 530, 200, -1));
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel15.setText("Rua");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Ja possui conta?");
-        jPanelEndereco.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 590, -1, -1));
+        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jLabelLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelLogin.setForeground(new java.awt.Color(51, 0, 255));
-        jLabelLogin.setText("Login");
-        jLabelLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabelLogin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelLoginMouseClicked(evt);
-            }
-        });
-        jPanelEndereco.add(jLabelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 590, 45, -1));
+        try {
+            jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jButtonCadastrar.setBackground(new java.awt.Color(51, 0, 255));
-        jButtonCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButtonCadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCadastrar.setText("Cadastrar");
-        jButtonCadastrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonCadastrar.addActionListener(this::jButtonCadastrarActionPerformed);
-        jPanelEndereco.add(jButtonCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, -1, -1));
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel16.setText("Número");
 
-        jButtonVoltar.setBackground(new java.awt.Color(51, 0, 255));
-        jButtonVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButtonVoltar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonVoltar.setText("Voltar");
-        jButtonVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonVoltar.addActionListener(this::jButtonVoltarActionPerformed);
-        jPanelEndereco.add(jButtonVoltar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 28));
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel17.setText("Complemento");
 
-        jLabelMsgErroCEP.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroCEP.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroCEP.setText("CEP inválido *");
-        jPanelEndereco.add(jLabelMsgErroCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, -1, 29));
+        jTextField4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jLabelMsgErroUF.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroUF.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroUF.setText("Digite o seu estado *");
-        jPanelEndereco.add(jLabelMsgErroUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 120, 26));
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel18.setText("Bairro");
 
-        jLabelMsgErroCidade.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroCidade.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroCidade.setText("Digite sua cidade *");
-        jPanelEndereco.add(jLabelMsgErroCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 440, 110, -1));
+        jTextField5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jTextField5.addActionListener(this::jTextField5ActionPerformed);
 
-        jLabelMsgErroBairro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroBairro.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroBairro.setText("Digite seu Bairro *");
-        jPanelEndereco.add(jLabelMsgErroBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 130, -1));
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel19.setText("Cidade");
 
-        jLabelMsgErroComplemento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroComplemento.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroComplemento.setText("Digite o seu complemento *");
-        jPanelEndereco.add(jLabelMsgErroComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, -1, -1));
+        jTextField6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jLabelMsgErroRua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroRua.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroRua.setText("Digite a sua rua *");
-        jPanelEndereco.add(jLabelMsgErroRua, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 480, -1, -1));
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel20.setText("Estado");
 
-        jLabelMsgErroNumero.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabelMsgErroNumero.setForeground(new java.awt.Color(204, 0, 0));
-        jLabelMsgErroNumero.setText("Digite o seu número *");
-        jPanelEndereco.add(jLabelMsgErroNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, -1, -1));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTextFieldBairro.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Bairro:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jPanelEndereco.add(jTextFieldBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 200, -1));
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/padlock.png"))); // NOI18N
 
-        jTextFieldNumero.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Numero:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        jTextFieldNumero.addActionListener(this::jTextFieldNumeroActionPerformed);
-        jPanelEndereco.add(jTextFieldNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 470, 70, 40));
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel22.setText("Dados de acesso");
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel23.setText("Email");
+
+        jTextField7.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+
+        jPasswordField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+
+        jPasswordField2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel24.setText("Senha");
+
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(22, 22, 64));
+        jLabel25.setText("Confirmar senha");
+
+        try {
+            jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jFormattedTextField5.setPreferredSize(new java.awt.Dimension(126, 32));
+        jFormattedTextField5.addActionListener(this::jFormattedTextField5ActionPerformed);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblFoneSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel11))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel7)
+                .addGap(346, 346, 346)
+                .addComponent(jLabel8))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel10)
+                .addGap(313, 313, 313)
+                .addComponent(jLabel9))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(139, 139, 139)
+                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel12)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel13))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel14)
+                .addGap(450, 450, 450)
+                .addComponent(jLabel15))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(166, 166, 166)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel16)
+                .addGap(413, 413, 413)
+                .addComponent(jLabel17))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(166, 166, 166)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel18)
+                .addGap(430, 430, 430)
+                .addComponent(jLabel19)
+                .addGap(197, 197, 197)
+                .addComponent(jLabel20))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(166, 166, 166)
+                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel21)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel22))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jLabel23)
+                .addGap(354, 354, 354)
+                .addComponent(jLabel24)
+                .addGap(234, 234, 234)
+                .addComponent(jLabel25))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFoneSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel5)
+                        .addGap(45, 45, 45)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel11)))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel9))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel13)))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel22)))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel24)
+                    .addComponent(jLabel25))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jPanelCadastro.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(309, 39, 1160, 930));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/logo-175x175.png"))); // NOI18N
+        jPanelCadastro.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 110, -1, 121));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Contrata");
+        jPanelCadastro.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 237, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(21, 89, 214));
+        jLabel3.setText("já");
+        jLabel3.setAlignmentY(0.0F);
+        jLabel3.setPreferredSize(new java.awt.Dimension(25, 48));
+        jPanelCadastro.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(199, 237, 30, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/suporte.png"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        jPanelCadastro.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 281, 397));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelDadosPessoais, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelEndereco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE))
+            .addComponent(jPanelCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelDadosPessoais, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+            .addComponent(jPanelCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEstadoActionPerformed
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxEstadoActionPerformed
+    }//GEN-LAST:event_jTextField5ActionPerformed
 
-    private void jButtonAvancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAvancarActionPerformed
-        
-
-    }//GEN-LAST:event_jButtonAvancarActionPerformed
-
-    private void jButtonVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVoltarActionPerformed
-        
-    }//GEN-LAST:event_jButtonVoltarActionPerformed
-
-    private void jLabelLogin1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogin1MouseClicked
-        
-    }//GEN-LAST:event_jLabelLogin1MouseClicked
-
-    private void jLabelLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLoginMouseClicked
-        
-    }//GEN-LAST:event_jLabelLoginMouseClicked
-
-    private void jButtonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarActionPerformed
-        
-
-    }//GEN-LAST:event_jButtonCadastrarActionPerformed
-
-    private void jPasswordFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldSenhaActionPerformed
+    private void jFormattedTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField5ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordFieldSenhaActionPerformed
-
-    private void jLabelOlhoCriarSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelOlhoCriarSenhaMouseClicked
-        if (cont == 1) {
-            String caminho = "src/imagens/visivel.png";
-            ImageIcon icon = new ImageIcon(caminho);
-            jLabelOlhoCriarSenha.setIcon(icon);
-            jPasswordFieldSenha.setEchoChar((char) 0);
-            cont = cont + 1;
-        } else if (cont == 2) {
-            String caminho2 = "src/imagens/olho.png";
-            ImageIcon icon = new ImageIcon(caminho2);
-            jLabelOlhoCriarSenha.setIcon(icon);
-            jPasswordFieldSenha.setEchoChar('*');
-            cont = cont - 1;
-        }
-    }//GEN-LAST:event_jLabelOlhoCriarSenhaMouseClicked
-
-    private void jLabelOlhoConfirmarSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelOlhoConfirmarSenhaMouseClicked
-        if (cont == 1) {
-            String caminho3 = "src/imagens/visivel.png";
-            ImageIcon icon = new ImageIcon(caminho3);
-            jLabelOlhoConfirmarSenha.setIcon(icon);
-            jPasswordFieldConfirmarSenha.setEchoChar((char) 0);
-            cont = cont + 1;
-        } else if (cont == 2) {
-            String caminho4 = "src/imagens/olho.png";
-            ImageIcon icon = new ImageIcon(caminho4);
-            jLabelOlhoConfirmarSenha.setIcon(icon);
-            jPasswordFieldConfirmarSenha.setEchoChar('*');
-            cont = cont - 1;
-        }
-
-    }//GEN-LAST:event_jLabelOlhoConfirmarSenhaMouseClicked
-
-    private void jTextFieldNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNumeroActionPerformed
+    }//GEN-LAST:event_jFormattedTextField5ActionPerformed
     public static boolean validarEmail(String email) {
 
         if (email == null || email.isEmpty()) {
@@ -526,50 +623,48 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAvancar;
-    private javax.swing.JButton jButtonCadastrar;
-    private javax.swing.JButton jButtonVoltar;
-    private javax.swing.JComboBox<String> jComboBoxEstado;
-    private javax.swing.JComboBox<String> jComboBoxTipoDeConta;
-    private com.toedter.calendar.JDateChooser jDateChooserDataNascimento;
-    private javax.swing.JFormattedTextField jFormattedCep;
-    private javax.swing.JFormattedTextField jFormattedTextFieldCpf;
-    private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JFormattedTextField jFormattedTextField4;
+    private javax.swing.JFormattedTextField jFormattedTextField5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabelDataNascimento;
-    private javax.swing.JLabel jLabelLogin;
-    private javax.swing.JLabel jLabelLogin1;
-    private javax.swing.JLabel jLabelLogo;
-    private javax.swing.JLabel jLabelMsgErroBairro;
-    private javax.swing.JLabel jLabelMsgErroCEP;
-    private javax.swing.JLabel jLabelMsgErroCPF;
-    private javax.swing.JLabel jLabelMsgErroCidade;
-    private javax.swing.JLabel jLabelMsgErroComplemento;
-    private javax.swing.JLabel jLabelMsgErroConfirmarSenha;
-    private javax.swing.JLabel jLabelMsgErroEmail;
-    private javax.swing.JLabel jLabelMsgErroNome;
-    private javax.swing.JLabel jLabelMsgErroNumero;
-    private javax.swing.JLabel jLabelMsgErroRua;
-    private javax.swing.JLabel jLabelMsgErroSenha;
-    private javax.swing.JLabel jLabelMsgErroTelefone;
-    private javax.swing.JLabel jLabelMsgErroUF;
-    private javax.swing.JLabel jLabelOlhoConfirmarSenha;
-    private javax.swing.JLabel jLabelOlhoCriarSenha;
-    private javax.swing.JPanel jPanelDadosPessoais;
-    private javax.swing.JPanel jPanelEndereco;
-    private javax.swing.JPasswordField jPasswordFieldConfirmarSenha;
-    private javax.swing.JPasswordField jPasswordFieldSenha;
-    private javax.swing.JTextField jTextFieldBairro;
-    private javax.swing.JTextField jTextFieldCidade;
-    private javax.swing.JTextField jTextFieldComplemento;
-    private javax.swing.JTextField jTextFieldEmail;
-    private javax.swing.JTextField jTextFieldNome;
-    private javax.swing.JTextField jTextFieldNumero;
-    private javax.swing.JTextField jTextFieldRua;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelCadastro;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel lblFoneSuporte;
     // End of variables declaration//GEN-END:variables
 }
