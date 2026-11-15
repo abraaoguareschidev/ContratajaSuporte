@@ -11,8 +11,19 @@ import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+import javax.swing.SwingWorker;
 
 public class TelaCadastro extends javax.swing.JFrame {
+    
+    private final HttpClient httpClient = HttpClient.newHttpClient();
     
     private boolean isValido;
     private String email, cpf;
@@ -20,6 +31,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     int idUsuario;
     private int cont = 1;
     private double valorHora;
+    
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -32,6 +44,23 @@ public class TelaCadastro extends javax.swing.JFrame {
      */
     public TelaCadastro() {
     initComponents();
+    cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
+        new String[]{
+            "Selecione o estado",
+            "AC", "AL", "AP", "AM", "BA", "CE",
+            "DF", "ES", "GO", "MA", "MT", "MS",
+            "MG", "PA", "PB", "PR", "PE", "PI",
+            "RJ", "RN", "RS", "RO", "RR", "SC",
+            "SP", "SE", "TO"
+        }
+));
+    fmtCEP.addFocusListener(new java.awt.event.FocusAdapter() {
+
+    @Override
+    public void focusLost(java.awt.event.FocusEvent evt) {
+        consultarCep();
+    }
+});
 
     // Localiza a imagem dentro da pasta resources
     java.net.URL caminhoImagem = getClass().getResource(
@@ -115,36 +144,36 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txtNomeSuporte = new javax.swing.JTextField();
+        fmtDataNasc = new javax.swing.JFormattedTextField();
+        fmtTelefone = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        fmtCEP = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField();
+        txtRua = new javax.swing.JTextField();
+        fmtNumero = new javax.swing.JFormattedTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtComplemento = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtBairro = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtCidade = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxEstado = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtEmail = new javax.swing.JTextField();
+        pswSenha = new javax.swing.JPasswordField();
+        pswCfSenha = new javax.swing.JPasswordField();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        fmtCPF = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -191,21 +220,21 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(22, 22, 64));
         jLabel10.setText("Data de nascimento");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtNomeSuporte.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            fmtDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        fmtDataNasc.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         try {
-            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+            fmtTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        fmtTelefone.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(22, 22, 64));
@@ -226,24 +255,24 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel14.setText("CEP");
 
         try {
-            jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+            fmtCEP.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        fmtCEP.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(22, 22, 64));
         jLabel15.setText("Rua");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtRua.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         try {
-            jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
+            fmtNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        fmtNumero.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(22, 22, 64));
@@ -253,26 +282,27 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(22, 22, 64));
         jLabel17.setText("Complemento");
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtComplemento.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(22, 22, 64));
         jLabel18.setText("Bairro");
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jTextField5.addActionListener(this::jTextField5ActionPerformed);
+        txtBairro.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtBairro.addActionListener(this::txtBairroActionPerformed);
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(22, 22, 64));
         jLabel19.setText("Cidade");
 
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtCidade.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(22, 22, 64));
         jLabel20.setText("Estado");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxEstado.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o estado", "Item 2", "Item 3", "Item 4" }));
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/padlock.png"))); // NOI18N
 
@@ -284,11 +314,11 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(22, 22, 64));
         jLabel23.setText("Email");
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtEmail.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jPasswordField1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        pswSenha.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        jPasswordField2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        pswCfSenha.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(22, 22, 64));
@@ -299,13 +329,13 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel25.setText("Confirmar senha");
 
         try {
-            jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+            fmtCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jFormattedTextField5.setPreferredSize(new java.awt.Dimension(126, 32));
-        jFormattedTextField5.addActionListener(this::jFormattedTextField5ActionPerformed);
+        fmtCPF.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        fmtCPF.setPreferredSize(new java.awt.Dimension(126, 32));
+        fmtCPF.addActionListener(this::fmtCPFActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -332,9 +362,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel8))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNomeSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(62, 62, 62)
-                .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(fmtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jLabel10)
@@ -342,9 +372,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel9))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fmtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(139, 139, 139)
-                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(fmtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jLabel12)
@@ -357,9 +387,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel15))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fmtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(166, 166, 166)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtRua, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jLabel16)
@@ -367,9 +397,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel17))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fmtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(166, 166, 166)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jLabel18)
@@ -379,11 +409,11 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel20))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(166, 166, 166)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(jLabel21)
@@ -398,11 +428,11 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(jLabel25))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
-                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -428,18 +458,18 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNomeSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(fmtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jLabel9))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -452,8 +482,8 @@ public class TelaCadastro extends javax.swing.JFrame {
                     .addComponent(jLabel15))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRua, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
@@ -462,8 +492,8 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(fmtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
@@ -471,9 +501,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                     .addComponent(jLabel20))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel21)
@@ -487,9 +517,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                     .addComponent(jLabel25))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanelCadastro.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(309, 39, 1160, 930));
@@ -528,13 +558,13 @@ public class TelaCadastro extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtBairroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBairroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_txtBairroActionPerformed
 
-    private void jFormattedTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField5ActionPerformed
+    private void fmtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fmtCPFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField5ActionPerformed
+    }//GEN-LAST:event_fmtCPFActionPerformed
     public static boolean validarEmail(String email) {
 
         if (email == null || email.isEmpty()) {
@@ -597,7 +627,121 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
         
+    private String obterCepDigitado() {
 
+    String cep = fmtCEP.getText().replaceAll("\\D", "");
+
+    if (cep.length() != 8) {
+        return null;
+    }
+
+    return cep;
+}
+    
+    
+    private JsonObject buscarEndereco(String cep)
+        throws java.io.IOException, InterruptedException {
+
+    // Monta o endereço do ViaCEP
+    HttpRequest requisicao = HttpRequest.newBuilder().uri(URI.create("https://viacep.com.br/ws/" + cep + "/json/")).GET().build();
+
+    // Envia a requisição e recebe a resposta
+    HttpResponse<String> resposta = httpClient.send(
+            requisicao,
+            HttpResponse.BodyHandlers.ofString());
+
+    // Verifica se a consulta foi bem-sucedida
+    if (resposta.statusCode() != 200) {
+        throw new java.io.IOException("Erro ao consultar o CEP.");
+    }
+
+    // Converte o JSON recebido em um objeto Java
+    return JsonParser.parseString(resposta.body()).getAsJsonObject();
+}
+    private void preencherEndereco(JsonObject endereco) {
+
+    txtRua.setText(endereco.get("logradouro").getAsString());
+
+    txtBairro.setText(endereco.get("bairro").getAsString());
+
+    txtCidade.setText(endereco.get("localidade").getAsString());
+
+    cbxEstado.setSelectedItem(endereco.get("uf").getAsString());
+}
+    
+    private void consultarCep() {
+
+    // Obtém o CEP sem máscara e verifica se possui 8 dígitos
+    String cep = obterCepDigitado();
+
+    if (cep == null) {
+
+        // Não mostra aviso se o campo estiver vazio
+        String digitado = fmtCEP.getText().replaceAll("\\D", "");
+
+        if (!digitado.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Digite um CEP com 8 números."
+            );
+        }
+
+        return;
+    }
+
+    // Executa a consulta sem congelar a interface
+    new SwingWorker<JsonObject, Void>() {
+
+        @Override
+        protected JsonObject doInBackground() throws Exception {
+
+            return buscarEndereco(cep);
+        }
+
+        @Override
+        protected void done() {
+
+            try {
+
+                JsonObject endereco = get();
+
+                // Verifica se o ViaCEP não encontrou o endereço
+                if (endereco.has("erro")
+                        && endereco.get("erro").getAsBoolean()) {
+
+                    JOptionPane.showMessageDialog(
+                            TelaCadastro.this,
+                            "CEP não encontrado."
+                    );
+
+                    return;
+                }
+
+                // Preenche os campos com os dados recebidos
+                preencherEndereco(endereco);
+
+            } catch (InterruptedException e) {
+
+                Thread.currentThread().interrupt();
+
+                JOptionPane.showMessageDialog(
+                        TelaCadastro.this,
+                        "Consulta de CEP interrompida."
+                );
+
+            } catch (java.util.concurrent.ExecutionException e) {
+
+                e.printStackTrace();
+
+                JOptionPane.showMessageDialog(
+                        TelaCadastro.this,
+                        "Não foi possível consultar o CEP. Verifique sua conexão."
+                );
+            }
+        }
+
+    }.execute();
+}
     
 
     public static void main(String args[]) {
@@ -623,12 +767,12 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
-    private javax.swing.JFormattedTextField jFormattedTextField4;
-    private javax.swing.JFormattedTextField jFormattedTextField5;
+    private javax.swing.JComboBox<String> cbxEstado;
+    private javax.swing.JFormattedTextField fmtCEP;
+    private javax.swing.JFormattedTextField fmtCPF;
+    private javax.swing.JFormattedTextField fmtDataNasc;
+    private javax.swing.JFormattedTextField fmtNumero;
+    private javax.swing.JFormattedTextField fmtTelefone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -657,14 +801,14 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelCadastro;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblFoneSuporte;
+    private javax.swing.JPasswordField pswCfSenha;
+    private javax.swing.JPasswordField pswSenha;
+    private javax.swing.JTextField txtBairro;
+    private javax.swing.JTextField txtCidade;
+    private javax.swing.JTextField txtComplemento;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtNomeSuporte;
+    private javax.swing.JTextField txtRua;
     // End of variables declaration//GEN-END:variables
 }
