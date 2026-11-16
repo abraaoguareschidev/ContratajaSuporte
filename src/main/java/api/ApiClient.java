@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import com.google.gson.JsonObject;
 public class ApiClient {
    
     private final HttpClient client = HttpClient.newHttpClient();
@@ -80,6 +81,39 @@ public static void main(String[] args) {
         e.printStackTrace();
     }
 }
+
+public HttpResponse<String> cadastrarSuporte(String nome, String cpf, String email, String telefone, String senha, String dataNasc, String rua, String numero, String complemento, String bairro, String cidade, String estado, String cep) throws Exception{
+    JsonObject json = new JsonObject();
+    
+    json.addProperty("nome", nome);
+    json.addProperty("cpf", cpf);
+    json.addProperty("email", email);
+    json.addProperty("telefone", telefone);
+    json.addProperty("senha", senha);
+    json.addProperty("dataNasc", dataNasc);
+    json.addProperty("rua", rua);
+    json.addProperty("numero", numero);
+    json.addProperty("complemento", complemento);
+    json.addProperty("bairro", bairro);
+    json.addProperty("cidade", cidade);
+    json.addProperty("estado", estado);
+    json.addProperty("cep", cep);
+   
+   
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create("http://localhost:8080/usuarios/suporte"))
+        .header("Content-Type", "application/json")
+        .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+        .build();
+
+    HttpResponse<String> response = client.send(
+        request,
+        HttpResponse.BodyHandlers.ofString());
+    
+    return response;
+}
+
+    
 
 
 }

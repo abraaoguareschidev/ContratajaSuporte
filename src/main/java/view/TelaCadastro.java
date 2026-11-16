@@ -4,7 +4,7 @@
  */
 package view;
 
-
+import api.ApiClient;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -13,118 +13,119 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.awt.Color;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.format.DateTimeFormatter;
+import javax.swing.BorderFactory;
 
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 
 public class TelaCadastro extends javax.swing.JFrame {
-    
+
     private final HttpClient httpClient = HttpClient.newHttpClient();
-    
     private boolean isValido;
     private String email, cpf;
-    
+
     int idUsuario;
     private int cont = 1;
     private double valorHora;
-    
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaCadastro.class.getName());
 
     /**
      * Creates new form TelaCadastro
      */
     public TelaCadastro() {
-    initComponents();
-    cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
-        new String[]{
-            "Selecione o estado",
-            "AC", "AL", "AP", "AM", "BA", "CE",
-            "DF", "ES", "GO", "MA", "MT", "MS",
-            "MG", "PA", "PB", "PR", "PE", "PI",
-            "RJ", "RN", "RS", "RO", "RR", "SC",
-            "SP", "SE", "TO"
-        }
-));
-    fmtCEP.addFocusListener(new java.awt.event.FocusAdapter() {
+        initComponents();
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
+                new String[]{
+                    "Selecione o estado",
+                    "AC", "AL", "AP", "AM", "BA", "CE",
+                    "DF", "ES", "GO", "MA", "MT", "MS",
+                    "MG", "PA", "PB", "PR", "PE", "PI",
+                    "RJ", "RN", "RS", "RO", "RR", "SC",
+                    "SP", "SE", "TO"
+                }
+        ));
+        fmtCEP.addFocusListener(new java.awt.event.FocusAdapter() {
 
-    @Override
-    public void focusLost(java.awt.event.FocusEvent evt) {
-        consultarCep();
-    }
-});
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                consultarCep();
+            }
+        });
 
-    // Localiza a imagem dentro da pasta resources
-    java.net.URL caminhoImagem = getClass().getResource(
-            "/imagens/telacadastro/background1.png"
-    );
-
-    // Verifica se a imagem foi encontrada
-    if (caminhoImagem == null) {
-        throw new RuntimeException(
-                "Imagem não encontrada: /imagens/telacadastro/background1.png"
+        // Localiza a imagem dentro da pasta resources
+        java.net.URL caminhoImagem = getClass().getResource(
+                "/imagens/telacadastro/background1.png"
         );
+
+        // Verifica se a imagem foi encontrada
+        if (caminhoImagem == null) {
+            throw new RuntimeException(
+                    "Imagem não encontrada: /imagens/telacadastro/background1.png"
+            );
+        }
+
+        // Carrega a imagem
+        final java.awt.Image imagemFundo
+                = new javax.swing.ImageIcon(caminhoImagem).getImage();
+
+        // Guarda a borda original do painel
+        javax.swing.border.Border bordaOriginal
+                = jPanelCadastro.getBorder();
+
+        // Cria uma borda personalizada para desenhar o background
+        javax.swing.border.Border bordaImagem
+                = new javax.swing.border.Border() {
+
+            @Override
+            public void paintBorder(
+                    java.awt.Component c,
+                    java.awt.Graphics g,
+                    int x,
+                    int y,
+                    int largura,
+                    int altura) {
+
+                g.drawImage(imagemFundo, x, y, largura, altura, c);
+            }
+
+            @Override
+            public java.awt.Insets getBorderInsets(
+                    java.awt.Component c) {
+
+                return new java.awt.Insets(0, 0, 0, 0);
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return false;
+            }
+        };
+
+        // Permite que o background seja desenhado
+        jPanelCadastro.setOpaque(false);
+
+        // Aplica a imagem como fundo do painel
+        jPanelCadastro.setBorder(
+                javax.swing.BorderFactory.createCompoundBorder(
+                        bordaImagem,
+                        bordaOriginal
+                )
+        );
+
+        jPanelCadastro.repaint();
     }
-
-    // Carrega a imagem
-    final java.awt.Image imagemFundo =
-            new javax.swing.ImageIcon(caminhoImagem).getImage();
-
-    // Guarda a borda original do painel
-    javax.swing.border.Border bordaOriginal =
-            jPanelCadastro.getBorder();
-
-    // Cria uma borda personalizada para desenhar o background
-    javax.swing.border.Border bordaImagem =
-            new javax.swing.border.Border() {
-
-        @Override
-        public void paintBorder(
-                java.awt.Component c,
-                java.awt.Graphics g,
-                int x,
-                int y,
-                int largura,
-                int altura) {
-
-            g.drawImage(imagemFundo,x,y,largura,altura,c);
-        }
-
-        @Override
-        public java.awt.Insets getBorderInsets(
-                java.awt.Component c) {
-
-            return new java.awt.Insets(0, 0, 0, 0);
-        }
-
-        @Override
-        public boolean isBorderOpaque() {
-            return false;
-        }
-    };
-
-    // Permite que o background seja desenhado
-    jPanelCadastro.setOpaque(false);
-
-    // Aplica a imagem como fundo do painel
-    jPanelCadastro.setBorder(
-            javax.swing.BorderFactory.createCompoundBorder(
-                    bordaImagem,
-                    bordaOriginal
-            )
-    );
-
-    jPanelCadastro.repaint();
-}
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -174,6 +175,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         fmtCPF = new javax.swing.JFormattedTextField();
+        btnCadastrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -221,6 +223,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel10.setText("Data de nascimento");
 
         txtNomeSuporte.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtNomeSuporte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         try {
             fmtDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -267,11 +270,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         txtRua.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        try {
-            fmtNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        fmtNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtNumero.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -337,102 +336,116 @@ public class TelaCadastro extends javax.swing.JFrame {
         fmtCPF.setPreferredSize(new java.awt.Dimension(126, 32));
         fmtCPF.addActionListener(this::fmtCPFActionPerformed);
 
+        btnCadastrar.setBackground(new java.awt.Color(21, 89, 214));
+        btnCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(this::btnCadastrarActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lblFoneSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(21, 21, 21)
+                        .addComponent(lblFoneSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(106, 106, 106)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel7)
+                        .addGap(346, 346, 346)
+                        .addComponent(jLabel8))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(txtNomeSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
+                        .addComponent(fmtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel10)
+                        .addGap(313, 313, 313)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(fmtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139)
+                        .addComponent(fmtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel12)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel14)
+                        .addGap(450, 450, 450)
+                        .addComponent(jLabel15))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(fmtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(166, 166, 166)
+                        .addComponent(txtRua, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel16)
+                        .addGap(413, 413, 413)
+                        .addComponent(jLabel17))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(fmtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(166, 166, 166)
+                        .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel18)
+                        .addGap(430, 430, 430)
+                        .addComponent(jLabel19)
+                        .addGap(197, 197, 197)
+                        .addComponent(jLabel20))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(166, 166, 166)
+                        .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel21)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel22))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(481, 481, 481)
+                        .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jLabel11))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel7)
-                .addGap(346, 346, 346)
-                .addComponent(jLabel8))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(txtNomeSuporte, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addComponent(fmtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel10)
-                .addGap(313, 313, 313)
-                .addComponent(jLabel9))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(fmtDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(139, 139, 139)
-                .addComponent(fmtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel12)
-                .addGap(6, 6, 6)
-                .addComponent(jLabel13))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel14)
-                .addGap(450, 450, 450)
-                .addComponent(jLabel15))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(fmtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166)
-                .addComponent(txtRua, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel16)
-                .addGap(413, 413, 413)
-                .addComponent(jLabel17))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(fmtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166)
-                .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel18)
-                .addGap(430, 430, 430)
-                .addComponent(jLabel19)
-                .addGap(197, 197, 197)
-                .addComponent(jLabel20))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166)
-                .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel21)
-                .addGap(6, 6, 6)
-                .addComponent(jLabel22))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel23)
-                .addGap(354, 354, 354)
-                .addComponent(jLabel24)
-                .addGap(234, 234, 234)
-                .addComponent(jLabel25))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addGap(354, 354, 354)
+                        .addComponent(jLabel24))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25)
+                    .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,7 +532,10 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(pswCfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanelCadastro.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(309, 39, 1160, 930));
@@ -565,6 +581,236 @@ public class TelaCadastro extends javax.swing.JFrame {
     private void fmtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fmtCPFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtCPFActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+
+        boolean valido = true;
+
+        // ===== CAMPOS OBRIGATÓRIOS =====
+        if (txtNomeSuporte.getText().trim().isEmpty()) {
+            txtNomeSuporte.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            txtNomeSuporte.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (fmtCPF.getText().replaceAll("\\D", "").isEmpty()) {
+            fmtCPF.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            fmtCPF.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (fmtDataNasc.getText().replaceAll("\\D", "").isEmpty()) {
+            fmtDataNasc.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            fmtDataNasc.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (fmtTelefone.getText().replaceAll("\\D", "").isEmpty()) {
+            fmtTelefone.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            fmtTelefone.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (fmtCEP.getText().replaceAll("\\D", "").isEmpty()) {
+            fmtCEP.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            fmtCEP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (txtRua.getText().trim().isEmpty()) {
+            txtRua.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            txtRua.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (fmtNumero.getText().replaceAll("\\D", "").isEmpty()) {
+            fmtNumero.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            fmtNumero.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (txtBairro.getText().trim().isEmpty()) {
+            txtBairro.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            txtBairro.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (txtCidade.getText().trim().isEmpty()) {
+            txtCidade.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            txtCidade.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (cbxEstado.getSelectedIndex() == 0) {
+            cbxEstado.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            cbxEstado.setBorder(UIManager.getBorder("ComboBox.border"));
+        }
+
+        if (txtEmail.getText().trim().isEmpty()) {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (pswSenha.getPassword().length == 0) {
+            pswSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            pswSenha.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        if (pswCfSenha.getPassword().length == 0) {
+            pswCfSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valido = false;
+        } else {
+            pswCfSenha.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        }
+
+        // Se algum estiver vazio, para aqui.
+        if (!valido) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Os campos em vermelho são obrigatórios."
+            );
+            return;
+        }
+
+        // ===== PEGA OS VALORES =====
+        String nome = txtNomeSuporte.getText();
+        String cpf = fmtCPF.getText();
+        String email = txtEmail.getText();
+        String telefone = fmtTelefone.getText();
+        String cep = fmtCEP.getText();
+        String rua = txtRua.getText();
+        String numero = fmtNumero.getText();
+        String complemento = txtComplemento.getText();
+        String bairro = txtBairro.getText();
+        String cidade = txtCidade.getText();
+        String estado = cbxEstado.getSelectedItem().toString();
+        String senha = new String(pswSenha.getPassword());
+        String confirmarSenha = new String(pswCfSenha.getPassword());
+
+        // ===== DATA DE NASCIMENTO =====
+        String dataNascTexto = fmtDataNasc.getText();
+        DateTimeFormatter formatoData
+                = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate data;
+
+        try {
+            data = LocalDate.parse(dataNascTexto, formatoData);
+        } catch (Exception e) {
+            fmtDataNasc.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(this, "Data de nascimento inválida.");
+            return;
+        }
+
+        String dataNasc = data.toString();
+
+        // ===== IDADE MÍNIMA =====
+        int idade = Period.between(data, LocalDate.now()).getYears();
+
+        if (idade < 18) {
+            fmtDataNasc.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(
+                    this,
+                    "É necessário ter pelo menos 18 anos."
+            );
+            return;
+        }
+
+        // ===== CPF =====
+        if (!validarCPF(cpf)) {
+            fmtCPF.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(this, "CPF inválido.");
+            return;
+        }
+
+        //  E-MAIL 
+        if (!validarEmail(email)) {
+            txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(this, "E-mail inválido.");
+            return;
+        }
+
+        //  TELEFONE 
+        String telefoneNumeros = telefone.replaceAll("\\D", "");
+
+        if (telefoneNumeros.length() < 10 || telefoneNumeros.length() > 11) {
+            fmtTelefone.setBorder(BorderFactory.createLineBorder(Color.RED));
+            JOptionPane.showMessageDialog(this, "Telefone inválido.");
+            return;
+        }
+
+        //  SENHAS 
+        if (!senha.equals(confirmarSenha)) {
+            pswSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
+            pswCfSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
+
+            JOptionPane.showMessageDialog(this, "As senhas não coincidem.");
+            return;
+        }
+
+        //  ENVIA PARA API 
+        ApiClient api = new ApiClient();
+
+        try {
+
+            HttpResponse<String> resposta = api.cadastrarSuporte(
+                    nome,
+                    cpf,
+                    email,
+                    telefone,
+                    senha,
+                    dataNasc,
+                    rua,
+                    numero,
+                    complemento,
+                    bairro,
+                    cidade,
+                    estado,
+                    cep
+            );
+
+            if (resposta.statusCode() == 200 || resposta.statusCode() == 201) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Cadastro realizado com sucesso!"
+                );
+
+            } else {
+                JsonObject erro = JsonParser.parseString(resposta.body()).getAsJsonObject();
+
+                String mensagem = erro.get("mensagem").getAsString();
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        mensagem
+                );
+            }
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Não foi possível conectar com a API."
+            );
+        }
+
+    }//GEN-LAST:event_btnCadastrarActionPerformed
     public static boolean validarEmail(String email) {
 
         if (email == null || email.isEmpty()) {
@@ -626,123 +872,134 @@ public class TelaCadastro extends javax.swing.JFrame {
         }
     }
 
-        
     private String obterCepDigitado() {
 
-    String cep = fmtCEP.getText().replaceAll("\\D", "");
+        String cep = fmtCEP.getText().replaceAll("\\D", "");
 
-    if (cep.length() != 8) {
-        return null;
+        if (cep.length() != 8) {
+            return null;
+        }
+
+        return cep;
     }
 
-    return cep;
-}
-    
-    
     private JsonObject buscarEndereco(String cep)
-        throws java.io.IOException, InterruptedException {
+            throws java.io.IOException, InterruptedException {
 
-    // Monta o endereço do ViaCEP
-    HttpRequest requisicao = HttpRequest.newBuilder().uri(URI.create("https://viacep.com.br/ws/" + cep + "/json/")).GET().build();
+        // Monta o endereço do ViaCEP
+        HttpRequest requisicao = HttpRequest.newBuilder().uri(URI.create("https://viacep.com.br/ws/" + cep + "/json/")).GET().build();
 
-    // Envia a requisição e recebe a resposta
-    HttpResponse<String> resposta = httpClient.send(
-            requisicao,
-            HttpResponse.BodyHandlers.ofString());
+        // Envia a requisição e recebe a resposta
+        HttpResponse<String> resposta = httpClient.send(
+                requisicao,
+                HttpResponse.BodyHandlers.ofString());
 
-    // Verifica se a consulta foi bem-sucedida
-    if (resposta.statusCode() != 200) {
-        throw new java.io.IOException("Erro ao consultar o CEP.");
+        // Verifica se a consulta foi bem-sucedida
+        if (resposta.statusCode() != 200) {
+            throw new java.io.IOException("Erro ao consultar o CEP.");
+        }
+
+        // Converte o JSON recebido em um objeto Java
+        return JsonParser.parseString(resposta.body()).getAsJsonObject();
     }
 
-    // Converte o JSON recebido em um objeto Java
-    return JsonParser.parseString(resposta.body()).getAsJsonObject();
-}
     private void preencherEndereco(JsonObject endereco) {
 
-    txtRua.setText(endereco.get("logradouro").getAsString());
+        txtRua.setText(endereco.get("logradouro").getAsString());
 
-    txtBairro.setText(endereco.get("bairro").getAsString());
+        txtBairro.setText(endereco.get("bairro").getAsString());
 
-    txtCidade.setText(endereco.get("localidade").getAsString());
+        txtCidade.setText(endereco.get("localidade").getAsString());
 
-    cbxEstado.setSelectedItem(endereco.get("uf").getAsString());
-}
-    
-    private void consultarCep() {
-
-    // Obtém o CEP sem máscara e verifica se possui 8 dígitos
-    String cep = obterCepDigitado();
-
-    if (cep == null) {
-
-        // Não mostra aviso se o campo estiver vazio
-        String digitado = fmtCEP.getText().replaceAll("\\D", "");
-
-        if (!digitado.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Digite um CEP com 8 números."
-            );
-        }
-
-        return;
+        cbxEstado.setSelectedItem(endereco.get("uf").getAsString());
     }
 
-    // Executa a consulta sem congelar a interface
-    new SwingWorker<JsonObject, Void>() {
+    private void consultarCep() {
 
-        @Override
-        protected JsonObject doInBackground() throws Exception {
+        // Obtém o CEP sem máscara e verifica se possui 8 dígitos
+        String cep = obterCepDigitado();
 
-            return buscarEndereco(cep);
+        if (cep == null) {
+
+            // Não mostra aviso se o campo estiver vazio
+            String digitado = fmtCEP.getText().replaceAll("\\D", "");
+
+            if (!digitado.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Digite um CEP com 8 números."
+                );
+            }
+
+            return;
         }
 
-        @Override
-        protected void done() {
+        // Executa a consulta sem congelar a interface
+        new SwingWorker<JsonObject, Void>() {
 
-            try {
+            @Override
+            protected JsonObject doInBackground() throws Exception {
 
-                JsonObject endereco = get();
+                return buscarEndereco(cep);
+            }
 
-                // Verifica se o ViaCEP não encontrou o endereço
-                if (endereco.has("erro")
-                        && endereco.get("erro").getAsBoolean()) {
+            @Override
+            protected void done() {
+
+                try {
+
+                    JsonObject endereco = get();
+
+                    // Verifica se o ViaCEP não encontrou o endereço
+                    if (endereco.has("erro")
+                            && endereco.get("erro").getAsBoolean()) {
+
+                        JOptionPane.showMessageDialog(
+                                TelaCadastro.this,
+                                "CEP não encontrado."
+                        );
+
+                        return;
+                    }
+
+                    // Preenche os campos com os dados recebidos
+                    preencherEndereco(endereco);
+
+                } catch (InterruptedException e) {
+
+                    Thread.currentThread().interrupt();
 
                     JOptionPane.showMessageDialog(
                             TelaCadastro.this,
-                            "CEP não encontrado."
+                            "Consulta de CEP interrompida."
                     );
 
-                    return;
+                } catch (java.util.concurrent.ExecutionException e) {
+
+                    e.printStackTrace();
+
+                    JOptionPane.showMessageDialog(
+                            TelaCadastro.this,
+                            "Não foi possível consultar o CEP. Verifique sua conexão."
+                    );
                 }
-
-                // Preenche os campos com os dados recebidos
-                preencherEndereco(endereco);
-
-            } catch (InterruptedException e) {
-
-                Thread.currentThread().interrupt();
-
-                JOptionPane.showMessageDialog(
-                        TelaCadastro.this,
-                        "Consulta de CEP interrompida."
-                );
-
-            } catch (java.util.concurrent.ExecutionException e) {
-
-                e.printStackTrace();
-
-                JOptionPane.showMessageDialog(
-                        TelaCadastro.this,
-                        "Não foi possível consultar o CEP. Verifique sua conexão."
-                );
             }
+
+        }.execute();
+    }
+
+    private boolean validarCampo(javax.swing.text.JTextComponent campo) {
+
+        String texto = campo.getText().replaceAll("[^A-Za-z0-9]", "").trim();
+
+        if (texto.isEmpty()) {
+            campo.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.RED));
+            return false;
         }
 
-    }.execute();
-}
-    
+        campo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        return true;
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -767,6 +1024,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCadastrar;
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JFormattedTextField fmtCEP;
     private javax.swing.JFormattedTextField fmtCPF;
