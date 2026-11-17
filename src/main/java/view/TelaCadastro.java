@@ -586,7 +586,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         boolean valido = true;
 
-        // ===== CAMPOS OBRIGATÓRIOS =====
+        // VALIDAÇÃO DE CAMPOS
         if (txtNomeSuporte.getText().trim().isEmpty()) {
             txtNomeSuporte.setBorder(BorderFactory.createLineBorder(Color.RED));
             valido = false;
@@ -680,14 +680,11 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         // Se algum estiver vazio, para aqui.
         if (!valido) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Os campos em vermelho são obrigatórios."
-            );
+            JOptionPane.showMessageDialog(this,"Os campos em vermelho são obrigatórios.");
             return;
         }
 
-        // ===== PEGA OS VALORES =====
+        // PEGA OS VALORES
         String nome = txtNomeSuporte.getText();
         String cpf = fmtCPF.getText();
         String email = txtEmail.getText();
@@ -738,14 +735,14 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        //  E-MAIL 
+        //  email
         if (!validarEmail(email)) {
             txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(this, "E-mail inválido.");
             return;
         }
 
-        //  TELEFONE 
+        //  telefone 
         String telefoneNumeros = telefone.replaceAll("\\D", "");
 
         if (telefoneNumeros.length() < 10 || telefoneNumeros.length() > 11) {
@@ -754,7 +751,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        //  SENHAS 
+        //  senha 
         if (!senha.equals(confirmarSenha)) {
             pswSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
             pswCfSenha.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -763,26 +760,12 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        //  ENVIA PARA API 
+        //  envia para api 
         ApiClient api = new ApiClient();
 
         try {
 
-            HttpResponse<String> resposta = api.cadastrarSuporte(
-                    nome,
-                    cpf,
-                    email,
-                    telefone,
-                    senha,
-                    dataNasc,
-                    rua,
-                    numero,
-                    complemento,
-                    bairro,
-                    cidade,
-                    estado,
-                    cep
-            );
+            HttpResponse<String> resposta = api.cadastrarSuporte(nome,cpf,email,telefone,senha,dataNasc,rua,numero,complemento,bairro,cidade,estado,cep);
 
             if (resposta.statusCode() == 200 || resposta.statusCode() == 201) {
 
