@@ -46,16 +46,6 @@ public class TelaCadastro extends javax.swing.JFrame {
      */
     public TelaCadastro() {
         initComponents();
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(
-                new String[]{
-                    "Selecione o estado",
-                    "AC", "AL", "AP", "AM", "BA", "CE",
-                    "DF", "ES", "GO", "MA", "MT", "MS",
-                    "MG", "PA", "PB", "PR", "PE", "PI",
-                    "RJ", "RN", "RS", "RO", "RR", "SC",
-                    "SP", "SE", "TO"
-                }
-        ));
         fmtCEP.addFocusListener(new java.awt.event.FocusAdapter() {
 
             @Override
@@ -301,7 +291,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel20.setText("Estado");
 
         cbxEstado.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o estado", "Item 2", "Item 3", "Item 4" }));
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o estado", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
 
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/telacadastro/padlock.png"))); // NOI18N
 
@@ -769,28 +759,22 @@ public class TelaCadastro extends javax.swing.JFrame {
 
             if (resposta.statusCode() == 200 || resposta.statusCode() == 201) {
 
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Cadastro realizado com sucesso!"
-                );
+                JOptionPane.showMessageDialog(this,"Cadastro realizado com sucesso!");
+                LoginSuporte login = new LoginSuporte();
+                this.setVisible(false);
+                login.setVisible(true);
 
             } else {
                 JsonObject erro = JsonParser.parseString(resposta.body()).getAsJsonObject();
 
                 String mensagem = erro.get("mensagem").getAsString();
 
-                JOptionPane.showMessageDialog(
-                        this,
-                        mensagem
-                );
+                JOptionPane.showMessageDialog(this,mensagem);
             }
 
         } catch (Exception e) {
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Não foi possível conectar com a API."
-            );
+            JOptionPane.showMessageDialog(this,"Não foi possível conectar com a API.");
         }
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -822,7 +806,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         try {
 
-            // ===== Primeiro dígito =====
+            // Primeiro dígito
             int soma = 0;
             int peso = 10;
 
@@ -834,7 +818,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             int resto = 11 - (soma % 11);
             int digito1 = (resto >= 10) ? 0 : resto;
 
-            // ===== Segundo dígito =====
+            //Segundo dígito
             soma = 0;
             peso = 11;
 
@@ -937,10 +921,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                     if (endereco.has("erro")
                             && endereco.get("erro").getAsBoolean()) {
 
-                        JOptionPane.showMessageDialog(
-                                TelaCadastro.this,
-                                "CEP não encontrado."
-                        );
+                        JOptionPane.showMessageDialog(TelaCadastro.this,"CEP não encontrado.");
 
                         return;
                     }

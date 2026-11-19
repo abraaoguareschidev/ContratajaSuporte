@@ -5,7 +5,9 @@
 package view;
 
 import api.ApiClient;
+import java.awt.Color;
 import java.net.http.HttpResponse;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -103,7 +105,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         pswSenha = new javax.swing.JPasswordField();
         btnEntrar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -127,9 +129,11 @@ public class LoginSuporte extends javax.swing.JFrame {
 
         txtLogin.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         txtLogin.setForeground(new java.awt.Color(0, 0, 0));
+        txtLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pswSenha.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         pswSenha.setForeground(new java.awt.Color(0, 0, 0));
+        pswSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnEntrar.setBackground(new java.awt.Color(21, 89, 214));
         btnEntrar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
@@ -142,10 +146,11 @@ public class LoginSuporte extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(21, 89, 214));
         jLabel4.setText("Não possui conta?");
 
-        jButton2.setBackground(new java.awt.Color(21, 89, 214));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Cadastre-se");
+        btnCadastrar.setBackground(new java.awt.Color(21, 89, 214));
+        btnCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCadastrar.setText("Cadastre-se");
+        btnCadastrar.addActionListener(this::btnCadastrarActionPerformed);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(21, 89, 214));
@@ -188,7 +193,7 @@ public class LoginSuporte extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
+                    .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLoginLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -221,7 +226,7 @@ public class LoginSuporte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
 
@@ -294,7 +299,10 @@ public class LoginSuporte extends javax.swing.JFrame {
         if (login.trim().isEmpty()) {
             
             JOptionPane.showMessageDialog(this, "Digite o seu email.");
+            txtLogin.setBorder(BorderFactory.createLineBorder(Color.RED));
             return;
+        }else{
+            txtLogin.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
         
         if (senha.trim().isEmpty()) {
@@ -306,8 +314,9 @@ public class LoginSuporte extends javax.swing.JFrame {
         try {
             HttpResponse<String> resposta = api.login(login, senha);
             if (resposta.statusCode() == 200) {
-                JOptionPane.showMessageDialog(this, "Login Realizado com sucesso");
-                
+                ChamadosDisponiveis chamados = new ChamadosDisponiveis();
+                chamados.setVisible(true);
+                this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(this, "E-mail ou senha inválidos");
             }
@@ -315,6 +324,13 @@ public class LoginSuporte extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Não foi possivel conectar a API.");
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+       TelaCadastro cadastro = new TelaCadastro();
+       cadastro.setVisible(true);
+       this.setVisible(false);
+       
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -343,8 +359,8 @@ public class LoginSuporte extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;
+    private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnEntrar;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
