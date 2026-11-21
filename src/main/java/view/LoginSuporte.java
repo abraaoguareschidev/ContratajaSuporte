@@ -317,7 +317,11 @@ public class LoginSuporte extends javax.swing.JFrame {
                 ChamadosDisponiveis chamados = new ChamadosDisponiveis();
                 chamados.setVisible(true);
                 this.setVisible(false);
-            }else{
+            }if (resposta.statusCode() == 403) {
+                
+                JOptionPane.showMessageDialog(this, "Por favor, valide o seu email.");
+            }
+            else{
                 JOptionPane.showMessageDialog(this, "E-mail ou senha inválidos");
             }
         } catch (Exception e) {

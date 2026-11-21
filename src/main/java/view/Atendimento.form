@@ -611,8 +611,8 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel22" pref="38" max="32767" attributes="0"/>
-                                  <Component id="jLabel24" max="32767" attributes="0"/>
+                                  <Component id="jLabel24" pref="39" max="32767" attributes="0"/>
+                                  <Component id="jLabel22" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -701,7 +701,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="450" y="0" width="-1" height="-1"/>
+              <AbsoluteConstraints x="510" y="0" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
