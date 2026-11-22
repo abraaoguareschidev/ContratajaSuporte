@@ -29,6 +29,7 @@ public class Atendimento extends javax.swing.JFrame {
 
     public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone,int idSuporte) {
         initComponents();
+        txtAreaSolucao.setEditable(false);
         jPanelMensagens.setLayout(new javax.swing.BoxLayout(jPanelMensagens, javax.swing.BoxLayout.Y_AXIS));
         this.idChamado = idChamado;
         this.idSuporte = idSuporte;
@@ -149,10 +150,11 @@ public class Atendimento extends javax.swing.JFrame {
         PainelAreaDescricao = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TxtAreaDescricao = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtAreaSolucao = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanelBackGround1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -223,8 +225,6 @@ public class Atendimento extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanelBackGround1.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 44, -1, -1));
-
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -286,10 +286,8 @@ public class Atendimento extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jTextFieldDataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
-
-        jPanelBackGround1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(995, 44, -1, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jPanel3.setPreferredSize(new java.awt.Dimension(403, 220));
@@ -343,7 +341,7 @@ public class Atendimento extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addComponent(jButton2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel14)
@@ -369,10 +367,8 @@ public class Atendimento extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
-
-        jPanelBackGround1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(995, 276, -1, -1));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -407,27 +403,20 @@ public class Atendimento extends javax.swing.JFrame {
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEncerrarChamado)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
-
-        jPanelBackGround1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(995, 502, -1, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
         jPanelMensagens.setLayout(new javax.swing.BoxLayout(jPanelMensagens, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane1.setViewportView(jPanelMensagens);
 
-        jPanelBackGround1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 329, 631, 405));
-
         txtAreaMensagem.setColumns(20);
         txtAreaMensagem.setRows(5);
         jScrollPane2.setViewportView(txtAreaMensagem);
 
-        jPanelBackGround1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 740, 548, 47));
-
         btnEnviar.setText("send");
         btnEnviar.addActionListener(this::btnEnviarActionPerformed);
-        jPanelBackGround1.add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 734, 70, 50));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -481,11 +470,8 @@ public class Atendimento extends javax.swing.JFrame {
                 .addGap(17, 17, 17))
         );
 
-        jPanelBackGround1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 44, -1, -1));
-
         jLabel26.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel26.setText("Atendimento de chamados");
-        jPanelBackGround1.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 0, -1, -1));
 
         PainelAreaDescricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
@@ -500,7 +486,7 @@ public class Atendimento extends javax.swing.JFrame {
             .addGroup(PainelAreaDescricaoLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         PainelAreaDescricaoLayout.setVerticalGroup(
             PainelAreaDescricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -510,17 +496,100 @@ public class Atendimento extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanelBackGround1.add(PainelAreaDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 149, 631, -1));
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+
+        txtAreaSolucao.setColumns(20);
+        txtAreaSolucao.setRows(5);
+        jScrollPane4.setViewportView(txtAreaSolucao);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+
+        javax.swing.GroupLayout jPanelBackGround1Layout = new javax.swing.GroupLayout(jPanelBackGround1);
+        jPanelBackGround1.setLayout(jPanelBackGround1Layout);
+        jPanelBackGround1Layout.setHorizontalGroup(
+            jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                        .addGap(510, 510, 510)
+                        .addComponent(jLabel26))
+                    .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(108, 108, 108)
+                        .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PainelAreaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelBackGround1Layout.createSequentialGroup()
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(75, 75, 75)
+                        .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(72, Short.MAX_VALUE))
+        );
+        jPanelBackGround1Layout.setVerticalGroup(
+            jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                .addComponent(jLabel26)
+                .addGap(12, 12, 12)
+                .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                        .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelBackGround1Layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(23, 23, 23)
+                                .addComponent(PainelAreaDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(jScrollPane1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelBackGround1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addGap(24, 24, 24))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackGround1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanelBackGround1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackGround1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBackGround1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -546,9 +615,41 @@ public class Atendimento extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void btnEncerrarChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarChamadoActionPerformed
+        if (!txtAreaSolucao.isEditable()) {
+        txtAreaSolucao.setEditable(true);
+        txtAreaSolucao.requestFocusInWindow();
+
+        JOptionPane.showMessageDialog(this,"Descreva a solução e clique novamente em Encerrar chamado.");
+        return;
+    }
+
+    String solucao = txtAreaSolucao.getText().trim();
+
+    if (solucao.isBlank()) {
+        JOptionPane.showMessageDialog(this,
+                "Informe a solução antes de encerrar o chamado.");
+        return;
+    }
+
+    try {
+        ApiClient api = new ApiClient();
+
+        api.encerrarChamado(idChamado, solucao);
+
         jTextFieldStatus.setText("fechado");
-        btnEnviar.setEnabled(false);
+
+        txtAreaSolucao.setEditable(false);
         txtAreaMensagem.setEnabled(false);
+        btnEnviar.setEnabled(false);
+        btnEncerrarChamado.setEnabled(false);
+
+        JOptionPane.showMessageDialog(this,
+                "Chamado encerrado com sucesso!");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "Erro ao encerrar chamado: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnEncerrarChamadoActionPerformed
 
     private void adicionarMensagem(
@@ -734,11 +835,13 @@ public class Atendimento extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanelBackGround1;
     private javax.swing.JPanel jPanelMensagens;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextFieldAssunto;
     private javax.swing.JTextField jTextFieldDataAbertura;
     private javax.swing.JTextField jTextFieldIdChamado;
@@ -748,5 +851,6 @@ public class Atendimento extends javax.swing.JFrame {
     private javax.swing.JLabel lblNomeUsuario;
     private javax.swing.JLabel lblTelefoneCliente;
     private javax.swing.JTextArea txtAreaMensagem;
+    private javax.swing.JTextArea txtAreaSolucao;
     // End of variables declaration//GEN-END:variables
 }
