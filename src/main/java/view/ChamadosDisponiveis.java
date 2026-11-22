@@ -17,6 +17,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     private final java.util.Map<Integer, String> descricoesChamados = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> emailUsuario = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> telefoneUsuario = new java.util.HashMap<>();
+    private final java.util.Map<Integer, String> solucoesChamados = new java.util.HashMap<>();
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ChamadosDisponiveis.class.getName());
 
@@ -78,7 +79,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextAreaResposta = new javax.swing.JTextArea();
         jButtonAtender = new javax.swing.JButton();
-        btnEnviarResposta = new javax.swing.JButton();
+        btnConsultarHistorico = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableChamadosDisponiveis = new javax.swing.JTable();
@@ -210,7 +211,8 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         jButtonAtender.setText("Atender chamado");
         jButtonAtender.addActionListener(this::jButtonAtenderActionPerformed);
 
-        btnEnviarResposta.setText("Enviar resposta");
+        btnConsultarHistorico.setText("Consultar histórico");
+        btnConsultarHistorico.addActionListener(this::btnConsultarHistoricoActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -251,7 +253,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(jButtonAtender, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnEnviarResposta, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnConsultarHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 48, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -293,7 +295,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEnviarResposta, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(btnConsultarHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jButtonAtender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12))
         );
@@ -447,6 +449,47 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TableChamadosDisponiveisMouseClicked
 
+    private void btnConsultarHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarHistoricoActionPerformed
+        int linha = TableChamadosDisponiveis.getSelectedRow();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um chamado para consultar.");
+            return;
+        }
+
+        String status = TableChamadosDisponiveis
+                .getValueAt(linha, 5).toString();
+
+        if (!"fechado".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(this,
+                    "O histórico está disponível apenas para chamados encerrados.",
+                    "Consulta de histórico",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        int idChamado = Integer.parseInt(
+                TableChamadosDisponiveis.getValueAt(linha, 0).toString()
+        );
+
+        String assunto = TableChamadosDisponiveis.getValueAt(linha, 1).toString();
+        String nome = TableChamadosDisponiveis.getValueAt(linha, 2).toString();
+        String data = TableChamadosDisponiveis.getValueAt(linha, 4).toString();
+
+        String descricao = descricoesChamados.get(idChamado);
+        String email = emailUsuario.get(idChamado);
+        String telefone = telefoneUsuario.get(idChamado);
+
+        Atendimento telaHistorico = new Atendimento(
+                idChamado, assunto, descricao, data, status,
+                nome, email, telefone, idSuporte, true
+        );
+
+        telaHistorico.exibirSolucao(solucoesChamados.get(idChamado));
+
+        telaHistorico.setVisible(true);
+    }//GEN-LAST:event_btnConsultarHistoricoActionPerformed
+
     private void carregarChamados() {
         try {
             ApiClient api = new ApiClient();
@@ -462,6 +505,9 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 com.google.gson.JsonObject chamado = elemento.getAsJsonObject();
 
                 int id = chamado.get("idChamado").getAsInt();
+                String solucao = chamado.has("solucao") && !chamado.get("solucao").isJsonNull() ? chamado.get("solucao").getAsString() : "";
+
+                solucoesChamados.put(id, solucao);
                 String assunto = chamado.get("assunto").getAsString();
                 String descricao = chamado.get("descricao").getAsString();
                 descricoesChamados.put(id, descricao);
@@ -507,7 +553,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableChamadosDisponiveis;
-    private javax.swing.JButton btnEnviarResposta;
+    private javax.swing.JButton btnConsultarHistorico;
     private javax.swing.JButton jButtonAtender;
     private javax.swing.JComboBox<String> jComboBoxStatus;
     private javax.swing.JComboBox<String> jComboBoxStatusChamados;

@@ -13,8 +13,10 @@ import javax.swing.JOptionPane;
  * @author ywdyl
  */
 public class Atendimento extends javax.swing.JFrame {
+
     private int idSuporte;
     private int idChamado;
+    private boolean modoHistorico = false;
     private String assunto, descricao, data, status, nome;
     private ChatWebSocketClient chat;
     private final java.util.List<javax.swing.JLabel> indicadoresLeitura = new java.util.ArrayList<>();
@@ -27,13 +29,25 @@ public class Atendimento extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone,int idSuporte) {
+    public Atendimento(int idChamado, String assunto, String descricao,
+            String data, String status, String nome,
+            String email, String telefone, int idSuporte) {
+
+        this(idChamado, assunto, descricao, data, status,
+                nome, email, telefone, idSuporte, false);
+    }
+
+    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone, int idSuporte, boolean modoHistorico) {
         initComponents();
         txtAreaSolucao.setEditable(false);
         jPanelMensagens.setLayout(new javax.swing.BoxLayout(jPanelMensagens, javax.swing.BoxLayout.Y_AXIS));
         this.idChamado = idChamado;
         this.idSuporte = idSuporte;
-        marcarMensagensComoLidas();
+        this.modoHistorico = modoHistorico;
+        if (!modoHistorico) {
+            marcarMensagensComoLidas();
+        }
+
         carregarHistorico();
         this.assunto = assunto;
         this.descricao = descricao;
@@ -47,57 +61,66 @@ public class Atendimento extends javax.swing.JFrame {
         lblNomeCliente.setText(nome);
         lblEmailCliente.setText(email);
         lblTelefoneCliente.setText(telefone);
-        try {
-            chat = new ChatWebSocketClient(idChamado);
-            chat.setAoReceberMensagem(json -> {
-                javax.swing.SwingUtilities.invokeLater(() -> {
+        if (modoHistorico) {
+            btnEnviar.setEnabled(false);
+            btnEncerrarChamado.setEnabled(false);
 
-                    com.google.gson.JsonObject mensagem
-                            = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
-
-                    int idRemetente = mensagem.get("idRemetente").getAsInt();
-                    String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
-                    String conteudo = mensagem.get("conteudo").getAsString();
-                    String dataEnvio = mensagem.get("dataEnvio").getAsString();
-                    boolean statusLeitura = mensagem.get("statusLeitura").getAsBoolean();
-
-                    adicionarMensagem(
-                            nomeRemetente,
-                            conteudo,
-                            dataEnvio,
-                            idRemetente,
-                            statusLeitura
-                    );
-                });
-            });
-            chat.setAoReceberLeitura(idUsuario -> {
-
-                javax.swing.SwingUtilities.invokeLater(() -> {
-
-                    // Verifica se quem leu foi o cliente (ID 1)
-                    if (idUsuario != idSuporte) {
-
-                        for (javax.swing.JLabel indicador : indicadoresLeitura) {
-                            indicador.setText("Lido");
-                        }
-
-                        jPanelMensagens.revalidate();
-                        jPanelMensagens.repaint();
-                    }
-                });
-            });
-            chat.connect();
-        } catch (Exception e) {
-            System.out.println("Erro ao conectar ao chat: " + e.getMessage());
+            txtAreaMensagem.setEditable(false);
+            txtAreaSolucao.setEditable(false);
         }
+        if (!modoHistorico) {
+            try {
+                chat = new ChatWebSocketClient(idChamado);
+                chat.setAoReceberMensagem(json -> {
+                    javax.swing.SwingUtilities.invokeLater(() -> {
 
+                        com.google.gson.JsonObject mensagem
+                                = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+
+                        int idRemetente = mensagem.get("idRemetente").getAsInt();
+                        String nomeRemetente = mensagem.get("nomeRemetente").getAsString();
+                        String conteudo = mensagem.get("conteudo").getAsString();
+                        String dataEnvio = mensagem.get("dataEnvio").getAsString();
+                        boolean statusLeitura = mensagem.get("statusLeitura").getAsBoolean();
+
+                        adicionarMensagem(
+                                nomeRemetente,
+                                conteudo,
+                                dataEnvio,
+                                idRemetente,
+                                statusLeitura
+                        );
+                    });
+                });
+                chat.setAoReceberLeitura(idUsuario -> {
+
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+
+                        // Verifica se quem leu foi o cliente (ID 1)
+                        if (idUsuario != idSuporte) {
+
+                            for (javax.swing.JLabel indicador : indicadoresLeitura) {
+                                indicador.setText("Lido");
+                            }
+
+                            jPanelMensagens.revalidate();
+                            jPanelMensagens.repaint();
+                        }
+                    });
+                });
+                chat.connect();
+            } catch (Exception e) {
+                System.out.println("Erro ao conectar ao chat: " + e.getMessage());
+            }
+
+        }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    public void exibirSolucao(String solucao) {
+        txtAreaSolucao.setText(solucao == null ? "" : solucao);
+    }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -616,40 +639,40 @@ public class Atendimento extends javax.swing.JFrame {
 
     private void btnEncerrarChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarChamadoActionPerformed
         if (!txtAreaSolucao.isEditable()) {
-        txtAreaSolucao.setEditable(true);
-        txtAreaSolucao.requestFocusInWindow();
+            txtAreaSolucao.setEditable(true);
+            txtAreaSolucao.requestFocusInWindow();
 
-        JOptionPane.showMessageDialog(this,"Descreva a solução e clique novamente em Encerrar chamado.");
-        return;
-    }
+            JOptionPane.showMessageDialog(this, "Descreva a solução e clique novamente em Encerrar chamado.");
+            return;
+        }
 
-    String solucao = txtAreaSolucao.getText().trim();
+        String solucao = txtAreaSolucao.getText().trim();
 
-    if (solucao.isBlank()) {
-        JOptionPane.showMessageDialog(this,
-                "Informe a solução antes de encerrar o chamado.");
-        return;
-    }
+        if (solucao.isBlank()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe a solução antes de encerrar o chamado.");
+            return;
+        }
 
-    try {
-        ApiClient api = new ApiClient();
+        try {
+            ApiClient api = new ApiClient();
 
-        api.encerrarChamado(idChamado, solucao);
+            api.encerrarChamado(idChamado, solucao);
 
-        jTextFieldStatus.setText("fechado");
+            jTextFieldStatus.setText("fechado");
 
-        txtAreaSolucao.setEditable(false);
-        txtAreaMensagem.setEnabled(false);
-        btnEnviar.setEnabled(false);
-        btnEncerrarChamado.setEnabled(false);
+            txtAreaSolucao.setEditable(false);
+            txtAreaMensagem.setEnabled(false);
+            btnEnviar.setEnabled(false);
+            btnEncerrarChamado.setEnabled(false);
 
-        JOptionPane.showMessageDialog(this,
-                "Chamado encerrado com sucesso!");
+            JOptionPane.showMessageDialog(this,
+                    "Chamado encerrado com sucesso!");
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-                "Erro ao encerrar chamado: " + e.getMessage());
-    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao encerrar chamado: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnEncerrarChamadoActionPerformed
 
     private void adicionarMensagem(
