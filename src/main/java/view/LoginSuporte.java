@@ -5,6 +5,8 @@
 package view;
 
 import api.ApiClient;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.awt.Color;
 import java.net.http.HttpResponse;
 import javax.swing.BorderFactory;
@@ -15,7 +17,7 @@ import javax.swing.JOptionPane;
  * @author ywdyl
  */
 public class LoginSuporte extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginSuporte.class.getName());
 
     /**
@@ -23,7 +25,7 @@ public class LoginSuporte extends javax.swing.JFrame {
      */
     public LoginSuporte() {
         initComponents();
-        
+
         // Localiza a imagem dentro da pasta resources
         java.net.URL caminhoImagem = getClass().getResource(
                 "/imagens/telacadastro/background1.png"
@@ -85,7 +87,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         );
 
         Background.repaint();
-    
+
     }
 
     /**
@@ -297,43 +299,48 @@ public class LoginSuporte extends javax.swing.JFrame {
         String login = txtLogin.getText();
         String senha = new String(pswSenha.getPassword());
         if (login.trim().isEmpty()) {
-            
+
             JOptionPane.showMessageDialog(this, "Digite o seu email.");
             txtLogin.setBorder(BorderFactory.createLineBorder(Color.RED));
             return;
-        }else{
+        } else {
             txtLogin.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         }
-        
+
         if (senha.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Digite a sua senha");
             return;
         }
-        
+
         ApiClient api = new ApiClient();
         try {
             HttpResponse<String> resposta = api.login(login, senha);
+            System.out.println("STATUS: " + resposta.statusCode());
+            System.out.println("RESPOSTA DA API: " + resposta.body());
             if (resposta.statusCode() == 200) {
-                ChamadosDisponiveis chamados = new ChamadosDisponiveis();
+                JsonObject dados = JsonParser.parseString(resposta.body()).getAsJsonObject();
+
+                int idSuporte = dados.get("idUsuario").getAsInt();
+                ChamadosDisponiveis chamados = new ChamadosDisponiveis(idSuporte);
                 chamados.setVisible(true);
                 this.setVisible(false);
-            }if (resposta.statusCode() == 403) {
-                
-                JOptionPane.showMessageDialog(this, "Por favor, valide o seu email.");
             }
-            else{
+            if (resposta.statusCode() == 403) {
+
+                JOptionPane.showMessageDialog(this, "Por favor, valide o seu email.");
+            } else {
                 JOptionPane.showMessageDialog(this, "E-mail ou senha inválidos");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Não foi possivel conectar a API.");
+            JOptionPane.showMessageDialog(this, "Não foi possivel conectar a API. \n" + e.getMessage());
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-       TelaCadastro cadastro = new TelaCadastro();
-       cadastro.setVisible(true);
-       this.setVisible(false);
-       
+        TelaCadastro cadastro = new TelaCadastro();
+        cadastro.setVisible(true);
+        this.setVisible(false);
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**

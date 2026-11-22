@@ -127,5 +127,27 @@ public class ApiClient {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
+    
+    public void assumirChamado(int idChamado, int idSuporte) throws Exception {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(
+                    "http://localhost:8080/chamados/"
+                    + idChamado + "/assumir?idSuporte=" + idSuporte
+            ))
+            .PUT(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+    HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+        throw new RuntimeException(
+                "Erro ao assumir chamado: " + response.statusCode()
+        );
+    }
+}
 
 }

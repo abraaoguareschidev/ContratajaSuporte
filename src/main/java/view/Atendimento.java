@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * @author ywdyl
  */
 public class Atendimento extends javax.swing.JFrame {
-
+    private int idSuporte;
     private int idChamado;
     private String assunto, descricao, data, status, nome;
     private ChatWebSocketClient chat;
@@ -27,10 +27,11 @@ public class Atendimento extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone) {
+    public Atendimento(int idChamado, String assunto, String descricao, String data, String status, String nome, String email, String telefone,int idSuporte) {
         initComponents();
         jPanelMensagens.setLayout(new javax.swing.BoxLayout(jPanelMensagens, javax.swing.BoxLayout.Y_AXIS));
         this.idChamado = idChamado;
+        this.idSuporte = idSuporte;
         marcarMensagensComoLidas();
         carregarHistorico();
         this.assunto = assunto;
@@ -73,7 +74,7 @@ public class Atendimento extends javax.swing.JFrame {
                 javax.swing.SwingUtilities.invokeLater(() -> {
 
                     // Verifica se quem leu foi o cliente (ID 1)
-                    if (idUsuario == 1) {
+                    if (idUsuario != idSuporte) {
 
                         for (javax.swing.JLabel indicador : indicadoresLeitura) {
                             indicador.setText("Lido");
@@ -538,7 +539,7 @@ public class Atendimento extends javax.swing.JFrame {
 
         if (chat != null && chat.isOpen()) {
 
-            chat.enviarMensagem(conteudo, 2);
+            chat.enviarMensagem(conteudo, idSuporte);
 
             txtAreaMensagem.setText("");
         }
@@ -559,7 +560,7 @@ public class Atendimento extends javax.swing.JFrame {
 
         javax.swing.JPanel linha = new javax.swing.JPanel(
                 new java.awt.FlowLayout(
-                        idRemetente == 2
+                        idRemetente == idSuporte
                                 ? java.awt.FlowLayout.RIGHT
                                 : java.awt.FlowLayout.LEFT
                 )
@@ -580,7 +581,7 @@ public class Atendimento extends javax.swing.JFrame {
         bolha.add(lblConteudo);
         bolha.add(lblData);
 
-        if (idRemetente == 2) {
+        if (idRemetente == idSuporte) {
 
             javax.swing.JLabel lblLeitura = new javax.swing.JLabel(
                     statusLeitura ? "Lido" : ""
@@ -637,7 +638,7 @@ public class Atendimento extends javax.swing.JFrame {
 
     private void adicionarMensagem(String nomeRemetente, String conteudo, String dataEnvio, int idRemetente) {
 
-        javax.swing.JPanel linha = new javax.swing.JPanel(new java.awt.FlowLayout(idRemetente == 2 ? java.awt.FlowLayout.RIGHT : java.awt.FlowLayout.LEFT)
+        javax.swing.JPanel linha = new javax.swing.JPanel(new java.awt.FlowLayout(idRemetente == idSuporte ? java.awt.FlowLayout.RIGHT : java.awt.FlowLayout.LEFT)
         );
 
         javax.swing.JPanel bolha = new javax.swing.JPanel();
@@ -669,7 +670,7 @@ public class Atendimento extends javax.swing.JFrame {
         try {
             ApiClient api = new ApiClient();
 
-            api.marcarMensagensComoLidas(idChamado, 2);
+            api.marcarMensagensComoLidas(idChamado, idSuporte);
 
         } catch (Exception e) {
             e.printStackTrace();

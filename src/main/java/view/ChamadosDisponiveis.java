@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class ChamadosDisponiveis extends javax.swing.JFrame {
 
+    private int idSuporte;
     private final java.util.Map<Integer, String> descricoesChamados = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> emailUsuario = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> telefoneUsuario = new java.util.HashMap<>();
@@ -24,6 +25,12 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
      */
     public ChamadosDisponiveis() {
         initComponents();
+        carregarChamados();
+    }
+
+    public ChamadosDisponiveis(int idSuporte) {
+        initComponents();
+        this.idSuporte = idSuporte;
         carregarChamados();
     }
 
@@ -403,8 +410,21 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         String nome = TableChamadosDisponiveis.getValueAt(linha, 2).toString();
         String email = emailUsuario.get(idChamado);
         String telefone = telefoneUsuario.get(idChamado);
-        Atendimento telaAtendimento = new Atendimento(idChamado,assunto,descricao,data,status,nome,email,telefone);
-        telaAtendimento.setVisible(true);
+        try {
+            ApiClient api = new ApiClient();
+
+            api.assumirChamado(idChamado, idSuporte);
+            status = "em_atendimento";
+            Atendimento telaAtendimento = new Atendimento(
+                    idChamado, assunto, descricao, data, status,
+                    nome, email, telefone, idSuporte);
+
+            telaAtendimento.setVisible(true);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível assumir o chamado: " + e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonAtenderActionPerformed
 
@@ -418,11 +438,11 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
             jTextFieldUsuario.setText(TableChamadosDisponiveis.getValueAt(linha, 2).toString());
             int id = Integer.parseInt(TableChamadosDisponiveis.getValueAt(linha, 0).toString());
-            
+
             jTextAreaDescricao.setText(descricoesChamados.get(id));
-            
+
             jTextFieldDataAbertura.setText(TableChamadosDisponiveis.getValueAt(linha, 4).toString());
-            
+
             jComboBoxStatus.setSelectedItem(TableChamadosDisponiveis.getValueAt(linha, 5).toString());
         }
     }//GEN-LAST:event_TableChamadosDisponiveisMouseClicked
@@ -457,7 +477,6 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
                 modelo.addRow(new Object[]{id, assunto, usuario, "", data, status});
             }
-            
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar chamados: " + e.getMessage());
