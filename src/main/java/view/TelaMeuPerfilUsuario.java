@@ -4,7 +4,7 @@
  */
 package view;
 
-
+import api.ApiClient;
 import java.awt.Image;
 import java.io.FileInputStream;
 import javax.imageio.ImageIO;
@@ -33,8 +33,14 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
      */
     public TelaMeuPerfilUsuario() {
         initComponents();
-        
-        jDateChooserDataNasc.setEnabled(true);
+
+        //jDateChooserDataNasc.setEnabled(true);
+    }
+
+    public TelaMeuPerfilUsuario(int idUsuario) {
+        initComponents();
+        this.idUsuario = idUsuario;
+        carregarPerfil();
     }
 
     /**
@@ -48,11 +54,9 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
 
         jPanelBackGroud = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabelFotoPerfil = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButtonAlterarFoto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldNomeUsuario = new javax.swing.JTextField();
@@ -67,7 +71,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jPasswordFieldSenha = new javax.swing.JPasswordField();
         jPanel3 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jFormattedTextFieldCEP = new javax.swing.JFormattedTextField();
@@ -84,9 +87,9 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jTextFieldComplemento = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jButtonSalvar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
+        btnAlterarSenha = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,9 +98,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        jLabelFotoPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/PerfilDefault.png"))); // NOI18N
-        jLabelFotoPerfil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(69, 104, 207));
         jLabel2.setText("Foto de perfil");
@@ -105,7 +105,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jButtonAlterarFoto.setBackground(new java.awt.Color(69, 104, 207));
         jButtonAlterarFoto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonAlterarFoto.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonAlterarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagensMeuPerfilUsuario/foto.png"))); // NOI18N
         jButtonAlterarFoto.setText("Alterar foto de perfil");
         jButtonAlterarFoto.addActionListener(this::jButtonAlterarFotoActionPerformed);
 
@@ -113,10 +112,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabelFotoPerfil)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jButtonAlterarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -131,17 +126,13 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelFotoPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(186, 186, 186)
                 .addComponent(jButtonAlterarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(84, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagensSolicitacoes/user.png"))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(69, 104, 207));
@@ -193,9 +184,7 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel3)
-                        .addGap(12, 12, 12)
+                        .addGap(28, 28, 28)
                         .addComponent(jLabel4))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
@@ -230,13 +219,9 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel4)))
-                .addGap(32, 32, 32)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel4)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
@@ -267,8 +252,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagensSolicitarProfissional/localizacao.png"))); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(69, 104, 207));
@@ -343,7 +326,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel9))
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -368,13 +350,9 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel9)))
-                .addGap(12, 12, 12)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel9)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -408,24 +386,21 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(69, 104, 207));
         jLabel17.setText("Meu perfil");
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(69, 104, 207));
-        jLabel18.setText("Gerencie suas informações pessoais");
-
         jButtonSalvar.setBackground(new java.awt.Color(69, 104, 207));
         jButtonSalvar.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jButtonSalvar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagensMeuPerfilUsuario/opcao-de-salvar-arquivo.png"))); // NOI18N
         jButtonSalvar.setText("Salvar alterações");
         jButtonSalvar.addActionListener(this::jButtonSalvarActionPerformed);
 
         jButtonCancelar.setBackground(new java.awt.Color(255, 255, 255));
         jButtonCancelar.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jButtonCancelar.setForeground(new java.awt.Color(0, 0, 0));
-        jButtonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagensMeuPerfilUsuario/cancelar.png"))); // NOI18N
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jButtonCancelar.addActionListener(this::jButtonCancelarActionPerformed);
+
+        btnAlterarSenha.setText("alterar senha");
+        btnAlterarSenha.addActionListener(this::btnAlterarSenhaActionPerformed);
 
         javax.swing.GroupLayout jPanelBackGroudLayout = new javax.swing.GroupLayout(jPanelBackGroud);
         jPanelBackGroud.setLayout(jPanelBackGroudLayout);
@@ -434,7 +409,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             .addGroup(jPanelBackGroudLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanelBackGroudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
                     .addComponent(jLabel17)
                     .addGroup(jPanelBackGroudLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,7 +420,9 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackGroudLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91)
+                .addGap(18, 18, 18)
+                .addComponent(btnAlterarSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
                 .addComponent(jButtonSalvar)
                 .addGap(91, 91, 91))
         );
@@ -455,20 +431,20 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackGroudLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(32, 32, 32)
                 .addGroup(jPanelBackGroudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelBackGroudLayout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(jPanelBackGroudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanelBackGroudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBackGroudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAlterarSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -487,7 +463,7 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAlterarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarFotoActionPerformed
-    
+
     }//GEN-LAST:event_jButtonAlterarFotoActionPerformed
 
     private void jFormattedTextFieldCEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPActionPerformed
@@ -495,19 +471,142 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextFieldCEPActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-    
+
+        try {
+            com.google.gson.JsonObject dados = new com.google.gson.JsonObject();
+
+            // Informações pessoais
+            dados.addProperty("nome", jTextFieldNomeUsuario.getText().trim());
+            dados.addProperty("email", jTextFieldEmail.getText().trim());
+            dados.addProperty("telefone", jTextFieldTelefone.getText().trim());
+
+            // Data de nascimento
+            java.util.Date dataNascimento = jDateChooserDataNasc.getDate();
+
+            String dataFormatada = dataNascimento == null
+                    ? null
+                    : new java.text.SimpleDateFormat("yyyy-MM-dd")
+                            .format(dataNascimento);
+
+            dados.addProperty("dataNasc", dataFormatada);
+
+            // Endereço
+            dados.addProperty("cep", jFormattedTextFieldCEP.getText().trim());
+
+            String estado = (String) jComboBoxEstado.getSelectedItem();
+            dados.addProperty("estado", "UF".equals(estado) ? null : estado);
+
+            dados.addProperty("cidade", jTextFieldCidade.getText().trim());
+            dados.addProperty("bairro", jTextFieldBairro.getText().trim());
+            dados.addProperty("rua", jTextFieldRua.getText().trim());
+            dados.addProperty("numeroCasa", jTextFieldNumero.getText().trim());
+            dados.addProperty("complemento", jTextFieldComplemento.getText().trim());
+
+            // Enviar alterações para a API
+            ApiClient api = new ApiClient();
+            api.atualizarPerfilSuporte(idUsuario, dados);
+
+            JOptionPane.showMessageDialog(this,
+                    "Perfil atualizado com sucesso!");
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao atualizar perfil: " + e.getMessage());
+        }
+
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
-
+        dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
-    
+    private void btnAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarSenhaActionPerformed
+        TelaAlterarSenha tela = new TelaAlterarSenha(idUsuario);
+        tela.setVisible(true);
+    }//GEN-LAST:event_btnAlterarSenhaActionPerformed
 
-    
+    private void carregarPerfil() {
 
-    
-   public static void main(String args[]) {
+        try {
+            ApiClient api = new ApiClient();
+
+            String resposta = api.buscarPerfilSuporte(idUsuario);
+
+            com.google.gson.JsonObject perfil
+                    = com.google.gson.JsonParser
+                            .parseString(resposta)
+                            .getAsJsonObject();
+
+            jTextFieldNomeUsuario.setText(
+                    perfil.get("nome").getAsString()
+            );
+
+            jTextFieldEmail.setText(
+                    perfil.get("email").getAsString()
+            );
+
+            jTextFieldTelefone.setText(
+                    perfil.get("telefone").getAsString()
+            );
+
+            jFormattedTextFieldCPF.setText(
+                    perfil.get("cpf").getAsString()
+            );
+
+            if (perfil.has("dataNasc")
+                    && !perfil.get("dataNasc").isJsonNull()) {
+
+                String dataNascimento = perfil.get("dataNasc").getAsString();
+
+                jDateChooserDataNasc.setDate(
+                        java.sql.Date.valueOf(dataNascimento)
+                );
+            }
+
+            jFormattedTextFieldCEP.setText(
+                    perfil.has("cep") && !perfil.get("cep").isJsonNull()
+                    ? perfil.get("cep").getAsString() : ""
+            );
+
+            String estado = perfil.has("estado") && !perfil.get("estado").isJsonNull()
+                    ? perfil.get("estado").getAsString() : "UF";
+
+            jComboBoxEstado.setSelectedItem(estado);
+
+            jTextFieldCidade.setText(
+                    perfil.has("cidade") && !perfil.get("cidade").isJsonNull()
+                    ? perfil.get("cidade").getAsString() : ""
+            );
+
+            jTextFieldBairro.setText(
+                    perfil.has("bairro") && !perfil.get("bairro").isJsonNull()
+                    ? perfil.get("bairro").getAsString() : ""
+            );
+
+            jTextFieldRua.setText(
+                    perfil.has("rua") && !perfil.get("rua").isJsonNull()
+                    ? perfil.get("rua").getAsString() : ""
+            );
+
+            jTextFieldNumero.setText(
+                    perfil.has("numeroCasa") && !perfil.get("numeroCasa").isJsonNull()
+                    ? perfil.get("numeroCasa").getAsString() : ""
+            );
+
+            jTextFieldComplemento.setText(
+                    perfil.has("complemento") && !perfil.get("complemento").isJsonNull()
+                    ? perfil.get("complemento").getAsString() : ""
+            );
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar perfil: " + e.getMessage());
+        }
+    }
+
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -530,6 +629,7 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterarSenha;
     private javax.swing.JButton jButtonAlterarFoto;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonSalvar;
@@ -546,18 +646,14 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelFotoPerfil;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

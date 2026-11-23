@@ -54,29 +54,29 @@ public class ApiClient {
 
     public void encerrarChamado(int idChamado, String solucao) throws Exception {
 
-    JsonObject json = new JsonObject();
-    json.addProperty("solucao", solucao);
+        JsonObject json = new JsonObject();
+        json.addProperty("solucao", solucao);
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(
-                    "http://localhost:8080/chamados/"
-                    + idChamado + "/encerrar"
-            ))
-            .header("Content-Type", "application/json")
-            .PUT(HttpRequest.BodyPublishers.ofString(json.toString()))
-            .build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/chamados/"
+                        + idChamado + "/encerrar"
+                ))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json.toString()))
+                .build();
 
-    HttpResponse<String> response = client.send(
-            request,
-            HttpResponse.BodyHandlers.ofString()
-    );
-
-    if (response.statusCode() < 200 || response.statusCode() >= 300) {
-        throw new RuntimeException(
-                "Erro ao encerrar chamado: " + response.statusCode()
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
         );
+
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException(
+                    "Erro ao encerrar chamado: " + response.statusCode()
+            );
+        }
     }
-}
 
     public static void main(String[] args) {
         try {
@@ -117,29 +117,76 @@ public class ApiClient {
 
         return response;
     }
-    
-    public HttpResponse<String> login(String email, String senha)throws Exception{
-        
+
+    public HttpResponse<String> login(String email, String senha) throws Exception {
+
         JsonObject json = new JsonObject();
-        
+
         json.addProperty("login", email);
         json.addProperty("senha", senha);
         // monto a requisição
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/auth/login")).header("Content-type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json.toString())).build();
-        
+
         //envio da requisição
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
-    
+
     public void assumirChamado(int idChamado, int idSuporte) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/chamados/"
+                        + idChamado + "/assumir?idSuporte=" + idSuporte
+                ))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException(
+                    "Erro ao assumir chamado: " + response.statusCode()
+            );
+        }
+    }
+
+    public String buscarPerfilSuporte(int idUsuario) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/usuarios/suporte/" + idUsuario
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException(
+                    "Erro ao buscar perfil: " + response.statusCode()
+            );
+        }
+
+        return response.body();
+    }
+    
+    
+public void atualizarPerfilSuporte(
+        int idUsuario, JsonObject dados) throws Exception {
 
     HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(
-                    "http://localhost:8080/chamados/"
-                    + idChamado + "/assumir?idSuporte=" + idSuporte
+                    "http://localhost:8080/usuarios/suporte/" + idUsuario
             ))
-            .PUT(HttpRequest.BodyPublishers.noBody())
+            .header("Content-Type", "application/json")
+            .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
             .build();
 
     HttpResponse<String> response = client.send(
@@ -147,11 +194,48 @@ public class ApiClient {
             HttpResponse.BodyHandlers.ofString()
     );
 
-    if (response.statusCode() < 200 || response.statusCode() >= 300) {
+    if (response.statusCode() != 204) {
         throw new RuntimeException(
-                "Erro ao assumir chamado: " + response.statusCode()
+                "Erro ao atualizar perfil: "
+                + response.statusCode()
+                + " - " + response.body()
         );
     }
 }
+
+
+public void alterarSenha(
+        int idUsuario,
+        String senhaAtual,
+        String novaSenha) throws Exception {
+
+    JsonObject dados = new JsonObject();
+
+    dados.addProperty("senhaAtual", senhaAtual);
+    dados.addProperty("novaSenha", novaSenha);
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(
+                    "http://localhost:8080/usuarios/suporte/"
+                    + idUsuario + "/senha"
+            ))
+            .header("Content-Type", "application/json")
+            .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
+            .build();
+
+    HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() != 204) {
+        throw new RuntimeException(
+                "Erro ao alterar senha: "
+                + response.statusCode()
+                + " - " + response.body()
+        );
+    }
+}
+
 
 }

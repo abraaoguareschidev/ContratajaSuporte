@@ -18,6 +18,8 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     private final java.util.Map<Integer, String> emailUsuario = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> telefoneUsuario = new java.util.HashMap<>();
     private final java.util.Map<Integer, String> solucoesChamados = new java.util.HashMap<>();
+    private final java.util.Map<Integer, Integer> suportesResponsaveis = new java.util.HashMap<>();
+    private javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> filtroChamados;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ChamadosDisponiveis.class.getName());
 
@@ -26,11 +28,23 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
      */
     public ChamadosDisponiveis() {
         initComponents();
+        TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
+        filtroChamados = new javax.swing.table.TableRowSorter<>(
+                (javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel()
+        );
+
+        TableChamadosDisponiveis.setRowSorter(filtroChamados);
         carregarChamados();
     }
 
     public ChamadosDisponiveis(int idSuporte) {
         initComponents();
+        TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
+        filtroChamados = new javax.swing.table.TableRowSorter<>(
+                (javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel()
+        );
+
+        TableChamadosDisponiveis.setRowSorter(filtroChamados);
         this.idSuporte = idSuporte;
         carregarChamados();
     }
@@ -89,6 +103,11 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabelImgChamados.setText("jLabel1");
+        jLabelImgChamados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelImgChamadosMouseClicked(evt);
+            }
+        });
 
         jLabel2.setText("CHAMADOS");
 
@@ -133,14 +152,25 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         jLabel6.setText("Buscar:");
 
         jTextFieldBuscar.setPreferredSize(new java.awt.Dimension(73, 26));
+        jTextFieldBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTextFieldBuscarMouseReleased(evt);
+            }
+        });
+        jTextFieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarKeyReleased(evt);
+            }
+        });
 
         jLabel7.setText("Status:");
 
-        jComboBoxStatusChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxStatusChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Abertos", "Em atendimento", "Fechados" }));
+        jComboBoxStatusChamados.addActionListener(this::jComboBoxStatusChamadosActionPerformed);
 
         jLabel8.setText("Tipo:");
 
-        jComboBoxTipoChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTipoChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Abertos", "Em atendimento", "Fechados" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -317,6 +347,14 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TableChamadosDisponiveisMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                TableChamadosDisponiveisMouseReleased(evt);
+            }
+        });
+        TableChamadosDisponiveis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TableChamadosDisponiveisKeyReleased(evt);
+            }
         });
         jScrollPane1.setViewportView(TableChamadosDisponiveis);
 
@@ -447,6 +485,47 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
             jComboBoxStatus.setSelectedItem(TableChamadosDisponiveis.getValueAt(linha, 5).toString());
         }
+        if (evt.getClickCount() == 2) {
+
+            if (linha == -1) {
+                return;
+            }
+
+            String status = TableChamadosDisponiveis
+                    .getValueAt(linha, 5).toString();
+
+            if ("em_atendimento".equalsIgnoreCase(status)) {
+
+                int idChamado = Integer.parseInt(
+                        TableChamadosDisponiveis.getValueAt(linha, 0).toString()
+                );
+
+                Integer idResponsavel = suportesResponsaveis.get(idChamado);
+
+                if (idResponsavel != null && idResponsavel == idSuporte) {
+
+                    String assunto = TableChamadosDisponiveis.getValueAt(linha, 1).toString();
+                    String nome = TableChamadosDisponiveis.getValueAt(linha, 2).toString();
+                    String data = TableChamadosDisponiveis.getValueAt(linha, 4).toString();
+
+                    String descricao = descricoesChamados.get(idChamado);
+                    String email = emailUsuario.get(idChamado);
+                    String telefone = telefoneUsuario.get(idChamado);
+
+                    Atendimento telaAtendimento = new Atendimento(
+                            idChamado, assunto, descricao, data, status,
+                            nome, email, telefone, idSuporte
+                    );
+
+                    telaAtendimento.setVisible(true);
+                } else {
+
+                    JOptionPane.showMessageDialog(this,
+                            "Este chamado já está em atendimento por outro suporte.");
+
+                }
+            }
+        }
     }//GEN-LAST:event_TableChamadosDisponiveisMouseClicked
 
     private void btnConsultarHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarHistoricoActionPerformed
@@ -490,6 +569,67 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         telaHistorico.setVisible(true);
     }//GEN-LAST:event_btnConsultarHistoricoActionPerformed
 
+    private void TableChamadosDisponiveisKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableChamadosDisponiveisKeyReleased
+
+    }//GEN-LAST:event_TableChamadosDisponiveisKeyReleased
+
+    private void TableChamadosDisponiveisMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableChamadosDisponiveisMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TableChamadosDisponiveisMouseReleased
+
+    private void jTextFieldBuscarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextFieldBuscarMouseReleased
+            }//GEN-LAST:event_jTextFieldBuscarMouseReleased
+
+    private void jTextFieldBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarKeyReleased
+        aplicarFiltros();
+    }//GEN-LAST:event_jTextFieldBuscarKeyReleased
+
+    private void jComboBoxStatusChamadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxStatusChamadosActionPerformed
+        aplicarFiltros();
+    }//GEN-LAST:event_jComboBoxStatusChamadosActionPerformed
+
+    private void jLabelImgChamadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelImgChamadosMouseClicked
+        TelaMeuPerfilUsuario telaPerfil = new TelaMeuPerfilUsuario(idSuporte);
+        telaPerfil.setVisible(true);
+    }//GEN-LAST:event_jLabelImgChamadosMouseClicked
+
+    private void aplicarFiltros() {
+
+        String texto = jTextFieldBuscar.getText().trim();
+        String status = (String) jComboBoxStatusChamados.getSelectedItem();
+
+        java.util.List<javax.swing.RowFilter<javax.swing.table.DefaultTableModel, Integer>> filtros
+                = new java.util.ArrayList<>();
+
+        // Filtro de pesquisa
+        if (!texto.isEmpty()) {
+            filtros.add(javax.swing.RowFilter.regexFilter(
+                    "(?i)" + java.util.regex.Pattern.quote(texto)
+            ));
+        }
+
+        // Filtro por status
+        String statusBanco = null;
+
+        if ("Abertos".equals(status)) {
+            statusBanco = "aberto";
+        } else if ("Em atendimento".equals(status)) {
+            statusBanco = "em_atendimento";
+        } else if ("Fechados".equals(status)) {
+            statusBanco = "fechado";
+        }
+
+        if (statusBanco != null) {
+            filtros.add(javax.swing.RowFilter.regexFilter(
+                    "^" + statusBanco + "$", 5
+            ));
+        }
+
+        filtroChamados.setRowFilter(
+                filtros.isEmpty() ? null : javax.swing.RowFilter.andFilter(filtros)
+        );
+    }
+
     private void carregarChamados() {
         try {
             ApiClient api = new ApiClient();
@@ -505,6 +645,16 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 com.google.gson.JsonObject chamado = elemento.getAsJsonObject();
 
                 int id = chamado.get("idChamado").getAsInt();
+                if (chamado.has("suporte")
+                        && !chamado.get("suporte").isJsonNull()) {
+
+                    int idResponsavel = chamado
+                            .getAsJsonObject("suporte")
+                            .get("idUsuario")
+                            .getAsInt();
+
+                    suportesResponsaveis.put(id, idResponsavel);
+                }
                 String solucao = chamado.has("solucao") && !chamado.get("solucao").isJsonNull() ? chamado.get("solucao").getAsString() : "";
 
                 solucoesChamados.put(id, solucao);
