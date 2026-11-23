@@ -458,6 +458,7 @@ public class Atendimento extends javax.swing.JFrame {
         jLabel25.setText("meu perfil");
 
         btnVoltar.setText("voltar");
+        btnVoltar.addActionListener(this::btnVoltarActionPerformed);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -674,6 +675,10 @@ public class Atendimento extends javax.swing.JFrame {
                     "Erro ao encerrar chamado: " + e.getMessage());
         }
     }//GEN-LAST:event_btnEncerrarChamadoActionPerformed
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void adicionarMensagem(
             String nomeRemetente,

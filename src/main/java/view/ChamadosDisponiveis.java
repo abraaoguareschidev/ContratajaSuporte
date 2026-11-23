@@ -5,6 +5,7 @@
 package view;
 
 import api.ApiClient;
+import api.ChamadosWebSocketClient;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +21,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     private final java.util.Map<Integer, String> solucoesChamados = new java.util.HashMap<>();
     private final java.util.Map<Integer, Integer> suportesResponsaveis = new java.util.HashMap<>();
     private javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> filtroChamados;
+    private ChamadosWebSocketClient websocketChamados;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ChamadosDisponiveis.class.getName());
 
@@ -35,6 +37,8 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         TableChamadosDisponiveis.setRowSorter(filtroChamados);
         carregarChamados();
+        conectarWebSocketChamados();
+
     }
 
     public ChamadosDisponiveis(int idSuporte) {
@@ -47,6 +51,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         TableChamadosDisponiveis.setRowSorter(filtroChamados);
         this.idSuporte = idSuporte;
         carregarChamados();
+        conectarWebSocketChamados();
     }
 
     /**
@@ -471,20 +476,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     private void TableChamadosDisponiveisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableChamadosDisponiveisMouseClicked
         int linha = TableChamadosDisponiveis.getSelectedRow();
 
-        if (linha != -1) {
-            jTextFieldIdChamado.setText(TableChamadosDisponiveis.getValueAt(linha, 0).toString());
-
-            jTextFieldAssunto.setText(TableChamadosDisponiveis.getValueAt(linha, 1).toString());
-
-            jTextFieldUsuario.setText(TableChamadosDisponiveis.getValueAt(linha, 2).toString());
-            int id = Integer.parseInt(TableChamadosDisponiveis.getValueAt(linha, 0).toString());
-
-            jTextAreaDescricao.setText(descricoesChamados.get(id));
-
-            jTextFieldDataAbertura.setText(TableChamadosDisponiveis.getValueAt(linha, 4).toString());
-
-            jComboBoxStatus.setSelectedItem(TableChamadosDisponiveis.getValueAt(linha, 5).toString());
-        }
+        atualizarDetalhesChamado();
         if (evt.getClickCount() == 2) {
 
             if (linha == -1) {
@@ -631,6 +623,16 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     }
 
     private void carregarChamados() {
+        int linhaSelecionada = TableChamadosDisponiveis.getSelectedRow();
+
+        Integer idSelecionado = null;
+
+        if (linhaSelecionada != -1) {
+            idSelecionado = Integer.parseInt(
+                    TableChamadosDisponiveis
+                            .getValueAt(linhaSelecionada, 0).toString()
+            );
+        }
         try {
             ApiClient api = new ApiClient();
             String resposta = api.listarChamados();
@@ -640,6 +642,11 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel();
 
             modelo.setRowCount(0);
+            descricoesChamados.clear();
+            emailUsuario.clear();
+            telefoneUsuario.clear();
+            solucoesChamados.clear();
+            suportesResponsaveis.clear();
 
             for (com.google.gson.JsonElement elemento : chamados) {
                 com.google.gson.JsonObject chamado = elemento.getAsJsonObject();
@@ -674,9 +681,99 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 modelo.addRow(new Object[]{id, assunto, usuario, "", data, status});
             }
 
+            if (idSelecionado != null) {
+
+                for (int i = 0; i < TableChamadosDisponiveis.getRowCount(); i++) {
+
+                    int idAtual = Integer.parseInt(
+                            TableChamadosDisponiveis.getValueAt(i, 0).toString()
+                    );
+
+                    if (idAtual == idSelecionado) {
+
+                        TableChamadosDisponiveis.setRowSelectionInterval(i, i);
+
+                        break;
+                    }
+                }
+            }
+
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar chamados: " + e.getMessage());
         }
+    }
+
+    private void conectarWebSocketChamados() {
+
+        try {
+            websocketChamados = new ChamadosWebSocketClient();
+
+            websocketChamados.setAoReceberAtualizacao(evento -> {
+
+                System.out.println("Evento recebido: " + evento);
+
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    carregarChamados();
+                });
+
+            });
+
+            websocketChamados.connect();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao conectar WebSocket: "
+                    + e.getMessage());
+        }
+    }
+
+    private void atualizarDetalhesChamado() {
+
+        int linha = TableChamadosDisponiveis.getSelectedRow();
+
+        if (linha == -1) {
+            jTextFieldIdChamado.setText("");
+            jTextFieldAssunto.setText("");
+            jTextFieldUsuario.setText("");
+            jTextFieldTipo.setText("");
+            jTextFieldDataAbertura.setText("");
+            jTextAreaDescricao.setText("");
+            jComboBoxStatus.setSelectedIndex(-1);
+            return;
+        }
+
+        int id = Integer.parseInt(
+                TableChamadosDisponiveis.getValueAt(linha, 0).toString()
+        );
+
+        jTextFieldIdChamado.setText(String.valueOf(id));
+
+        jTextFieldAssunto.setText(
+                TableChamadosDisponiveis.getValueAt(linha, 1).toString()
+        );
+
+        jTextFieldUsuario.setText(
+                TableChamadosDisponiveis.getValueAt(linha, 2).toString()
+        );
+
+        jTextFieldDataAbertura.setText(
+                TableChamadosDisponiveis.getValueAt(linha, 4).toString()
+        );
+
+        jTextAreaDescricao.setText(descricoesChamados.get(id));
+
+        jComboBoxStatus.setSelectedItem(
+                TableChamadosDisponiveis.getValueAt(linha, 5).toString()
+        );
+    }
+
+    @Override
+    public void dispose() {
+
+        if (websocketChamados != null) {
+            websocketChamados.close();
+        }
+
+        super.dispose();
     }
 
     public static void main(String args[]) {
