@@ -1,6 +1,7 @@
 package view;
 
 import api.ApiClient;
+import api.ChamadosWebSocketClient;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,12 +22,13 @@ import javax.swing.table.TableRowSorter;
 public class MeusChamados extends javax.swing.JFrame {
 
     private final int idSuporte;
+    private ChamadosWebSocketClient websocketChamados;
     private final Map<Integer, JsonObject> detalhesChamados = new HashMap<>();
     private TableRowSorter<DefaultTableModel> filtro;
-    
+
     public MeusChamados() {
-    this(0);
-}
+        this(0);
+    }
 
     public MeusChamados(int idSuporte) {
         this.idSuporte = idSuporte;
@@ -35,6 +37,7 @@ public class MeusChamados extends javax.swing.JFrame {
         configurarVisual();
         configurarEventos();
         carregarMeusChamados();
+        conectarWebSocketChamados();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -114,6 +117,7 @@ public class MeusChamados extends javax.swing.JFrame {
         btnChamados.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnChamados.setForeground(new java.awt.Color(36, 59, 98));
         btnChamados.setText("Chamados");
+        btnChamados.addActionListener(this::btnChamadosActionPerformed);
 
         btnMeusChamados.setBackground(new java.awt.Color(7, 84, 216));
         btnMeusChamados.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -130,6 +134,7 @@ public class MeusChamados extends javax.swing.JFrame {
         btnSair.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnSair.setForeground(new java.awt.Color(36, 59, 98));
         btnSair.setText("Sair");
+        btnSair.addActionListener(this::btnSairActionPerformed);
 
         javax.swing.GroupLayout painelMenuLayout = new javax.swing.GroupLayout(painelMenu);
         painelMenu.setLayout(painelMenuLayout);
@@ -678,7 +683,20 @@ public class MeusChamados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMeuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeuPerfilActionPerformed
-        // TODO add your handling code here:
+
+        for (Window janela : Window.getWindows()) {
+
+            if (janela instanceof TelaMeuPerfilUsuario && janela.isDisplayable()) {
+
+                janela.setVisible(true);
+                janela.toFront();
+                return;
+            }
+        }
+
+        TelaMeuPerfilUsuario tela = new TelaMeuPerfilUsuario(idSuporte);
+        tela.setVisible(true);
+
     }//GEN-LAST:event_btnMeuPerfilActionPerformed
 
     private void btnAbrirAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirAtendimentoActionPerformed
@@ -693,9 +711,7 @@ public class MeusChamados extends javax.swing.JFrame {
             return;
         }
 
-        int idChamado = Integer.parseInt(
-                tblMeusChamados.getValueAt(linha, 0).toString()
-        );
+        int idChamado = Integer.parseInt(tblMeusChamados.getValueAt(linha, 0).toString());
 
         JsonObject chamado = detalhesChamados.get(idChamado);
 
@@ -734,6 +750,35 @@ public class MeusChamados extends javax.swing.JFrame {
         tela.setVisible(true);
 
     }//GEN-LAST:event_btnVerHistoricoActionPerformed
+
+    private void btnChamadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamadosActionPerformed
+        for (Window janela : Window.getWindows()) {
+
+            if (janela instanceof ChamadosDisponiveis && janela.isDisplayable()) {
+
+                janela.setVisible(true);
+                janela.toFront();
+                dispose();
+                return;
+            }
+        }
+
+        new ChamadosDisponiveis(idSuporte).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnChamadosActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema?", "Sair", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+
+            for (Window janela : Window.getWindows()) {
+                janela.dispose();
+            }
+
+            new LoginSuporte().setVisible(true);
+        }
+    }//GEN-LAST:event_btnSairActionPerformed
 
     // Estilização separada do código gerado pelo NetBeans.
     private void configurarVisual() {
@@ -878,7 +923,6 @@ public class MeusChamados extends javax.swing.JFrame {
             }
         });
 
-        btnSair.addActionListener(e -> dispose());
     }
 
     private void aplicarFiltros() {
@@ -1005,6 +1049,35 @@ public class MeusChamados extends javax.swing.JFrame {
         tela.setVisible(true);
     }
 
+    @Override
+    public void dispose() {
+        if (websocketChamados != null) {
+            websocketChamados.close();
+        }
+
+        super.dispose();
+    }
+
+    private void conectarWebSocketChamados() {
+        try {
+            websocketChamados = new ChamadosWebSocketClient();
+
+            websocketChamados.setAoReceberAtualizacao(mensagem -> {
+
+                SwingUtilities.invokeLater(() -> {
+                    carregarMeusChamados();
+                });
+
+            });
+
+            websocketChamados.connect();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao conectar WebSocket: "
+                    + e.getMessage());
+        }
+    }
+
     private void carregarMeusChamados() {
 
         try {
@@ -1025,6 +1098,11 @@ public class MeusChamados extends javax.swing.JFrame {
                 int idChamado = chamado.get("idChamado").getAsInt();
 
                 detalhesChamados.put(idChamado, chamado);
+                long mensagensNaoLidas = 0;
+
+                if (!"fechado".equalsIgnoreCase(chamado.get("status").getAsString())) {
+                    mensagensNaoLidas = api.contarMensagensNaoLidas(idChamado, idSuporte);
+                }
 
                 JsonObject usuario = chamado.getAsJsonObject("usuario");
 
@@ -1034,7 +1112,7 @@ public class MeusChamados extends javax.swing.JFrame {
                     usuario.get("nome").getAsString(),
                     chamado.get("dataAbertura").getAsString(),
                     chamado.get("status").getAsString(),
-                    0
+                    mensagensNaoLidas
                 });
             }
 

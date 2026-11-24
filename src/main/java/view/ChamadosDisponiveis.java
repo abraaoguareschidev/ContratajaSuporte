@@ -126,18 +126,18 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelMenu.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblMarca.setText("ContrataJá");
         lblMarca.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblMarca.setForeground(new java.awt.Color(6, 77, 199));
+        lblMarca.setText("ContrataJá");
 
-        lblMarcaSub.setText("SUPORTE");
         lblMarcaSub.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblMarcaSub.setForeground(new java.awt.Color(82, 103, 133));
+        lblMarcaSub.setText("SUPORTE");
 
-        btnChamados.setText("Chamados");
+        btnChamados.setBackground(new java.awt.Color(7, 84, 216));
         btnChamados.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnChamados.setForeground(new java.awt.Color(255, 255, 255));
-        btnChamados.setBackground(new java.awt.Color(7, 84, 216));
+        btnChamados.setText("Chamados");
 
         btnMeusChamados.setBackground(new java.awt.Color(237, 243, 253));
         btnMeusChamados.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -145,16 +145,17 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         btnMeusChamados.setText("Meus chamados");
         btnMeusChamados.addActionListener(this::btnMeusChamadosActionPerformed);
 
-        btnMeuPerfil.setText("Meu perfil");
+        btnMeuPerfil.setBackground(new java.awt.Color(237, 243, 253));
         btnMeuPerfil.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnMeuPerfil.setForeground(new java.awt.Color(36, 59, 98));
-        btnMeuPerfil.setBackground(new java.awt.Color(237, 243, 253));
+        btnMeuPerfil.setText("Meu perfil");
         btnMeuPerfil.addActionListener(this::btnMeuPerfilActionPerformed);
 
-        btnSair.setText("Sair");
+        btnSair.setBackground(new java.awt.Color(237, 243, 253));
         btnSair.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnSair.setForeground(new java.awt.Color(36, 59, 98));
-        btnSair.setBackground(new java.awt.Color(237, 243, 253));
+        btnSair.setText("Sair");
+        btnSair.addActionListener(this::btnSairActionPerformed);
 
         javax.swing.GroupLayout painelMenuLayout = new javax.swing.GroupLayout(painelMenu);
         painelMenu.setLayout(painelMenuLayout);
@@ -191,13 +192,13 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelConteudo.setBackground(new java.awt.Color(243, 246, 252));
 
-        lblTitulo.setText("Chamados");
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(24, 36, 60));
+        lblTitulo.setText("Chamados");
 
-        lblSubtitulo.setText("Acompanhe, assuma e consulte os chamados de suporte.");
         lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblSubtitulo.setForeground(new java.awt.Color(82, 103, 133));
+        lblSubtitulo.setText("Acompanhe, assuma e consulte os chamados de suporte.");
 
         painelLista.setBackground(new java.awt.Color(243, 246, 252));
 
@@ -205,13 +206,13 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         cardAbertos.setBackground(new java.awt.Color(255, 243, 217));
 
-        lblTituloAbertos.setText("Abertos");
         lblTituloAbertos.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTituloAbertos.setForeground(new java.awt.Color(24, 36, 60));
+        lblTituloAbertos.setText("Abertos");
 
-        lblAbertos.setText("0");
         lblAbertos.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lblAbertos.setForeground(new java.awt.Color(149, 96, 6));
+        lblAbertos.setText("0");
 
         javax.swing.GroupLayout cardAbertosLayout = new javax.swing.GroupLayout(cardAbertos);
         cardAbertos.setLayout(cardAbertosLayout);
@@ -236,13 +237,13 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         cardAndamento.setBackground(new java.awt.Color(231, 240, 255));
 
-        lblTituloAndamento.setText("Em atendimento");
         lblTituloAndamento.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTituloAndamento.setForeground(new java.awt.Color(24, 36, 60));
+        lblTituloAndamento.setText("Em atendimento");
 
-        lblAndamento.setText("0");
         lblAndamento.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lblAndamento.setForeground(new java.awt.Color(7, 84, 216));
+        lblAndamento.setText("0");
 
         javax.swing.GroupLayout cardAndamentoLayout = new javax.swing.GroupLayout(cardAndamento);
         cardAndamento.setLayout(cardAndamentoLayout);
@@ -267,13 +268,13 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         cardEncerrados.setBackground(new java.awt.Color(232, 247, 238));
 
-        lblTituloEncerrados.setText("Encerrados");
         lblTituloEncerrados.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTituloEncerrados.setForeground(new java.awt.Color(24, 36, 60));
+        lblTituloEncerrados.setText("Encerrados");
 
-        lblEncerrados.setText("0");
         lblEncerrados.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         lblEncerrados.setForeground(new java.awt.Color(19, 115, 70));
+        lblEncerrados.setText("0");
 
         javax.swing.GroupLayout cardEncerradosLayout = new javax.swing.GroupLayout(cardEncerrados);
         cardEncerrados.setLayout(cardEncerradosLayout);
@@ -316,9 +317,9 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelFiltros.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblBuscar.setText("Buscar:");
         lblBuscar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblBuscar.setForeground(new java.awt.Color(24, 36, 60));
+        lblBuscar.setText("Buscar:");
 
         jTextFieldBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -327,12 +328,12 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             }
         });
 
-        lblFiltroStatus.setText("Status:");
         lblFiltroStatus.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblFiltroStatus.setForeground(new java.awt.Color(24, 36, 60));
+        lblFiltroStatus.setText("Status:");
 
-        jComboBoxStatusChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Abertos", "Em atendimento", "Fechados" }));
         jComboBoxStatusChamados.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jComboBoxStatusChamados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Abertos", "Em atendimento", "Fechados" }));
         jComboBoxStatusChamados.addActionListener(this::jComboBoxStatusChamadosActionPerformed);
 
         javax.swing.GroupLayout painelFiltrosLayout = new javax.swing.GroupLayout(painelFiltros);
@@ -433,61 +434,61 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblDetalhes.setText("Detalhes do chamado");
         lblDetalhes.setFont(new java.awt.Font("Segoe UI", 1, 19)); // NOI18N
         lblDetalhes.setForeground(new java.awt.Color(24, 36, 60));
+        lblDetalhes.setText("Detalhes do chamado");
 
-        lblIdChamado.setText("ID do chamado:");
         lblIdChamado.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblIdChamado.setForeground(new java.awt.Color(24, 36, 60));
+        lblIdChamado.setText("ID do chamado:");
 
-        lblAssunto.setText("Assunto:");
         lblAssunto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblAssunto.setForeground(new java.awt.Color(24, 36, 60));
+        lblAssunto.setText("Assunto:");
 
-        lblUsuario.setText("Usuário:");
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(24, 36, 60));
+        lblUsuario.setText("Usuário:");
 
-        lblTipo.setText("Tipo:");
         lblTipo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTipo.setForeground(new java.awt.Color(24, 36, 60));
+        lblTipo.setText("Tipo:");
 
-        lblDataAbertura.setText("Data de abertura:");
         lblDataAbertura.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDataAbertura.setForeground(new java.awt.Color(24, 36, 60));
+        lblDataAbertura.setText("Data de abertura:");
 
-        lblStatusChamado.setText("Status:");
         lblStatusChamado.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblStatusChamado.setForeground(new java.awt.Color(24, 36, 60));
+        lblStatusChamado.setText("Status:");
 
         jTextFieldIdChamado.setEditable(false);
-        jTextFieldIdChamado.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldIdChamado.setBackground(new java.awt.Color(248, 250, 253));
+        jTextFieldIdChamado.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldIdChamado.setForeground(new java.awt.Color(24, 36, 60));
 
         jTextFieldAssunto.setEditable(false);
-        jTextFieldAssunto.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldAssunto.setBackground(new java.awt.Color(248, 250, 253));
+        jTextFieldAssunto.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldAssunto.setForeground(new java.awt.Color(24, 36, 60));
 
         jTextFieldUsuario.setEditable(false);
-        jTextFieldUsuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldUsuario.setBackground(new java.awt.Color(248, 250, 253));
+        jTextFieldUsuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldUsuario.setForeground(new java.awt.Color(24, 36, 60));
 
         jTextFieldTipo.setEditable(false);
-        jTextFieldTipo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldTipo.setBackground(new java.awt.Color(248, 250, 253));
+        jTextFieldTipo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldTipo.setForeground(new java.awt.Color(24, 36, 60));
 
         jTextFieldDataAbertura.setEditable(false);
-        jTextFieldDataAbertura.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldDataAbertura.setBackground(new java.awt.Color(248, 250, 253));
+        jTextFieldDataAbertura.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jTextFieldDataAbertura.setForeground(new java.awt.Color(24, 36, 60));
 
-        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "aberto", "em_atendimento", "fechado" }));
         jComboBoxStatus.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "aberto", "em_atendimento", "fechado" }));
         jComboBoxStatus.setEnabled(false);
 
         javax.swing.GroupLayout painelDetalhesLayout = new javax.swing.GroupLayout(painelDetalhes);
@@ -550,9 +551,9 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelDescricao.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblDescricao.setText("Descrição");
         lblDescricao.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         lblDescricao.setForeground(new java.awt.Color(24, 36, 60));
+        lblDescricao.setText("Descrição");
 
         jTextAreaDescricao.setEditable(false);
         jTextAreaDescricao.setLineWrap(true);
@@ -585,9 +586,9 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelSolucao.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblSolucao.setText("Solução");
         lblSolucao.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         lblSolucao.setForeground(new java.awt.Color(24, 36, 60));
+        lblSolucao.setText("Solução");
 
         jTextAreaResposta.setEditable(false);
         jTextAreaResposta.setLineWrap(true);
@@ -620,16 +621,16 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         painelAcoes.setBackground(new java.awt.Color(243, 246, 252));
 
-        jButtonAtender.setText("Atender chamado");
+        jButtonAtender.setBackground(new java.awt.Color(7, 84, 216));
         jButtonAtender.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jButtonAtender.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonAtender.setBackground(new java.awt.Color(7, 84, 216));
+        jButtonAtender.setText("Atender chamado");
         jButtonAtender.addActionListener(this::jButtonAtenderActionPerformed);
 
-        btnConsultarHistorico.setText("Consultar histórico");
+        btnConsultarHistorico.setBackground(new java.awt.Color(237, 243, 253));
         btnConsultarHistorico.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnConsultarHistorico.setForeground(new java.awt.Color(36, 59, 98));
-        btnConsultarHistorico.setBackground(new java.awt.Color(237, 243, 253));
+        btnConsultarHistorico.setText("Consultar histórico");
         btnConsultarHistorico.addActionListener(this::btnConsultarHistoricoActionPerformed);
 
         javax.swing.GroupLayout painelAcoesLayout = new javax.swing.GroupLayout(painelAcoes);
@@ -864,14 +865,37 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxStatusChamadosActionPerformed
 
     private void btnMeuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeuPerfilActionPerformed
-        TelaMeuPerfilUsuario telaPerfil = new TelaMeuPerfilUsuario(idSuporte);
-        telaPerfil.setVisible(true);
+        for (Window janela : Window.getWindows()) {
+
+            if (janela instanceof TelaMeuPerfilUsuario && janela.isDisplayable()) {
+
+                janela.setVisible(true);
+                janela.toFront();
+                return;
+            }
+        }
+
+        TelaMeuPerfilUsuario tela = new TelaMeuPerfilUsuario(idSuporte);
+        tela.setVisible(true);
     }//GEN-LAST:event_btnMeuPerfilActionPerformed
 
     private void btnMeusChamadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeusChamadosActionPerformed
         MeusChamados tela = new MeusChamados(idSuporte);
         tela.setVisible(true);
     }//GEN-LAST:event_btnMeusChamadosActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente sair do sistema?", "Sair", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+
+            for (Window janela : Window.getWindows()) {
+                janela.dispose();
+            }
+
+            new LoginSuporte().setVisible(true);
+        }
+    }//GEN-LAST:event_btnSairActionPerformed
 
     private void aplicarFiltros() {
 

@@ -42,6 +42,27 @@ public class ApiClient {
 
         return response.body();
     }
+    
+    public long contarMensagensNaoLidas(int idChamado, int idSuporte) throws Exception {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(
+                    "http://localhost:8080/mensagens-suporte/chamado/"
+                    + idChamado + "/nao-lidas?idSuporte=" + idSuporte
+            ))
+            .GET()
+            .build();
+
+    HttpResponse<String> response = client.send(
+            request, HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() != 200) {
+        throw new Exception("Erro ao consultar mensagens não lidas.");
+    }
+
+    return Long.parseLong(response.body().trim());
+}
 
     public String listarMensagens(int idChamado) throws Exception {
 

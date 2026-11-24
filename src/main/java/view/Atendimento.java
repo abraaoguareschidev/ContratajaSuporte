@@ -5,8 +5,11 @@ import api.ChatWebSocketClient;
 import javax.swing.*;
 import java.awt.*;
 
-/** Atendimento do ContrataJá Suporte. Interface editável pelo GUI Builder. */
+/**
+ * Atendimento do ContrataJá Suporte. Interface editável pelo GUI Builder.
+ */
 public class Atendimento extends javax.swing.JFrame {
+
     private int idSuporte;
     private int idChamado;
     private boolean modoHistorico = false;
@@ -51,7 +54,9 @@ public class Atendimento extends javax.swing.JFrame {
         lblEmailCliente.setToolTipText(email);
         lblSubtitulo.setText("Chamado #" + idChamado + " · " + assunto);
         atualizarStatusVisual(status);
-        if (!modoHistorico) marcarMensagensComoLidas();
+        if (!modoHistorico) {
+            marcarMensagensComoLidas();
+        }
         carregarHistorico();
         if (modoHistorico) {
             btnEnviar.setEnabled(false);
@@ -63,15 +68,24 @@ public class Atendimento extends javax.swing.JFrame {
             try {
                 chat = new ChatWebSocketClient(idChamado);
                 chat.setAoReceberMensagem(json -> SwingUtilities.invokeLater(() -> {
-                    if (!isDisplayable()) return;
+                    if (!isDisplayable()) {
+                        return;
+                    }
                     com.google.gson.JsonObject mensagem = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
                     adicionarMensagem(mensagem.get("nomeRemetente").getAsString(),
-                        mensagem.get("conteudo").getAsString(), mensagem.get("dataEnvio").getAsString(),
-                        mensagem.get("idRemetente").getAsInt(), mensagem.get("statusLeitura").getAsBoolean());
+                            mensagem.get("conteudo").getAsString(), mensagem.get("dataEnvio").getAsString(),
+                            mensagem.get("idRemetente").getAsInt(), mensagem.get("statusLeitura").getAsBoolean());
+
+                    if (mensagem.get("idRemetente").getAsInt() != idSuporte
+                            && isShowing()) {
+                        marcarMensagensComoLidas();
+                    }
                 }));
                 chat.setAoReceberLeitura(idUsuario -> SwingUtilities.invokeLater(() -> {
                     if (idUsuario != idSuporte) {
-                        for (JLabel indicador : indicadoresLeitura) indicador.setText("Lido");
+                        for (JLabel indicador : indicadoresLeitura) {
+                            indicador.setText("Lido");
+                        }
                         jPanelMensagens.revalidate();
                         jPanelMensagens.repaint();
                     }
@@ -583,46 +597,56 @@ public class Atendimento extends javax.swing.JFrame {
         for (JPanel p : new JPanel[]{painelCabecalho, painelChat, painelInformacoes, painelCliente, painelDescricao, painelSolucao}) {
             p.setBorder(BorderFactory.createLineBorder(borda));
         }
-        for (JTextField f : new JTextField[]{jTextFieldIdChamado,jTextFieldAssunto,jTextFieldStatus,jTextFieldDataAbertura}) {
-            f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(borda),BorderFactory.createEmptyBorder(0,8,0,6)));
+        for (JTextField f : new JTextField[]{jTextFieldIdChamado, jTextFieldAssunto, jTextFieldStatus, jTextFieldDataAbertura}) {
+            f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(borda), BorderFactory.createEmptyBorder(0, 8, 0, 6)));
         }
-        for (JScrollPane s : new JScrollPane[]{jScrollPane1,jScrollPane2,jScrollPane3,jScrollPane4}) {
+        for (JScrollPane s : new JScrollPane[]{jScrollPane1, jScrollPane2, jScrollPane3, jScrollPane4}) {
             s.setBorder(BorderFactory.createLineBorder(borda));
             s.getVerticalScrollBar().setUnitIncrement(16);
         }
-        for (JTextArea a : new JTextArea[]{txtAreaMensagem,TxtAreaDescricao,txtAreaSolucao}) {
-            a.setMargin(new Insets(8,10,8,10));
+        for (JTextArea a : new JTextArea[]{txtAreaMensagem, TxtAreaDescricao, txtAreaSolucao}) {
+            a.setMargin(new Insets(8, 10, 8, 10));
         }
-        jPanelMensagens.setLayout(new BoxLayout(jPanelMensagens,BoxLayout.Y_AXIS));
-        jPanelMensagens.setBorder(BorderFactory.createEmptyBorder(10,8,10,8));
+        jPanelMensagens.setLayout(new BoxLayout(jPanelMensagens, BoxLayout.Y_AXIS));
+        jPanelMensagens.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         jScrollPane1.getViewport().setBackground(new Color(0xF3F6FC));
         jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        for (JButton b : new JButton[]{btnVoltar,btnEnviar,btnEncerrarChamado,jButton2}) {
+        for (JButton b : new JButton[]{btnVoltar, btnEnviar, btnEncerrarChamado, jButton2}) {
             b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-                @Override public void paint(Graphics g,JComponent c) {
-                    AbstractButton botao=(AbstractButton)c;
-                    Graphics2D g2=(Graphics2D)g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                    Color bg=botao.isEnabled()?botao.getBackground():new Color(0xEDF1F6);
-                    if (botao.isEnabled()&&botao.getModel().isPressed()) bg=bg.darker();
-                    g2.setColor(bg);g2.fillRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);
-                    g2.setColor(new Color(0xD6E1EF));g2.drawRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);g2.dispose();super.paint(g,c);
+                @Override
+                public void paint(Graphics g, JComponent c) {
+                    AbstractButton botao = (AbstractButton) c;
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    Color bg = botao.isEnabled() ? botao.getBackground() : new Color(0xEDF1F6);
+                    if (botao.isEnabled() && botao.getModel().isPressed()) {
+                        bg = bg.darker();
+                    }
+                    g2.setColor(bg);
+                    g2.fillRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                    g2.setColor(new Color(0xD6E1EF));
+                    g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                    g2.dispose();
+                    super.paint(g, c);
                 }
             });
-            b.setOpaque(false);b.setContentAreaFilled(false);b.setBorderPainted(false);b.setFocusPainted(false);
+            b.setOpaque(false);
+            b.setContentAreaFilled(false);
+            b.setBorderPainted(false);
+            b.setFocusPainted(false);
             b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
         jButton2.setEnabled(false);
         jButton2.setToolTipText("Consulta do perfil do usuário ainda não implementada.");
         txtAreaSolucao.setEditable(false);
-        setMinimumSize(new Dimension(980,720));
+        setMinimumSize(new Dimension(980, 720));
         setLocationRelativeTo(null);
     }
 
     private void atualizarStatusVisual(String valor) {
         status = valor;
-        jTextFieldStatus.setText("fechado".equalsIgnoreCase(valor) ? "Fechado" :
-                "em_atendimento".equalsIgnoreCase(valor) ? "Em atendimento" : valor);
+        jTextFieldStatus.setText("fechado".equalsIgnoreCase(valor) ? "Fechado"
+                : "em_atendimento".equalsIgnoreCase(valor) ? "Em atendimento" : valor);
         if ("fechado".equalsIgnoreCase(valor)) {
             jTextFieldStatus.setBackground(new Color(0xDDF5E7));
             jTextFieldStatus.setForeground(new Color(0x126B3D));
@@ -642,7 +666,9 @@ public class Atendimento extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         String conteudo = txtAreaMensagem.getText().trim();
-        if (conteudo.isEmpty() || modoHistorico || "fechado".equalsIgnoreCase(status)) return;
+        if (conteudo.isEmpty() || modoHistorico || "fechado".equalsIgnoreCase(status)) {
+            return;
+        }
         if (chat != null && chat.isOpen()) {
             chat.enviarMensagem(conteudo, idSuporte);
             txtAreaMensagem.setText("");
@@ -652,7 +678,9 @@ public class Atendimento extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     private void btnEncerrarChamadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarChamadoActionPerformed
-        if (modoHistorico || "fechado".equalsIgnoreCase(status)) return;
+        if (modoHistorico || "fechado".equalsIgnoreCase(status)) {
+            return;
+        }
         if (!txtAreaSolucao.isEditable()) {
             txtAreaSolucao.setEditable(true);
             txtAreaSolucao.requestFocusInWindow();
@@ -686,48 +714,83 @@ public class Atendimento extends javax.swing.JFrame {
     private void adicionarMensagem(String nomeRemetente, String conteudo, String dataEnvio,
             int idRemetente, boolean statusLeitura) {
         boolean minha = idRemetente == idSuporte;
-        JPanel linha = new JPanel(new FlowLayout(minha?FlowLayout.RIGHT:FlowLayout.LEFT,8,6));
+        JPanel linha = new JPanel(new FlowLayout(minha ? FlowLayout.RIGHT : FlowLayout.LEFT, 8, 6));
         linha.setOpaque(false);
-        Color fundo = minha?new Color(0xE0ECFF):Color.WHITE;
+        Color fundo = minha ? new Color(0xE0ECFF) : Color.WHITE;
         JPanel bolha = new JPanel() {
-            @Override protected void paintComponent(Graphics g) {
-                Graphics2D g2=(Graphics2D)g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(fundo);g2.fillRoundRect(0,0,getWidth()-1,getHeight()-1,18,18);
-                g2.setColor(new Color(0xDFE6F1));g2.drawRoundRect(0,0,getWidth()-1,getHeight()-1,18,18);g2.dispose();
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(fundo);
+                g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 18, 18);
+                g2.setColor(new Color(0xDFE6F1));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 18, 18);
+                g2.dispose();
                 super.paintComponent(g);
             }
         };
         bolha.setOpaque(false);
-        bolha.setLayout(new BoxLayout(bolha,BoxLayout.Y_AXIS));
-        bolha.setBorder(BorderFactory.createEmptyBorder(10,14,10,14));
-        JLabel lblNome=new JLabel();lblNome.putClientProperty("html.disable",Boolean.TRUE);lblNome.setText(nomeRemetente);
-        lblNome.setFont(new Font("Segoe UI",Font.BOLD,13));lblNome.setForeground(new Color(0x0754D8));
-        JTextArea texto=new JTextArea(conteudo==null?"":conteudo);
+        bolha.setLayout(new BoxLayout(bolha, BoxLayout.Y_AXIS));
+        bolha.setBorder(BorderFactory.createEmptyBorder(10, 14, 10, 14));
+        JLabel lblNome = new JLabel();
+        lblNome.putClientProperty("html.disable", Boolean.TRUE);
+        lblNome.setText(nomeRemetente);
+        lblNome.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        lblNome.setForeground(new Color(0x0754D8));
+        JTextArea texto = new JTextArea(conteudo == null ? "" : conteudo);
         texto.setUI(new javax.swing.plaf.basic.BasicTextAreaUI());
-        texto.setEditable(false);texto.setOpaque(false);texto.setBorder(BorderFactory.createEmptyBorder());texto.setMargin(new Insets(0,0,0,0));texto.setLineWrap(true);texto.setWrapStyleWord(true);
-        texto.setFont(new Font("Segoe UI",Font.PLAIN,14));texto.setForeground(new Color(0x18243C));
-        int larguraDisponivel=jScrollPane1.getViewport().getWidth();
-        int larguraMax=Math.max(210,Math.min(410,larguraDisponivel>0?larguraDisponivel-100:410));
-        int largura=Math.min(larguraMax,Math.max(160,texto.getFontMetrics(texto.getFont()).stringWidth(conteudo==null?"":conteudo)+8));
-        texto.setSize(largura,Short.MAX_VALUE);texto.setPreferredSize(new Dimension(largura,texto.getPreferredSize().height));
-        String hora=dataEnvio;
-        try { hora=java.time.LocalDateTime.parse(dataEnvio).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")); } catch(Exception ignored) {}
-        JLabel lblData=new JLabel(hora);lblData.setFont(new Font("Segoe UI",Font.PLAIN,11));lblData.setForeground(new Color(0x526785));
-        for(JComponent c:new JComponent[]{lblNome,texto,lblData}) c.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bolha.add(lblNome);bolha.add(Box.createVerticalStrut(4));bolha.add(texto);bolha.add(Box.createVerticalStrut(6));bolha.add(lblData);
-        if(minha) {
-            JLabel lblLeitura=new JLabel(statusLeitura?"Lido":"");lblLeitura.setFont(new Font("Segoe UI",Font.BOLD,11));lblLeitura.setForeground(new Color(0x0754D8));lblLeitura.setAlignmentX(Component.LEFT_ALIGNMENT);
-            bolha.add(lblLeitura);indicadoresLeitura.add(lblLeitura);
+        texto.setEditable(false);
+        texto.setOpaque(false);
+        texto.setBorder(BorderFactory.createEmptyBorder());
+        texto.setMargin(new Insets(0, 0, 0, 0));
+        texto.setLineWrap(true);
+        texto.setWrapStyleWord(true);
+        texto.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        texto.setForeground(new Color(0x18243C));
+        int larguraDisponivel = jScrollPane1.getViewport().getWidth();
+        int larguraMax = Math.max(210, Math.min(410, larguraDisponivel > 0 ? larguraDisponivel - 100 : 410));
+        int largura = Math.min(larguraMax, Math.max(160, texto.getFontMetrics(texto.getFont()).stringWidth(conteudo == null ? "" : conteudo) + 8));
+        texto.setSize(largura, Short.MAX_VALUE);
+        texto.setPreferredSize(new Dimension(largura, texto.getPreferredSize().height));
+        String hora = dataEnvio;
+        try {
+            hora = java.time.LocalDateTime.parse(dataEnvio).format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        } catch (Exception ignored) {
         }
-        linha.add(bolha);linha.setAlignmentX(Component.LEFT_ALIGNMENT);
-        linha.setMaximumSize(new Dimension(Integer.MAX_VALUE,linha.getPreferredSize().height));
-        jPanelMensagens.add(linha);jPanelMensagens.revalidate();jPanelMensagens.repaint();
-        SwingUtilities.invokeLater(() -> { JScrollBar barra=jScrollPane1.getVerticalScrollBar();barra.setValue(barra.getMaximum()); });
+        JLabel lblData = new JLabel(hora);
+        lblData.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        lblData.setForeground(new Color(0x526785));
+        for (JComponent c : new JComponent[]{lblNome, texto, lblData}) {
+            c.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        bolha.add(lblNome);
+        bolha.add(Box.createVerticalStrut(4));
+        bolha.add(texto);
+        bolha.add(Box.createVerticalStrut(6));
+        bolha.add(lblData);
+        if (minha) {
+            JLabel lblLeitura = new JLabel(statusLeitura ? "Lido" : "");
+            lblLeitura.setFont(new Font("Segoe UI", Font.BOLD, 11));
+            lblLeitura.setForeground(new Color(0x0754D8));
+            lblLeitura.setAlignmentX(Component.LEFT_ALIGNMENT);
+            bolha.add(lblLeitura);
+            indicadoresLeitura.add(lblLeitura);
+        }
+        linha.add(bolha);
+        linha.setAlignmentX(Component.LEFT_ALIGNMENT);
+        linha.setMaximumSize(new Dimension(Integer.MAX_VALUE, linha.getPreferredSize().height));
+        jPanelMensagens.add(linha);
+        jPanelMensagens.revalidate();
+        jPanelMensagens.repaint();
+        SwingUtilities.invokeLater(() -> {
+            JScrollBar barra = jScrollPane1.getVerticalScrollBar();
+            barra.setValue(barra.getMaximum());
+        });
     }
 
     private void adicionarMensagem(String nomeRemetente, String conteudo, String dataEnvio, int idRemetente) {
-        adicionarMensagem(nomeRemetente,conteudo,dataEnvio,idRemetente,false);
+        adicionarMensagem(nomeRemetente, conteudo, dataEnvio, idRemetente, false);
     }
 
     private void carregarHistorico() {
@@ -738,28 +801,41 @@ public class Atendimento extends javax.swing.JFrame {
             for (com.google.gson.JsonElement elemento : mensagens) {
                 com.google.gson.JsonObject mensagem = elemento.getAsJsonObject();
                 adicionarMensagem(mensagem.get("nomeRemetente").getAsString(),
-                    mensagem.get("conteudo").getAsString(),mensagem.get("dataEnvio").getAsString(),
-                    mensagem.get("idRemetente").getAsInt(),mensagem.get("statusLeitura").getAsBoolean());
+                        mensagem.get("conteudo").getAsString(), mensagem.get("dataEnvio").getAsString(),
+                        mensagem.get("idRemetente").getAsInt(), mensagem.get("statusLeitura").getAsBoolean());
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void marcarMensagensComoLidas() {
-        try { new ApiClient().marcarMensagensComoLidas(idChamado,idSuporte); }
-        catch(Exception e) { e.printStackTrace(); }
+        try {
+            new ApiClient().marcarMensagensComoLidas(idChamado, idSuporte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override public void dispose() {
-        if (chat != null) chat.desconectar();
+    @Override
+    public void dispose() {
+        if (chat != null) {
+            chat.desconectar();
+        }
         super.dispose();
     }
 
     public static void main(String args[]) {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) { UIManager.setLookAndFeel(info.getClassName());break; }
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
-        } catch(Exception ex) { logger.log(java.util.logging.Level.SEVERE,null,ex); }
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
         java.awt.EventQueue.invokeLater(() -> new Atendimento().setVisible(true));
     }
 
