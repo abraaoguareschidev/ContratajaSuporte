@@ -20,6 +20,29 @@ public class ApiClient {
 
     }
 
+    public String listarMeusChamados(int idSuporte) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/chamados/suporte/" + idSuporte
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException(
+                    "Erro ao listar meus chamados: " + response.statusCode()
+            );
+        }
+
+        return response.body();
+    }
+
     public String listarMensagens(int idChamado) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -176,66 +199,63 @@ public class ApiClient {
 
         return response.body();
     }
-    
-    
-public void atualizarPerfilSuporte(
-        int idUsuario, JsonObject dados) throws Exception {
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(
-                    "http://localhost:8080/usuarios/suporte/" + idUsuario
-            ))
-            .header("Content-Type", "application/json")
-            .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
-            .build();
+    public void atualizarPerfilSuporte(
+            int idUsuario, JsonObject dados) throws Exception {
 
-    HttpResponse<String> response = client.send(
-            request,
-            HttpResponse.BodyHandlers.ofString()
-    );
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/usuarios/suporte/" + idUsuario
+                ))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
+                .build();
 
-    if (response.statusCode() != 204) {
-        throw new RuntimeException(
-                "Erro ao atualizar perfil: "
-                + response.statusCode()
-                + " - " + response.body()
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
         );
+
+        if (response.statusCode() != 204) {
+            throw new RuntimeException(
+                    "Erro ao atualizar perfil: "
+                    + response.statusCode()
+                    + " - " + response.body()
+            );
+        }
     }
-}
 
+    public void alterarSenha(
+            int idUsuario,
+            String senhaAtual,
+            String novaSenha) throws Exception {
 
-public void alterarSenha(
-        int idUsuario,
-        String senhaAtual,
-        String novaSenha) throws Exception {
+        JsonObject dados = new JsonObject();
 
-    JsonObject dados = new JsonObject();
+        dados.addProperty("senhaAtual", senhaAtual);
+        dados.addProperty("novaSenha", novaSenha);
 
-    dados.addProperty("senhaAtual", senhaAtual);
-    dados.addProperty("novaSenha", novaSenha);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/usuarios/suporte/"
+                        + idUsuario + "/senha"
+                ))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
+                .build();
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(
-                    "http://localhost:8080/usuarios/suporte/"
-                    + idUsuario + "/senha"
-            ))
-            .header("Content-Type", "application/json")
-            .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
-            .build();
-
-    HttpResponse<String> response = client.send(
-            request,
-            HttpResponse.BodyHandlers.ofString()
-    );
-
-    if (response.statusCode() != 204) {
-        throw new RuntimeException(
-                "Erro ao alterar senha: "
-                + response.statusCode()
-                + " - " + response.body()
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
         );
-    }
-}
 
+        if (response.statusCode() != 204) {
+            throw new RuntimeException(
+                    "Erro ao alterar senha: "
+                    + response.statusCode()
+                    + " - " + response.body()
+            );
+        }
+    }
 
 }
