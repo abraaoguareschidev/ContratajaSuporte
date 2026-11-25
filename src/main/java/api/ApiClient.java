@@ -5,6 +5,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.google.gson.JsonObject;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class ApiClient {
 
@@ -62,6 +64,31 @@ public class ApiClient {
     }
 
     return Long.parseLong(response.body().trim());
+}
+    
+    public String reenviarEmailVerificacao(String email) throws Exception {
+
+    String emailCodificado = URLEncoder.encode(
+            email, StandardCharsets.UTF_8
+    );
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8080/auth/reenviar-verificacao?email="
+                    + emailCodificado
+            ))
+            .POST(HttpRequest.BodyPublishers.noBody())
+            .build();
+
+    HttpResponse<String> response = client.send(
+            request,
+            HttpResponse.BodyHandlers.ofString()
+    );
+
+    if (response.statusCode() != 200) {
+        throw new Exception("Erro ao solicitar reenvio do e-mail.");
+    }
+
+    return response.body();
 }
 
     public String listarMensagens(int idChamado) throws Exception {

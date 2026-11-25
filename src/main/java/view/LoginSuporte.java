@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.net.http.HttpResponse;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -20,11 +22,30 @@ public class LoginSuporte extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginSuporte.class.getName());
 
-    /**
-     * Creates new form LoginSuporte
-     */
+    private void monitorarCampoEmail() {
+
+        txtLogin.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                lblReenviarVerificacao.setVisible(false);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                lblReenviarVerificacao.setVisible(false);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                lblReenviarVerificacao.setVisible(false);
+            }
+        });
+    }
+
     public LoginSuporte() {
         initComponents();
+        lblReenviarVerificacao.setVisible(false);
 
         // Localiza a imagem dentro da pasta resources
         java.net.URL caminhoImagem = getClass().getResource(
@@ -112,6 +133,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        lblReenviarVerificacao = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -156,7 +178,7 @@ public class LoginSuporte extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(21, 89, 214));
-        jLabel7.setText("Email ou CPF");
+        jLabel7.setText("Email");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(21, 89, 214));
@@ -168,6 +190,15 @@ public class LoginSuporte extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(21, 89, 214));
         jLabel11.setText("esqueceu senha?");
 
+        lblReenviarVerificacao.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblReenviarVerificacao.setForeground(new java.awt.Color(21, 89, 214));
+        lblReenviarVerificacao.setText("Reenviar e-mail de verificação");
+        lblReenviarVerificacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblReenviarVerificacaoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout painelLoginLayout = new javax.swing.GroupLayout(painelLogin);
         painelLogin.setLayout(painelLoginLayout);
         painelLoginLayout.setHorizontalGroup(
@@ -178,11 +209,13 @@ public class LoginSuporte extends javax.swing.JFrame {
                     .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel7)
                         .addComponent(jLabel8)
-                        .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11)
-                            .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                                .addComponent(pswSenha))))
+                        .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(painelLoginLayout.createSequentialGroup()
+                                .addComponent(lblReenviarVerificacao)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel11))
+                            .addComponent(txtLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                            .addComponent(pswSenha, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(painelLoginLayout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,7 +255,9 @@ public class LoginSuporte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11)
+                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(lblReenviarVerificacao))
                 .addGap(56, 56, 56)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
@@ -313,6 +348,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         }
 
         ApiClient api = new ApiClient();
+        lblReenviarVerificacao.setVisible(false);
         try {
             HttpResponse<String> resposta = api.login(login, senha);
             System.out.println("STATUS: " + resposta.statusCode());
@@ -324,10 +360,10 @@ public class LoginSuporte extends javax.swing.JFrame {
                 ChamadosDisponiveis chamados = new ChamadosDisponiveis(idSuporte);
                 chamados.setVisible(true);
                 this.setVisible(false);
-            }
-            if (resposta.statusCode() == 403) {
+            } else if (resposta.statusCode() == 403) {
 
                 JOptionPane.showMessageDialog(this, "Por favor, valide o seu email.");
+                lblReenviarVerificacao.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "E-mail ou senha inválidos");
             }
@@ -342,6 +378,28 @@ public class LoginSuporte extends javax.swing.JFrame {
         this.setVisible(false);
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void lblReenviarVerificacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReenviarVerificacaoMouseClicked
+        String email = txtLogin.getText().trim();
+
+        if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe seu e-mail.");
+            return;
+        }
+
+        ApiClient api = new ApiClient();
+
+        try {
+            String resposta = api.reenviarEmailVerificacao(email);
+
+            JOptionPane.showMessageDialog(this, resposta);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao solicitar reenvio: " + e.getMessage());
+        }
+    }//GEN-LAST:event_lblReenviarVerificacaoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -383,6 +441,7 @@ public class LoginSuporte extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblReenviarVerificacao;
     private javax.swing.JPanel painelLogin;
     private javax.swing.JPasswordField pswSenha;
     private javax.swing.JTextField txtLogin;
