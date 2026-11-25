@@ -154,6 +154,11 @@ public class LoginSuporte extends javax.swing.JFrame {
         txtLogin.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         txtLogin.setForeground(new java.awt.Color(0, 0, 0));
         txtLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLoginKeyReleased(evt);
+            }
+        });
 
         pswSenha.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         pswSenha.setForeground(new java.awt.Color(0, 0, 0));
@@ -400,6 +405,10 @@ public class LoginSuporte extends javax.swing.JFrame {
                     "Erro ao solicitar reenvio: " + e.getMessage());
         }
     }//GEN-LAST:event_lblReenviarVerificacaoMouseClicked
+
+    private void txtLoginKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLoginKeyReleased
+        monitorarCampoEmail();
+    }//GEN-LAST:event_txtLoginKeyReleased
 
     /**
      * @param args the command line arguments

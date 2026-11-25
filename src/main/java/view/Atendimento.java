@@ -636,7 +636,7 @@ public class Atendimento extends javax.swing.JFrame {
             b.setFocusPainted(false);
             b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
-        jButton2.setEnabled(false);
+        jButton2.setEnabled(true);
         jButton2.setToolTipText("Consulta do perfil do usuário ainda não implementada.");
         txtAreaSolucao.setEditable(false);
         setMinimumSize(new Dimension(980, 720));
@@ -661,7 +661,47 @@ public class Atendimento extends javax.swing.JFrame {
     }
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Consulta de perfil do cliente ainda não implementada no projeto original.
+        try {
+            ApiClient api = new ApiClient();
+
+            String resposta = api.buscarUsuarioDoChamado(idChamado);
+
+            com.google.gson.JsonObject usuario
+                    = com.google.gson.JsonParser.parseString(resposta)
+                            .getAsJsonObject();
+
+            int idUsuario = usuario.get("idUsuario").getAsInt();
+
+            String nome = usuario.get("nome").getAsString();
+            String email = usuario.get("email").getAsString();
+            String telefone = usuario.get("telefone").getAsString();
+            String tipoUsuario = usuario.get("tipoUsuario").getAsString();
+
+            if ("PROFISSIONAL".equalsIgnoreCase(tipoUsuario)) {
+
+                TelaPerfilProfissional tela
+                        = new TelaPerfilProfissional(
+                                idUsuario, nome, email, telefone);
+
+                tela.setVisible(true);
+
+            } else if ("CLIENTE".equalsIgnoreCase(tipoUsuario)) {
+
+                TelaPerfilCliente tela
+                        = new TelaPerfilCliente(
+                                idUsuario, nome, email, telefone);
+
+                tela.setVisible(true);
+
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Tipo de usuário não reconhecido.");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao consultar perfil: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed

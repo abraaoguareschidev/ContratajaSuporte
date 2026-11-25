@@ -44,52 +44,52 @@ public class ApiClient {
 
         return response.body();
     }
-    
+
     public long contarMensagensNaoLidas(int idChamado, int idSuporte) throws Exception {
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(
-                    "http://localhost:8080/mensagens-suporte/chamado/"
-                    + idChamado + "/nao-lidas?idSuporte=" + idSuporte
-            ))
-            .GET()
-            .build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/mensagens-suporte/chamado/"
+                        + idChamado + "/nao-lidas?idSuporte=" + idSuporte
+                ))
+                .GET()
+                .build();
 
-    HttpResponse<String> response = client.send(
-            request, HttpResponse.BodyHandlers.ofString()
-    );
+        HttpResponse<String> response = client.send(
+                request, HttpResponse.BodyHandlers.ofString()
+        );
 
-    if (response.statusCode() != 200) {
-        throw new Exception("Erro ao consultar mensagens não lidas.");
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao consultar mensagens não lidas.");
+        }
+
+        return Long.parseLong(response.body().trim());
     }
 
-    return Long.parseLong(response.body().trim());
-}
-    
     public String reenviarEmailVerificacao(String email) throws Exception {
 
-    String emailCodificado = URLEncoder.encode(
-            email, StandardCharsets.UTF_8
-    );
+        String emailCodificado = URLEncoder.encode(
+                email, StandardCharsets.UTF_8
+        );
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:8080/auth/reenviar-verificacao?email="
-                    + emailCodificado
-            ))
-            .POST(HttpRequest.BodyPublishers.noBody())
-            .build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/auth/reenviar-verificacao?email="
+                        + emailCodificado
+                ))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
 
-    HttpResponse<String> response = client.send(
-            request,
-            HttpResponse.BodyHandlers.ofString()
-    );
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
 
-    if (response.statusCode() != 200) {
-        throw new Exception("Erro ao solicitar reenvio do e-mail.");
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao solicitar reenvio do e-mail.");
+        }
+
+        return response.body();
     }
-
-    return response.body();
-}
 
     public String listarMensagens(int idChamado) throws Exception {
 
@@ -304,6 +304,94 @@ public class ApiClient {
                     + " - " + response.body()
             );
         }
+    }
+
+    public String buscarUsuarioDoChamado(int idChamado) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/chamados/"
+                        + idChamado + "/usuario"
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao consultar usuário do chamado.");
+        }
+
+        return response.body();
+    }
+
+    public String listarContratacoesCliente(int idCliente) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/contratacoes/cliente/" + idCliente
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao consultar contratações do cliente.");
+        }
+
+        return response.body();
+    }
+
+    public String listarContratacoesProfissional(int idProfissional) throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/contratacoes/profissional/" + idProfissional
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao consultar contratações do profissional.");
+        }
+
+        return response.body();
+    }
+
+    public String listarConversas(int idCliente, int idProfissional)
+            throws Exception {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                        "http://localhost:8080/conversas/mensagens"
+                        + "?idCliente=" + idCliente
+                        + "&idProfissional=" + idProfissional
+                ))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            throw new Exception("Erro ao consultar conversa.");
+        }
+
+        return response.body();
     }
 
 }

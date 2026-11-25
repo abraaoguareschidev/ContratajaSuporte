@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2" />
+    <Property name="title" type="java.lang.String" value="ContrataJá Suporte | Consulta de conversa" />
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1" />
+    <SyntheticProperty name="generateCenter" type="boolean" value="true" />
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0" />
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false" />
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true" />
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false" />
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false" />
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1" />
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="3" />
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false" />
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2" />
+  </AuxValues>
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" attributes="0" groupAlignment="0">
+        <Component id="painelPrincipal" attributes="0" max="32767" />
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" attributes="0" groupAlignment="0">
+        <Component id="painelPrincipal" attributes="0" max="32767" />
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="painelPrincipal">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color red="F3" green="F6" blue="FC" type="rgb" />
+        </Property>
+      </Properties>
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" attributes="0" groupAlignment="0">
+            <Component id="painelCabecalho" attributes="0" max="32767" />
+            <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Component id="painelParticipantes" attributes="0" max="32767" />
+                <Component id="painelHistorico" attributes="0" max="32767" />
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+            </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" attributes="0" groupAlignment="0">
+            <Group type="102" attributes="0">
+              <Component id="painelCabecalho" attributes="0" max="-2" min="-2" />
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0" />
+              <Component id="painelParticipantes" attributes="0" max="-2" min="-2" />
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0" />
+              <Component id="painelHistorico" attributes="0" max="32767" />
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+            </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="painelCabecalho">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color red="FF" green="FF" blue="FF" type="rgb" />
+            </Property>
+          </Properties>
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Component id="lblMarca" attributes="0" max="-2" min="-2" pref="165" />
+                    <Component id="lblMarcaSub" attributes="0" max="-2" min="-2" pref="165" />
+                  </Group>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Component id="lblTitulo" attributes="0" max="32767" />
+                    <Component id="lblSubtitulo" attributes="0" max="32767" />
+                  </Group>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+                  <Component id="btnVoltar" attributes="0" max="-2" min="-2" pref="120" />
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Group type="102" attributes="0">
+                      <Component id="lblMarca" attributes="0" max="-2" min="-2" pref="30" />
+                      <Component id="lblMarcaSub" attributes="0" max="-2" min="-2" pref="18" />
+                    </Group>
+                    <Group type="102" attributes="0">
+                      <Component id="lblTitulo" attributes="0" max="-2" min="-2" pref="32" />
+                      <Component id="lblSubtitulo" attributes="0" max="-2" min="-2" pref="20" />
+                    </Group>
+                    <Component id="btnVoltar" attributes="0" max="-2" min="-2" pref="42" />
+                  </Group>
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lblMarca">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="24" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="06" green="4D" blue="C7" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="ContrataJá" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblMarcaSub">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="52" green="67" blue="85" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="SUPORTE" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblTitulo">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="27" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="18" green="24" blue="3C" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Consulta de conversa" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblSubtitulo">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="13" style="0" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="52" green="67" blue="85" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Investigação de atendimento · somente leitura" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnVoltar">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="13" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="24" green="3B" blue="62" type="rgb" />
+                </Property>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="ED" green="F3" blue="FD" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="‹  Voltar" />
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVoltarActionPerformed" />
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="painelParticipantes">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color red="FF" green="FF" blue="FF" type="rgb" />
+            </Property>
+          </Properties>
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Group type="102" attributes="0">
+                      <Component id="lblCliente" attributes="0" max="32767" />
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0" />
+                      <Component id="lblProfissional" attributes="0" max="32767" />
+                    </Group>
+                    <Component id="lblAviso" attributes="0" max="32767" />
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Component id="lblCliente" attributes="0" max="-2" min="-2" pref="26" />
+                    <Component id="lblProfissional" attributes="0" max="-2" min="-2" pref="26" />
+                  </Group>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0" />
+                  <Component id="lblAviso" attributes="0" max="-2" min="-2" pref="22" />
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lblCliente">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="16" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="18" green="24" blue="3C" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Cliente: —" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblProfissional">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="16" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="18" green="24" blue="3C" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Profissional: —" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblAviso">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="0" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="52" green="67" blue="85" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Histórico entre os usuários; não vinculado exclusivamente a um contrato." />
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="painelHistorico">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color red="FF" green="FF" blue="FF" type="rgb" />
+            </Property>
+          </Properties>
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Group type="102" attributes="0">
+                      <Group type="103" attributes="0" groupAlignment="0">
+                        <Component id="lblHistorico" attributes="0" max="32767" />
+                        <Component id="lblQuantidade" attributes="0" max="32767" />
+                      </Group>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0" />
+                      <Component id="btnAtualizar" attributes="0" max="-2" min="-2" pref="110" />
+                    </Group>
+                    <Component id="scrollMensagens" attributes="0" max="32767" min="0" pref="860" />
+                    <Component id="lblEstado" attributes="0" max="32767" />
+                  </Group>
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" attributes="0" groupAlignment="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0" />
+                  <Group type="103" attributes="0" groupAlignment="0">
+                    <Group type="102" attributes="0">
+                      <Component id="lblHistorico" attributes="0" max="-2" min="-2" pref="28" />
+                      <Component id="lblQuantidade" attributes="0" max="-2" min="-2" pref="20" />
+                    </Group>
+                    <Component id="btnAtualizar" attributes="0" max="-2" min="-2" pref="38" />
+                  </Group>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0" />
+                  <Component id="scrollMensagens" attributes="0" max="32767" min="0" pref="420" />
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0" />
+                  <Component id="lblEstado" attributes="0" max="-2" min="-2" pref="22" />
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0" />
+                </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lblHistorico">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="20" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="18" green="24" blue="3C" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Histórico de mensagens" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblQuantidade">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="0" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="52" green="67" blue="85" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Nenhuma consulta iniciada" />
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnAtualizar">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="13" style="1" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="24" green="3B" blue="62" type="rgb" />
+                </Property>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="ED" green="F3" blue="FD" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Atualizar" />
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtualizarActionPerformed" />
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblEstado">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="0" />
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color red="52" green="67" blue="85" type="rgb" />
+                </Property>
+                <Property name="text" type="java.lang.String" value="Selecione uma contratação para consultar." />
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="scrollMensagens">
+              <Properties />
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout" />
+              <SubComponents>
+                <Component class="javax.swing.JEditorPane" name="txtMensagens">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false" />
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color red="F3" green="F6" blue="FC" type="rgb" />
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="14" style="0" />
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="As mensagens serão exibidas aqui." />
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
