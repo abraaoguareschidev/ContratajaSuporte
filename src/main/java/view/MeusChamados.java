@@ -34,6 +34,7 @@ public class MeusChamados extends javax.swing.JFrame {
         this.idSuporte = idSuporte;
 
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         configurarEventos();
         carregarMeusChamados();
@@ -683,19 +684,10 @@ public class MeusChamados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMeuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeuPerfilActionPerformed
-
-        for (Window janela : Window.getWindows()) {
-
-            if (janela instanceof TelaMeuPerfilUsuario && janela.isDisplayable()) {
-
-                janela.setVisible(true);
-                janela.toFront();
-                return;
-            }
-        }
-
         TelaMeuPerfilUsuario tela = new TelaMeuPerfilUsuario(idSuporte);
+        tela.setVeioDeMeusChamados(true);
         tela.setVisible(true);
+        dispose();
 
     }//GEN-LAST:event_btnMeuPerfilActionPerformed
 
@@ -747,23 +739,14 @@ public class MeusChamados extends javax.swing.JFrame {
         );
 
         tela.exibirSolucao(txtSolucao.getText());
+        tela.setVeioDeMeusChamados(true);
         tela.setVisible(true);
-
+        dispose();
     }//GEN-LAST:event_btnVerHistoricoActionPerformed
 
     private void btnChamadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamadosActionPerformed
-        for (Window janela : Window.getWindows()) {
-
-            if (janela instanceof ChamadosDisponiveis && janela.isDisplayable()) {
-
-                janela.setVisible(true);
-                janela.toFront();
-                dispose();
-                return;
-            }
-        }
-
-        new ChamadosDisponiveis(idSuporte).setVisible(true);
+        ChamadosDisponiveis tela = new ChamadosDisponiveis(idSuporte);
+        tela.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnChamadosActionPerformed
 
@@ -1046,7 +1029,10 @@ public class MeusChamados extends javax.swing.JFrame {
                 idSuporte
         );
 
+        tela.setVeioDeMeusChamados(true);
+        tela.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         tela.setVisible(true);
+        dispose();
     }
 
     @Override

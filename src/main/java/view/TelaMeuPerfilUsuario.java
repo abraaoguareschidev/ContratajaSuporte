@@ -5,15 +5,23 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
+
     private int idUsuario;
+    private boolean veioDeMeusChamados = false;
+
+    public void setVeioDeMeusChamados(boolean veioDeMeusChamados) {
+        this.veioDeMeusChamados = veioDeMeusChamados;
+    }
 
     public TelaMeuPerfilUsuario() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
     }
 
     public TelaMeuPerfilUsuario(int idUsuario) {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         this.idUsuario = idUsuario;
         carregarPerfil();
@@ -354,12 +362,20 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        if (veioDeMeusChamados) {
+            new MeusChamados(idUsuario).setVisible(true);
+        } else {
+            new ChamadosDisponiveis(idUsuario).setVisible(true);
+        }
+
         dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void btnAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarSenhaActionPerformed
         TelaAlterarSenha tela = new TelaAlterarSenha(idUsuario);
+        tela.setVeioDeMeusChamados(veioDeMeusChamados);
         tela.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnAlterarSenhaActionPerformed
 
     private void carregarPerfil() {
@@ -389,48 +405,82 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }
 
     private void configurarVisual() {
-        for (JPanel p : new JPanel[]{painelCabecalho,painelIdentidade,painelSeguranca,painelPessoais,painelEndereco}) estilizarPainel(p);
-        for (JButton b : new JButton[]{jButtonCancelar,jButtonSalvar,btnAlterarSenha}) estilizarBotao(b);
-        for (JTextField f : new JTextField[]{jTextFieldNomeUsuario,jTextFieldEmail,jTextFieldTelefone,jFormattedTextFieldCPF,jFormattedTextFieldCEP,jTextFieldCidade,jTextFieldBairro,jTextFieldRua,jTextFieldNumero,jTextFieldComplemento}) estilizarCampo(f);
+        for (JPanel p : new JPanel[]{painelCabecalho, painelIdentidade, painelSeguranca, painelPessoais, painelEndereco}) {
+            estilizarPainel(p);
+        }
+        for (JButton b : new JButton[]{jButtonCancelar, jButtonSalvar, btnAlterarSenha}) {
+            estilizarBotao(b);
+        }
+        for (JTextField f : new JTextField[]{jTextFieldNomeUsuario, jTextFieldEmail, jTextFieldTelefone, jFormattedTextFieldCPF, jFormattedTextFieldCEP, jTextFieldCidade, jTextFieldBairro, jTextFieldRua, jTextFieldNumero, jTextFieldComplemento}) {
+            estilizarCampo(f);
+        }
         lblAvatar.setIcon(new Icon() {
-            public int getIconWidth(){return 112;}
-            public int getIconHeight(){return 112;}
+            public int getIconWidth() {
+                return 112;
+            }
+
+            public int getIconHeight() {
+                return 112;
+            }
+
             public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D p=(Graphics2D)g.create();p.translate(x,y);
-                p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                p.setColor(new Color(0xE0ECFF));p.fillOval(0,0,112,112);
-                p.setColor(new Color(0x0754D8));p.setStroke(new BasicStroke(5f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-                p.drawArc(28,23,56,53,0,180);p.fillRoundRect(24,48,13,25,8,8);p.fillRoundRect(75,48,13,25,8,8);
-                p.drawArc(48,57,31,30,270,90);p.fillRoundRect(48,83,13,6,5,5);p.dispose();
+                Graphics2D p = (Graphics2D) g.create();
+                p.translate(x, y);
+                p.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                p.setColor(new Color(0xE0ECFF));
+                p.fillOval(0, 0, 112, 112);
+                p.setColor(new Color(0x0754D8));
+                p.setStroke(new BasicStroke(5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                p.drawArc(28, 23, 56, 53, 0, 180);
+                p.fillRoundRect(24, 48, 13, 25, 8, 8);
+                p.fillRoundRect(75, 48, 13, 25, 8, 8);
+                p.drawArc(48, 57, 31, 30, 270, 90);
+                p.fillRoundRect(48, 83, 13, 6, 5, 5);
+                p.dispose();
             }
         });
         lblAvatar.setToolTipText("Avatar institucional do suporte ContrataJá");
-        setMinimumSize(new Dimension(850,680));
+        setMinimumSize(new Dimension(850, 680));
         setLocationRelativeTo(null);
     }
 
     private void estilizarBotao(JButton b) {
         b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-            @Override public void paint(Graphics g, JComponent c) {
-                AbstractButton botao = (AbstractButton)c;
-                Graphics2D g2 = (Graphics2D)g.create();
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                AbstractButton botao = (AbstractButton) c;
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 Color bg = botao.isEnabled() ? botao.getBackground() : new Color(0xEDF1F6);
-                if (botao.isEnabled() && botao.getModel().isPressed()) bg = bg.darker();
-                else if (botao.isEnabled() && botao.getModel().isRollover()) bg = bg.darker();
-                g2.setColor(bg); g2.fillRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);
-                g2.setColor(new Color(0xD6E1EF)); g2.drawRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);
-                if (botao.hasFocus()) { g2.setColor(new Color(0x7BA9F8)); g2.drawRoundRect(3,3,c.getWidth()-7,c.getHeight()-7,10,10); }
-                g2.dispose(); super.paint(g,c);
+                if (botao.isEnabled() && botao.getModel().isPressed()) {
+                    bg = bg.darker();
+                } else if (botao.isEnabled() && botao.getModel().isRollover()) {
+                    bg = bg.darker();
+                }
+                g2.setColor(bg);
+                g2.fillRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                g2.setColor(new Color(0xD6E1EF));
+                g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                if (botao.hasFocus()) {
+                    g2.setColor(new Color(0x7BA9F8));
+                    g2.drawRoundRect(3, 3, c.getWidth() - 7, c.getHeight() - 7, 10, 10);
+                }
+                g2.dispose();
+                super.paint(g, c);
             }
         });
-        b.setOpaque(false); b.setContentAreaFilled(false); b.setBorderPainted(false); b.setFocusPainted(false);
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
+
     private void estilizarCampo(JTextField f) {
-        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xD5DFEE)), BorderFactory.createEmptyBorder(0,11,0,9)));
+        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xD5DFEE)), BorderFactory.createEmptyBorder(0, 11, 0, 9)));
         f.setCaretColor(new Color(0x0754D8));
     }
+
     private void estilizarPainel(JPanel p) {
         p.setBorder(BorderFactory.createLineBorder(new Color(0xDFE6F1)));
     }

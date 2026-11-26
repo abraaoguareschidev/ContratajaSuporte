@@ -25,6 +25,7 @@ public class TelaPerfilProfissional extends javax.swing.JFrame {
     // Construtor para o GUI Builder: não consulta a API.
     public TelaPerfilProfissional() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         btnAtualizar.setEnabled(false);
         btnVerOutraParte.setEnabled(false);
@@ -553,6 +554,21 @@ public class TelaPerfilProfissional extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void abrirTela(JFrame tela) {
+
+        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        tela.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                TelaPerfilProfissional.this.setVisible(true);
+            }
+        });
+
+        this.setVisible(false);
+        tela.setVisible(true);
+    }
+
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
@@ -566,10 +582,14 @@ public class TelaPerfilProfissional extends javax.swing.JFrame {
         if (c == null || idOutraParte(c) <= 0) {
             return;
         }
-        new TelaPerfilCliente(idOutraParte(c), texto(c, "nome_cliente")).setVisible(true);
+        TelaPerfilCliente tela = new TelaPerfilCliente(idOutraParte(c), texto(c, "nome_cliente"));
+
+        abrirTela(tela);
     }//GEN-LAST:event_btnVerOutraParteActionPerformed
     private void btnComoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComoClienteActionPerformed
-        new TelaPerfilCliente(idUsuario, nomeUsuario, emailUsuario, telefoneUsuario).setVisible(true);
+        TelaPerfilCliente tela = new TelaPerfilCliente(idUsuario, nomeUsuario, emailUsuario, telefoneUsuario);
+
+        abrirTela(tela);
     }//GEN-LAST:event_btnComoClienteActionPerformed
 
     private void btnConsultarConversaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarConversaActionPerformed
@@ -591,7 +611,7 @@ public class TelaPerfilProfissional extends javax.swing.JFrame {
                 texto(c, "nome_profissional")
         );
 
-        tela.setVisible(true);
+        abrirTela(tela);
     }//GEN-LAST:event_btnConsultarConversaActionPerformed
 
     public static void main(String[] args) {

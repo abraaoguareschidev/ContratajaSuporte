@@ -45,6 +45,7 @@ public class LoginSuporte extends javax.swing.JFrame {
 
     public LoginSuporte() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         lblReenviarVerificacao.setVisible(false);
 
         // Localiza a imagem dentro da pasta resources
@@ -132,7 +133,6 @@ public class LoginSuporte extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         lblReenviarVerificacao = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -191,10 +191,6 @@ public class LoginSuporte extends javax.swing.JFrame {
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/TelaLogin/padlock.png"))); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(21, 89, 214));
-        jLabel11.setText("esqueceu senha?");
-
         lblReenviarVerificacao.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReenviarVerificacao.setForeground(new java.awt.Color(21, 89, 214));
         lblReenviarVerificacao.setText("Reenviar e-mail de verificação");
@@ -215,10 +211,7 @@ public class LoginSuporte extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addComponent(jLabel8)
                         .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(painelLoginLayout.createSequentialGroup()
-                                .addComponent(lblReenviarVerificacao)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel11))
+                            .addComponent(lblReenviarVerificacao, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                             .addComponent(pswSenha, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(painelLoginLayout.createSequentialGroup()
@@ -260,9 +253,7 @@ public class LoginSuporte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(painelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(lblReenviarVerificacao))
+                .addComponent(lblReenviarVerificacao)
                 .addGap(56, 56, 56)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
@@ -380,7 +371,7 @@ public class LoginSuporte extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         TelaCadastro cadastro = new TelaCadastro();
         cadastro.setVisible(true);
-        this.setVisible(false);
+        dispose();
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -441,7 +432,6 @@ public class LoginSuporte extends javax.swing.JFrame {
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

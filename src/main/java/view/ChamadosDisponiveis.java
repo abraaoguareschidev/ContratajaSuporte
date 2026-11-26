@@ -33,6 +33,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
      */
     public ChamadosDisponiveis() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
         filtroChamados = new javax.swing.table.TableRowSorter<>(
@@ -47,6 +48,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
     public ChamadosDisponiveis(int idSuporte) {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
         filtroChamados = new javax.swing.table.TableRowSorter<>(
@@ -759,6 +761,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                     nome, email, telefone, idSuporte);
 
             telaAtendimento.setVisible(true);
+            dispose();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -804,6 +807,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                     );
 
                     telaAtendimento.setVisible(true);
+                    dispose();
                 } else {
 
                     JOptionPane.showMessageDialog(this,
@@ -853,6 +857,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         telaHistorico.exibirSolucao(solucoesChamados.get(idChamado));
 
         telaHistorico.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnConsultarHistoricoActionPerformed
 
 
@@ -865,23 +870,15 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxStatusChamadosActionPerformed
 
     private void btnMeuPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeuPerfilActionPerformed
-        for (Window janela : Window.getWindows()) {
-
-            if (janela instanceof TelaMeuPerfilUsuario && janela.isDisplayable()) {
-
-                janela.setVisible(true);
-                janela.toFront();
-                return;
-            }
-        }
-
         TelaMeuPerfilUsuario tela = new TelaMeuPerfilUsuario(idSuporte);
         tela.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnMeuPerfilActionPerformed
 
     private void btnMeusChamadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeusChamadosActionPerformed
         MeusChamados tela = new MeusChamados(idSuporte);
         tela.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnMeusChamadosActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed

@@ -5,13 +5,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TelaAlterarSenha extends javax.swing.JFrame {
+
     private int idUsuario;
+    private boolean veioDeMeusChamados = false;
+
+    public void setVeioDeMeusChamados(boolean veioDeMeusChamados) {
+        this.veioDeMeusChamados = veioDeMeusChamados;
+    }
+
+    private void voltarAoPerfil() {
+        TelaMeuPerfilUsuario tela = new TelaMeuPerfilUsuario(idUsuario);
+        tela.setVeioDeMeusChamados(veioDeMeusChamados);
+        tela.setVisible(true);
+        dispose();
+    }
+
     public TelaAlterarSenha() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
     }
+
     public TelaAlterarSenha(int idUsuario) {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         this.idUsuario = idUsuario;
     }
@@ -141,29 +158,48 @@ public class TelaAlterarSenha extends javax.swing.JFrame {
             ApiClient api = new ApiClient();
             api.alterarSenha(idUsuario, senhaAtual, novaSenha);
             JOptionPane.showMessageDialog(this, "Senha alterada com sucesso!");
-            dispose();
+            voltarAoPerfil();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao alterar senha: " + e.getMessage());
         }
     }//GEN-LAST:event_SalvarSenhaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        dispose();
+        voltarAoPerfil();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void configurarVisual() {
-        estilizarPainel(painelCabecalho);estilizarPainel(painelSenha);
-        estilizarBotao(SalvarSenha);estilizarBotao(btnCancelar);
-        for (JPasswordField f : new JPasswordField[]{txtSenhaAtual,txtNovaSenha,txtConfirmarSenha}) estilizarCampo(f);
-        lblCadeado.setIcon(new Icon(){
-            public int getIconWidth(){return 56;}
-            public int getIconHeight(){return 56;}
-            public void paintIcon(Component c,Graphics g,int x,int y){
-                Graphics2D p=(Graphics2D)g.create();p.translate(x,y);
-                p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                p.setColor(new Color(0xE0ECFF));p.fillRoundRect(0,0,56,56,16,16);
-                p.setColor(new Color(0x0754D8));p.setStroke(new BasicStroke(3f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-                p.drawRoundRect(16,25,24,20,5,5);p.drawArc(20,13,16,20,0,180);p.drawLine(20,23,20,25);p.drawLine(36,23,36,25);p.fillOval(26,31,4,4);p.drawLine(28,34,28,38);p.dispose();
+        estilizarPainel(painelCabecalho);
+        estilizarPainel(painelSenha);
+        estilizarBotao(SalvarSenha);
+        estilizarBotao(btnCancelar);
+        for (JPasswordField f : new JPasswordField[]{txtSenhaAtual, txtNovaSenha, txtConfirmarSenha}) {
+            estilizarCampo(f);
+        }
+        lblCadeado.setIcon(new Icon() {
+            public int getIconWidth() {
+                return 56;
+            }
+
+            public int getIconHeight() {
+                return 56;
+            }
+
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+                Graphics2D p = (Graphics2D) g.create();
+                p.translate(x, y);
+                p.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                p.setColor(new Color(0xE0ECFF));
+                p.fillRoundRect(0, 0, 56, 56, 16, 16);
+                p.setColor(new Color(0x0754D8));
+                p.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                p.drawRoundRect(16, 25, 24, 20, 5, 5);
+                p.drawArc(20, 13, 16, 20, 0, 180);
+                p.drawLine(20, 23, 20, 25);
+                p.drawLine(36, 23, 36, 25);
+                p.fillOval(26, 31, 4, 4);
+                p.drawLine(28, 34, 28, 38);
+                p.dispose();
             }
         });
         getRootPane().setDefaultButton(SalvarSenha);
@@ -172,26 +208,41 @@ public class TelaAlterarSenha extends javax.swing.JFrame {
 
     private void estilizarBotao(JButton b) {
         b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-            @Override public void paint(Graphics g, JComponent c) {
-                AbstractButton botao = (AbstractButton)c;
-                Graphics2D g2 = (Graphics2D)g.create();
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                AbstractButton botao = (AbstractButton) c;
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 Color bg = botao.isEnabled() ? botao.getBackground() : new Color(0xEDF1F6);
-                if (botao.isEnabled() && botao.getModel().isPressed()) bg = bg.darker();
-                else if (botao.isEnabled() && botao.getModel().isRollover()) bg = bg.darker();
-                g2.setColor(bg); g2.fillRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);
-                g2.setColor(new Color(0xD6E1EF)); g2.drawRoundRect(0,0,c.getWidth()-1,c.getHeight()-1,14,14);
-                if (botao.hasFocus()) { g2.setColor(new Color(0x7BA9F8)); g2.drawRoundRect(3,3,c.getWidth()-7,c.getHeight()-7,10,10); }
-                g2.dispose(); super.paint(g,c);
+                if (botao.isEnabled() && botao.getModel().isPressed()) {
+                    bg = bg.darker();
+                } else if (botao.isEnabled() && botao.getModel().isRollover()) {
+                    bg = bg.darker();
+                }
+                g2.setColor(bg);
+                g2.fillRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                g2.setColor(new Color(0xD6E1EF));
+                g2.drawRoundRect(0, 0, c.getWidth() - 1, c.getHeight() - 1, 14, 14);
+                if (botao.hasFocus()) {
+                    g2.setColor(new Color(0x7BA9F8));
+                    g2.drawRoundRect(3, 3, c.getWidth() - 7, c.getHeight() - 7, 10, 10);
+                }
+                g2.dispose();
+                super.paint(g, c);
             }
         });
-        b.setOpaque(false); b.setContentAreaFilled(false); b.setBorderPainted(false); b.setFocusPainted(false);
+        b.setOpaque(false);
+        b.setContentAreaFilled(false);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
+
     private void estilizarCampo(JTextField f) {
-        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xD5DFEE)), BorderFactory.createEmptyBorder(0,11,0,9)));
+        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0xD5DFEE)), BorderFactory.createEmptyBorder(0, 11, 0, 9)));
         f.setCaretColor(new Color(0x0754D8));
     }
+
     private void estilizarPainel(JPanel p) {
         p.setBorder(BorderFactory.createLineBorder(new Color(0xDFE6F1)));
     }

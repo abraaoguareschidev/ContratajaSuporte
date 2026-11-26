@@ -46,6 +46,16 @@ public class TelaCadastro extends javax.swing.JFrame {
      */
     public TelaCadastro() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new LoginSuporte().setVisible(true);
+                dispose();
+            }
+        });
         fmtCEP.addFocusListener(new java.awt.event.FocusAdapter() {
 
             @Override
@@ -670,7 +680,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         // Se algum estiver vazio, para aqui.
         if (!valido) {
-            JOptionPane.showMessageDialog(this,"Os campos em vermelho são obrigatórios.");
+            JOptionPane.showMessageDialog(this, "Os campos em vermelho são obrigatórios.");
             return;
         }
 
@@ -689,7 +699,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         String senha = new String(pswSenha.getPassword());
         String confirmarSenha = new String(pswCfSenha.getPassword());
 
-        // ===== DATA DE NASCIMENTO =====
+        // DATA DE NASCIMENTO 
         String dataNascTexto = fmtDataNasc.getText();
         DateTimeFormatter formatoData
                 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -718,7 +728,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        // ===== CPF =====
+        //  CPF 
         if (!validarCPF(cpf)) {
             fmtCPF.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(this, "CPF inválido.");
@@ -755,26 +765,26 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         try {
 
-            HttpResponse<String> resposta = api.cadastrarSuporte(nome,cpf,email,telefone,senha,dataNasc,rua,numero,complemento,bairro,cidade,estado,cep);
+            HttpResponse<String> resposta = api.cadastrarSuporte(nome, cpf, email, telefone, senha, dataNasc, rua, numero, complemento, bairro, cidade, estado, cep);
 
             if (resposta.statusCode() == 200 || resposta.statusCode() == 201) {
 
-                JOptionPane.showMessageDialog(this,"Cadastro realizado com sucesso!");
+                JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
                 LoginSuporte login = new LoginSuporte();
-                this.setVisible(false);
                 login.setVisible(true);
+                dispose();
 
             } else {
                 JsonObject erro = JsonParser.parseString(resposta.body()).getAsJsonObject();
 
                 String mensagem = erro.get("mensagem").getAsString();
 
-                JOptionPane.showMessageDialog(this,mensagem);
+                JOptionPane.showMessageDialog(this, mensagem);
             }
 
         } catch (Exception e) {
 
-            JOptionPane.showMessageDialog(this,"Não foi possível conectar com a API.");
+            JOptionPane.showMessageDialog(this, "Não foi possível conectar com a API.");
         }
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -921,7 +931,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                     if (endereco.has("erro")
                             && endereco.get("erro").getAsBoolean()) {
 
-                        JOptionPane.showMessageDialog(TelaCadastro.this,"CEP não encontrado.");
+                        JOptionPane.showMessageDialog(TelaCadastro.this, "CEP não encontrado.");
 
                         return;
                     }

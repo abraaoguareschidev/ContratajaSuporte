@@ -25,6 +25,7 @@ public class TelaPerfilCliente extends javax.swing.JFrame {
     // Construtor para o GUI Builder: não consulta a API.
     public TelaPerfilCliente() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         btnAtualizar.setEnabled(false);
         btnVerOutraParte.setEnabled(false);
@@ -539,7 +540,20 @@ public class TelaPerfilCliente extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    private void abrirTela(JFrame tela) {
 
+        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        tela.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                TelaPerfilCliente.this.setVisible(true);
+            }
+        });
+
+        this.setVisible(false);
+        tela.setVisible(true);
+    }
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
@@ -553,7 +567,10 @@ public class TelaPerfilCliente extends javax.swing.JFrame {
         if (c == null || idOutraParte(c) <= 0) {
             return;
         }
-        new TelaPerfilProfissional(idOutraParte(c), texto(c, "nome_profissional")).setVisible(true);
+        TelaPerfilProfissional tela = new TelaPerfilProfissional(
+                idOutraParte(c), texto(c, "nome_profissional"));
+
+        abrirTela(tela);
     }//GEN-LAST:event_btnVerOutraParteActionPerformed
 
     private void btnConsultarConversaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarConversaActionPerformed
@@ -575,7 +592,7 @@ public class TelaPerfilCliente extends javax.swing.JFrame {
                 texto(c, "nome_profissional")
         );
 
-        tela.setVisible(true);
+        abrirTela(tela);
     }//GEN-LAST:event_btnConsultarConversaActionPerformed
 
     public static void main(String[] args) {

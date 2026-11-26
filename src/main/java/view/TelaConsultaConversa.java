@@ -25,6 +25,7 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
     // Construtor para o Design do NetBeans, sem acesso à API.
     public TelaConsultaConversa() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         btnAtualizar.setEnabled(false);
     }

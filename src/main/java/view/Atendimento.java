@@ -11,6 +11,7 @@ import java.awt.*;
 public class Atendimento extends javax.swing.JFrame {
 
     private int idSuporte;
+    private boolean veioDeMeusChamados = false;
     private int idChamado;
     private boolean modoHistorico = false;
     private String assunto, descricao, data, status, nome;
@@ -18,8 +19,13 @@ public class Atendimento extends javax.swing.JFrame {
     private final java.util.List<JLabel> indicadoresLeitura = new java.util.ArrayList<>();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Atendimento.class.getName());
 
+    public void setVeioDeMeusChamados(boolean veioDeMeusChamados) {
+        this.veioDeMeusChamados = veioDeMeusChamados;
+    }
+
     public Atendimento() {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         btnEnviar.setEnabled(false);
         btnEncerrarChamado.setEnabled(false);
@@ -35,6 +41,7 @@ public class Atendimento extends javax.swing.JFrame {
     public Atendimento(int idChamado, String assunto, String descricao, String data, String status,
             String nome, String email, String telefone, int idSuporte, boolean modoHistorico) {
         initComponents();
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         this.idChamado = idChamado;
         this.idSuporte = idSuporte;
@@ -660,6 +667,21 @@ public class Atendimento extends javax.swing.JFrame {
         }
     }
 
+    private void abrirPerfil(JFrame tela) {
+
+        tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        tela.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                Atendimento.this.setVisible(true);
+            }
+        });
+
+        this.setVisible(false);
+        tela.setVisible(true);
+    }
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             ApiClient api = new ApiClient();
@@ -679,11 +701,9 @@ public class Atendimento extends javax.swing.JFrame {
 
             if ("PROFISSIONAL".equalsIgnoreCase(tipoUsuario)) {
 
-                TelaPerfilProfissional tela
-                        = new TelaPerfilProfissional(
-                                idUsuario, nome, email, telefone);
+                TelaPerfilProfissional tela = new TelaPerfilProfissional(idUsuario, nome, email, telefone);
 
-                tela.setVisible(true);
+                abrirPerfil(tela);
 
             } else if ("CLIENTE".equalsIgnoreCase(tipoUsuario)) {
 
@@ -691,7 +711,7 @@ public class Atendimento extends javax.swing.JFrame {
                         = new TelaPerfilCliente(
                                 idUsuario, nome, email, telefone);
 
-                tela.setVisible(true);
+                abrirPerfil(tela);
 
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -748,6 +768,12 @@ public class Atendimento extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEncerrarChamadoActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        if (veioDeMeusChamados) {
+            new MeusChamados(idSuporte).setVisible(true);
+        } else {
+            new ChamadosDisponiveis(idSuporte).setVisible(true);
+        }
+
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
