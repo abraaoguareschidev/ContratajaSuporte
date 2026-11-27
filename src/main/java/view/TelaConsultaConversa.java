@@ -70,7 +70,9 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
             lblEstado.setText("Identificação dos participantes inválida.");
             return;
         }
-        if (consulta != null && !consulta.isDone()) return;
+        if (consulta != null && !consulta.isDone()) {
+            return;
+        }
         btnAtualizar.setEnabled(false);
         lblEstado.setText("Consultando a API...");
         lblQuantidade.setText("Carregando...");
@@ -84,7 +86,9 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
 
             @Override
             protected void done() {
-                if (!isDisplayable() || isCancelled()) return;
+                if (!isDisplayable() || isCancelled()) {
+                    return;
+                }
                 try {
                     JsonArray mensagens = get();
                     exibirMensagens(mensagens);
@@ -120,7 +124,9 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
             String fundo = cliente ? "#FFFFFF" : "#E0ECFF";
             String papel = cliente ? "Cliente" : "Profissional";
             pagina.append("<table width='100%' cellspacing='0' cellpadding='0'><tr>");
-            if (!cliente) pagina.append("<td width='23%'>&nbsp;</td>");
+            if (!cliente) {
+                pagina.append("<td width='23%'>&nbsp;</td>");
+            }
             pagina.append("<td width='77%'><table width='100%' cellspacing='0' cellpadding='10' bgcolor='")
                     .append(fundo).append("'><tr><td>")
                     .append("<font color='#064DC7'><b>").append(html(texto(m, "nome_remetente")))
@@ -131,7 +137,9 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
                     .append(" · Conversa #").append(html(texto(m, "id_conversa")))
                     .append(" · Mensagem #").append(html(texto(m, "id_mensagem")))
                     .append("</font></td></tr></table></td>");
-            if (cliente) pagina.append("<td width='23%'>&nbsp;</td>");
+            if (cliente) {
+                pagina.append("<td width='23%'>&nbsp;</td>");
+            }
             pagina.append("</tr></table><br>");
         }
         pagina.append("</body></html>");
@@ -150,15 +158,25 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
     }
 
     private static String data(String s) {
+        DateTimeFormatter formato
+                = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         try {
-            return Instant.parse(s).atZone(ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        } catch (Exception e) { return s; }
+            return java.time.LocalDateTime.parse(s).format(formato);
+        } catch (Exception e) {
+            try {
+                return Instant.parse(s).atZone(ZoneId.systemDefault()).format(formato);
+            } catch (Exception ex) {
+                return s;
+            }
+        }
     }
 
     @Override
     public void dispose() {
-        if (consulta != null) consulta.cancel(true);
+        if (consulta != null) {
+            consulta.cancel(true);
+        }
         super.dispose();
     }
 

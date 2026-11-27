@@ -15,12 +15,14 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
 
     public TelaMeuPerfilUsuario() {
         initComponents();
+        jDateChooserDataNasc.setEnabled(false);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
     }
 
     public TelaMeuPerfilUsuario(int idUsuario) {
         initComponents();
+        jDateChooserDataNasc.setEnabled(false);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         this.idUsuario = idUsuario;
@@ -342,9 +344,6 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
             dados.addProperty("nome", jTextFieldNomeUsuario.getText().trim());
             dados.addProperty("email", jTextFieldEmail.getText().trim());
             dados.addProperty("telefone", jTextFieldTelefone.getText().trim());
-            java.util.Date dataNascimento = jDateChooserDataNasc.getDate();
-            String dataFormatada = dataNascimento == null ? null : new java.text.SimpleDateFormat("yyyy-MM-dd").format(dataNascimento);
-            dados.addProperty("dataNasc", dataFormatada);
             dados.addProperty("cep", jFormattedTextFieldCEP.getText().trim());
             String estado = (String) jComboBoxEstado.getSelectedItem();
             dados.addProperty("estado", "UF".equals(estado) ? null : estado);

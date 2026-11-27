@@ -216,7 +216,13 @@ public class TelaPerfilCliente extends javax.swing.JFrame {
         String s = texto(c, chave);
         try {
             if (hora) {
-                return Instant.parse(s).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+                try {
+                    return LocalDateTime.parse(s).format(formato);
+                } catch (Exception e) {
+                    return Instant.parse(s).atZone(ZoneId.systemDefault()).format(formato);
+                }
             }
             return LocalDate.parse(s.substring(0, 10)).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         } catch (Exception e) {

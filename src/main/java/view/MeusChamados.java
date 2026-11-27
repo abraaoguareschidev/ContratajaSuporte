@@ -1092,14 +1092,13 @@ public class MeusChamados extends javax.swing.JFrame {
 
                 JsonObject usuario = chamado.getAsJsonObject("usuario");
 
-                modelo.addRow(new Object[]{
-                    chamado.get("idChamado").getAsInt(),
-                    chamado.get("assunto").getAsString(),
-                    usuario.get("nome").getAsString(),
-                    chamado.get("dataAbertura").getAsString(),
-                    chamado.get("status").getAsString(),
-                    mensagensNaoLidas
-                });
+                String dataOriginal = chamado.get("dataAbertura").getAsString();
+
+                java.time.LocalDateTime dataHora = java.time.LocalDateTime.parse(dataOriginal);
+
+                String data = dataHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+                modelo.addRow(new Object[]{chamado.get("idChamado").getAsInt(),chamado.get("assunto").getAsString(),usuario.get("nome").getAsString(),data,chamado.get("status").getAsString(),mensagensNaoLidas});
             }
 
             atualizarIndicadores();
