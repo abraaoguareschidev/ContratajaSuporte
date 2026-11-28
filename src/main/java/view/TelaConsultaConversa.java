@@ -107,8 +107,7 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
     }
 
     private void exibirAviso(String mensagem) {
-        txtMensagens.setText("<html><body style='background-color:#F3F6FC;font-family:Segoe UI;padding:20px;color:#526785;'>"
-                + html(mensagem) + "</body></html>");
+        txtMensagens.setText("<html><body style='background-color:#F3F6FC;font-family:Segoe UI;padding:20px;color:#526785;'>"+ html(mensagem) + "</body></html>");
         txtMensagens.setCaretPosition(0);
     }
 
@@ -158,8 +157,7 @@ public class TelaConsultaConversa extends javax.swing.JFrame {
     }
 
     private static String data(String s) {
-        DateTimeFormatter formato
-                = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         try {
             return java.time.LocalDateTime.parse(s).format(formato);

@@ -24,22 +24,12 @@ public class ApiClient {
 
     public String listarMeusChamados(int idSuporte) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/chamados/suporte/" + idSuporte
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/chamados/suporte/" + idSuporte)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException(
-                    "Erro ao listar meus chamados: " + response.statusCode()
-            );
+            throw new RuntimeException("Erro ao listar meus chamados: " + response.statusCode());
         }
 
         return response.body();
@@ -48,16 +38,9 @@ public class ApiClient {
     public long contarMensagensNaoLidas(int idChamado, int idSuporte) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/mensagens-suporte/chamado/"
-                        + idChamado + "/nao-lidas?idSuporte=" + idSuporte
-                ))
-                .GET()
-                .build();
+                .uri(URI.create("http://localhost:8080/mensagens-suporte/chamado/"+ idChamado + "/nao-lidas?idSuporte=" + idSuporte)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request, HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao consultar mensagens não lidas.");
@@ -68,21 +51,11 @@ public class ApiClient {
 
     public String reenviarEmailVerificacao(String email) throws Exception {
 
-        String emailCodificado = URLEncoder.encode(
-                email, StandardCharsets.UTF_8
-        );
+        String emailCodificado = URLEncoder.encode(email, StandardCharsets.UTF_8);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/auth/reenviar-verificacao?email="
-                        + emailCodificado
-                ))
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/auth/reenviar-verificacao?email="+ emailCodificado)).POST(HttpRequest.BodyPublishers.noBody()).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao solicitar reenvio do e-mail.");
@@ -93,10 +66,7 @@ public class ApiClient {
 
     public String listarMensagens(int idChamado) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/mensagens-suporte/chamado/" + idChamado))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/mensagens-suporte/chamado/" + idChamado)).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -110,16 +80,10 @@ public class ApiClient {
                         "http://localhost:8080/mensagens-suporte/chamado/"
                         + idChamado + "/lidas?idUsuario=" + idUsuario)).PUT(HttpRequest.BodyPublishers.noBody()).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new RuntimeException(
-                    "Erro ao marcar mensagens como lidas: "
-                    + response.statusCode()
-            );
+            throw new RuntimeException("Erro ao marcar mensagens como lidas: "+ response.statusCode());
         }
     }
 
@@ -128,24 +92,12 @@ public class ApiClient {
         JsonObject json = new JsonObject();
         json.addProperty("solucao", solucao);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/chamados/"
-                        + idChamado + "/encerrar"
-                ))
-                .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json.toString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/chamados/"+ idChamado + "/encerrar")).header("Content-Type", "application/json").PUT(HttpRequest.BodyPublishers.ofString(json.toString())).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new RuntimeException(
-                    "Erro ao encerrar chamado: " + response.statusCode()
-            );
+            throw new RuntimeException("Erro ao encerrar chamado: " + response.statusCode());
         }
     }
 
@@ -176,15 +128,9 @@ public class ApiClient {
         json.addProperty("cep", cep);
 
         // monto a requisição
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/usuarios/suporte"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/usuarios/suporte")).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(json.toString())).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         return response;
     }
@@ -205,121 +151,60 @@ public class ApiClient {
 
     public void assumirChamado(int idChamado, int idSuporte) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/chamados/"
-                        + idChamado + "/assumir?idSuporte=" + idSuporte
-                ))
-                .PUT(HttpRequest.BodyPublishers.noBody())
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/chamados/"+ idChamado + "/assumir?idSuporte=" + idSuporte)).PUT(HttpRequest.BodyPublishers.noBody()).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new RuntimeException(
-                    "Erro ao assumir chamado: " + response.statusCode()
-            );
+            throw new RuntimeException("Erro ao assumir chamado: " + response.statusCode());
         }
     }
 
     public String buscarPerfilSuporte(int idUsuario) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/usuarios/suporte/" + idUsuario
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/usuarios/suporte/" + idUsuario)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException(
-                    "Erro ao buscar perfil: " + response.statusCode()
-            );
+            throw new RuntimeException("Erro ao buscar perfil: " + response.statusCode());
         }
 
         return response.body();
     }
 
-    public void atualizarPerfilSuporte(
-            int idUsuario, JsonObject dados) throws Exception {
+    public void atualizarPerfilSuporte(int idUsuario, JsonObject dados) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/usuarios/suporte/" + idUsuario
-                ))
-                .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/usuarios/suporte/" + idUsuario)).header("Content-Type", "application/json").PUT(HttpRequest.BodyPublishers.ofString(dados.toString())).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 204) {
-            throw new RuntimeException(
-                    "Erro ao atualizar perfil: "
-                    + response.statusCode()
-                    + " - " + response.body()
-            );
+            throw new RuntimeException("Erro ao atualizar perfil: "+ response.statusCode()+ " - " + response.body());
         }
     }
 
-    public void alterarSenha(
-            int idUsuario,
-            String senhaAtual,
-            String novaSenha) throws Exception {
+    public void alterarSenha(int idUsuario,String senhaAtual,String novaSenha) throws Exception {
 
         JsonObject dados = new JsonObject();
 
         dados.addProperty("senhaAtual", senhaAtual);
         dados.addProperty("novaSenha", novaSenha);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/usuarios/suporte/"
-                        + idUsuario + "/senha"
-                ))
-                .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(dados.toString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/usuarios/suporte/"+ idUsuario + "/senha")).header("Content-Type", "application/json").PUT(HttpRequest.BodyPublishers.ofString(dados.toString())).build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 204) {
-            throw new RuntimeException(
-                    "Erro ao alterar senha: "
-                    + response.statusCode()
-                    + " - " + response.body()
-            );
+            throw new RuntimeException("Erro ao alterar senha: "+ response.statusCode()+ " - " + response.body());
         }
     }
 
     public String buscarUsuarioDoChamado(int idChamado) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/chamados/"
-                        + idChamado + "/usuario"
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/chamados/"+ idChamado + "/usuario")).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao consultar usuário do chamado.");
@@ -330,17 +215,9 @@ public class ApiClient {
 
     public String listarContratacoesCliente(int idCliente) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/contratacoes/cliente/" + idCliente
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/contratacoes/cliente/" + idCliente)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao consultar contratações do cliente.");
@@ -351,17 +228,9 @@ public class ApiClient {
 
     public String listarContratacoesProfissional(int idProfissional) throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/contratacoes/profissional/" + idProfissional
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/contratacoes/profissional/" + idProfissional)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao consultar contratações do profissional.");
@@ -373,19 +242,9 @@ public class ApiClient {
     public String listarConversas(int idCliente, int idProfissional)
             throws Exception {
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "http://localhost:8080/conversas/mensagens"
-                        + "?idCliente=" + idCliente
-                        + "&idProfissional=" + idProfissional
-                ))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/conversas/mensagens"+ "?idCliente=" + idCliente+ "&idProfissional=" + idProfissional)).GET().build();
 
-        HttpResponse<String> response = client.send(
-                request,
-                HttpResponse.BodyHandlers.ofString()
-        );
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new Exception("Erro ao consultar conversa.");

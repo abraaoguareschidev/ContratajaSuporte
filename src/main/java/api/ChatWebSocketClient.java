@@ -39,10 +39,7 @@ public class ChatWebSocketClient extends WebSocketClient {
 
         iniciandoReconexao = false;
 
-        String comando = "CONNECT\n"
-                + "accept-version:1.2\n"
-                + "host:localhost\n\n"
-                + "\u0000";
+        String comando = "CONNECT\n"+ "accept-version:1.2\n"+ "host:localhost\n\n"+ "\u0000";
 
         send(comando);
     }
@@ -65,15 +62,12 @@ public class ChatWebSocketClient extends WebSocketClient {
                 return;
             }
 
-            String corpo = mensagem.substring(inicioCorpo + 2)
-                    .replace("\u0000", "").trim();
+            String corpo = mensagem.substring(inicioCorpo + 2).replace("\u0000", "").trim();
 
             // Verifica se é um aviso de leitura
             if (mensagem.contains("destination:/topic/chamado/" + idChamado + "/leitura")) {
 
-                com.google.gson.JsonObject aviso
-                        = com.google.gson.JsonParser.parseString(corpo)
-                                .getAsJsonObject();
+                com.google.gson.JsonObject aviso = com.google.gson.JsonParser.parseString(corpo).getAsJsonObject();
 
                 int idUsuario = aviso.get("idUsuario").getAsInt();
 
@@ -100,18 +94,12 @@ public class ChatWebSocketClient extends WebSocketClient {
     private void inscreverNoChamado() {
 
         // Inscrição para receber mensagens da conversa
-        String comando = "SUBSCRIBE\n"
-                + "id:chamado-" + idChamado + "\n"
-                + "destination:/topic/chamado/" + idChamado + "\n\n"
-                + "\u0000";
+        String comando = "SUBSCRIBE\n"+ "id:chamado-" + idChamado + "\n"+ "destination:/topic/chamado/" + idChamado + "\n\n"+ "\u0000";
 
         send(comando);
 
         // Inscrição para receber avisos de leitura
-        String comandoLeitura = "SUBSCRIBE\n"
-                + "id:leitura-" + idChamado + "\n"
-                + "destination:/topic/chamado/" + idChamado + "/leitura\n\n"
-                + "\u0000";
+        String comandoLeitura = "SUBSCRIBE\n"+ "id:leitura-" + idChamado + "\n"+ "destination:/topic/chamado/" + idChamado + "/leitura\n\n"+ "\u0000";
 
         send(comandoLeitura);
 
@@ -146,11 +134,7 @@ public class ChatWebSocketClient extends WebSocketClient {
         json.addProperty("idRemetente", idRemetente);
         json.addProperty("conteudo", conteudo);
 
-        String comando = "SEND\n"
-                + "destination:/app/chamado/" + idChamado + "\n"
-                + "content-type:application/json\n\n"
-                + json.toString()
-                + "\u0000";
+        String comando = "SEND\n"+ "destination:/app/chamado/" + idChamado + "\n"+ "content-type:application/json\n\n"+ json.toString()+ "\u0000";
 
         send(comando);
     }

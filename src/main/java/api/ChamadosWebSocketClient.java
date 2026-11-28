@@ -23,10 +23,7 @@ public class ChamadosWebSocketClient extends WebSocketClient{
     @Override
     public void onOpen(ServerHandshake handshake) {
 
-        String comando = "CONNECT\n"
-                + "accept-version:1.2\n"
-                + "host:localhost\n\n"
-                + "\u0000";
+        String comando = "CONNECT\n"+ "accept-version:1.2\n"+ "host:localhost\n\n"+ "\u0000";
 
         send(comando);
     }
@@ -36,10 +33,7 @@ public class ChamadosWebSocketClient extends WebSocketClient{
 
         if (mensagem.startsWith("CONNECTED")) {
 
-            String comando = "SUBSCRIBE\n"
-                    + "id:atualizacao-chamados\n"
-                    + "destination:/topic/chamados\n\n"
-                    + "\u0000";
+            String comando = "SUBSCRIBE\n"+ "id:atualizacao-chamados\n"+ "destination:/topic/chamados\n\n"+ "\u0000";
 
             send(comando);
             return;
@@ -53,8 +47,7 @@ public class ChamadosWebSocketClient extends WebSocketClient{
                 return;
             }
 
-            String corpo = mensagem.substring(inicioCorpo + 2)
-                    .replace("\u0000", "").trim();
+            String corpo = mensagem.substring(inicioCorpo + 2).replace("\u0000", "").trim();
 
             if (aoReceberAtualizacao != null) {
                 aoReceberAtualizacao.accept(corpo);

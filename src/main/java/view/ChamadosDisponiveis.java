@@ -36,9 +36,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
-        filtroChamados = new javax.swing.table.TableRowSorter<>(
-                (javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel()
-        );
+        filtroChamados = new javax.swing.table.TableRowSorter<>((javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel());
 
         TableChamadosDisponiveis.setRowSorter(filtroChamados);
         carregarChamados();
@@ -51,9 +49,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
         TableChamadosDisponiveis.setDefaultEditor(Object.class, null);
-        filtroChamados = new javax.swing.table.TableRowSorter<>(
-                (javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel()
-        );
+        filtroChamados = new javax.swing.table.TableRowSorter<>((javax.swing.table.DefaultTableModel) TableChamadosDisponiveis.getModel());
 
         TableChamadosDisponiveis.setRowSorter(filtroChamados);
         this.idSuporte = idSuporte;
@@ -764,8 +760,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Não foi possível assumir o chamado: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,"Não foi possível assumir o chamado: " + e.getMessage());
         }
 
     }//GEN-LAST:event_jButtonAtenderActionPerformed
@@ -801,17 +796,13 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                     String email = emailUsuario.get(idChamado);
                     String telefone = telefoneUsuario.get(idChamado);
 
-                    Atendimento telaAtendimento = new Atendimento(
-                            idChamado, assunto, descricao, data, status,
-                            nome, email, telefone, idSuporte
-                    );
+                    Atendimento telaAtendimento = new Atendimento(idChamado, assunto, descricao, data, status,nome, email, telefone, idSuporte);
 
                     telaAtendimento.setVisible(true);
                     dispose();
                 } else {
 
-                    JOptionPane.showMessageDialog(this,
-                            "Este chamado já está em atendimento por outro suporte.");
+                    JOptionPane.showMessageDialog(this,"Este chamado já está em atendimento por outro suporte.");
 
                 }
             }
@@ -822,24 +813,17 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         int linha = TableChamadosDisponiveis.getSelectedRow();
 
         if (linha == -1) {
-            JOptionPane.showMessageDialog(this,
-                    "Selecione um chamado para consultar.");
+            JOptionPane.showMessageDialog(this,"Selecione um chamado para consultar.");
             return;
         }
 
-        String status = TableChamadosDisponiveis
-                .getValueAt(linha, 5).toString();
+        String status = TableChamadosDisponiveis.getValueAt(linha, 5).toString();
 
         if (!"fechado".equalsIgnoreCase(status)) {
-            JOptionPane.showMessageDialog(this,
-                    "O histórico está disponível apenas para chamados encerrados.",
-                    "Consulta de histórico",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"O histórico está disponível apenas para chamados encerrados.","Consulta de histórico",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        int idChamado = Integer.parseInt(
-                TableChamadosDisponiveis.getValueAt(linha, 0).toString()
-        );
+        int idChamado = Integer.parseInt(TableChamadosDisponiveis.getValueAt(linha, 0).toString());
 
         String assunto = TableChamadosDisponiveis.getValueAt(linha, 1).toString();
         String nome = TableChamadosDisponiveis.getValueAt(linha, 2).toString();
@@ -849,10 +833,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         String email = emailUsuario.get(idChamado);
         String telefone = telefoneUsuario.get(idChamado);
 
-        Atendimento telaHistorico = new Atendimento(
-                idChamado, assunto, descricao, data, status,
-                nome, email, telefone, idSuporte, true
-        );
+        Atendimento telaHistorico = new Atendimento(idChamado, assunto, descricao, data, status,nome, email, telefone, idSuporte, true);
 
         telaHistorico.exibirSolucao(solucoesChamados.get(idChamado));
 
@@ -904,10 +885,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
         // Filtro de pesquisa
         if (!texto.isEmpty()) {
-            filtros.add(javax.swing.RowFilter.regexFilter(
-                    "(?i)" + java.util.regex.Pattern.quote(texto)
-            ));
-        }
+            filtros.add(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(texto)));}
 
         // Filtro por status
         String statusBanco = null;
@@ -921,17 +899,14 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         }
 
         if (statusBanco != null) {
-            filtros.add(javax.swing.RowFilter.regexFilter(
-                    "^" + statusBanco + "$", 5
-            ));
+            filtros.add(javax.swing.RowFilter.regexFilter("^" + statusBanco + "$", 5));
         }
 
         if (filtroChamados == null) {
             return;
         }
         filtroChamados.setRowFilter(
-                filtros.isEmpty() ? null : javax.swing.RowFilter.andFilter(filtros)
-        );
+                filtros.isEmpty() ? null : javax.swing.RowFilter.andFilter(filtros));
         atualizarDetalhesChamado();
     }
 
@@ -941,10 +916,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
         Integer idSelecionado = null;
 
         if (linhaSelecionada != -1) {
-            idSelecionado = Integer.parseInt(
-                    TableChamadosDisponiveis
-                            .getValueAt(linhaSelecionada, 0).toString()
-            );
+            idSelecionado = Integer.parseInt(TableChamadosDisponiveis.getValueAt(linhaSelecionada, 0).toString());
         }
         try {
             ApiClient api = new ApiClient();
@@ -966,15 +938,9 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
                 com.google.gson.JsonObject chamado = elemento.getAsJsonObject();
 
                 int id = chamado.get("idChamado").getAsInt();
-                if (chamado.has("suporte")
-                        && !chamado.get("suporte").isJsonNull()) {
+                if (chamado.has("suporte")&& !chamado.get("suporte").isJsonNull()) {
 
-                    int idResponsavel = chamado
-                            .getAsJsonObject("suporte")
-                            .get("idUsuario")
-                            .getAsInt();
-
-                    suportesResponsaveis.put(id, idResponsavel);
+                    int idResponsavel = chamado.getAsJsonObject("suporte").get("idUsuario").getAsInt();suportesResponsaveis.put(id, idResponsavel);
                 }
                 String solucao = chamado.has("solucao") && !chamado.get("solucao").isJsonNull() ? chamado.get("solucao").getAsString() : "";
 
@@ -1002,9 +968,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
 
                 for (int i = 0; i < TableChamadosDisponiveis.getRowCount(); i++) {
 
-                    int idAtual = Integer.parseInt(
-                            TableChamadosDisponiveis.getValueAt(i, 0).toString()
-                    );
+                    int idAtual = Integer.parseInt(TableChamadosDisponiveis.getValueAt(i, 0).toString());
 
                     if (idAtual == idSelecionado) {
 
@@ -1044,8 +1008,7 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             websocketChamados.connect();
 
         } catch (Exception e) {
-            System.out.println("Erro ao conectar WebSocket: "
-                    + e.getMessage());
+            System.out.println("Erro ao conectar WebSocket: "+ e.getMessage());
         }
     }
 
@@ -1065,31 +1028,21 @@ public class ChamadosDisponiveis extends javax.swing.JFrame {
             return;
         }
 
-        int id = Integer.parseInt(
-                TableChamadosDisponiveis.getValueAt(linha, 0).toString()
-        );
+        int id = Integer.parseInt(TableChamadosDisponiveis.getValueAt(linha, 0).toString());
 
         jTextFieldIdChamado.setText(String.valueOf(id));
 
-        jTextFieldAssunto.setText(
-                TableChamadosDisponiveis.getValueAt(linha, 1).toString()
-        );
+        jTextFieldAssunto.setText(TableChamadosDisponiveis.getValueAt(linha, 1).toString());
 
-        jTextFieldUsuario.setText(
-                TableChamadosDisponiveis.getValueAt(linha, 2).toString()
-        );
+        jTextFieldUsuario.setText(TableChamadosDisponiveis.getValueAt(linha, 2).toString());
 
-        jTextFieldDataAbertura.setText(
-                TableChamadosDisponiveis.getValueAt(linha, 4).toString()
-        );
+        jTextFieldDataAbertura.setText(TableChamadosDisponiveis.getValueAt(linha, 4).toString());
 
         jTextFieldTipo.setText(String.valueOf(TableChamadosDisponiveis.getValueAt(linha, 3)));
         jTextAreaDescricao.setText(descricoesChamados.get(id));
         jTextAreaResposta.setText(solucoesChamados.get(id));
 
-        jComboBoxStatus.setSelectedItem(
-                TableChamadosDisponiveis.getValueAt(linha, 5).toString()
-        );
+        jComboBoxStatus.setSelectedItem(TableChamadosDisponiveis.getValueAt(linha, 5).toString());
     }
 
     @Override

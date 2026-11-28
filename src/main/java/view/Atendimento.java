@@ -33,13 +33,11 @@ public class Atendimento extends javax.swing.JFrame {
         lblModoChat.setText("Selecione um chamado na lista para iniciar.");
     }
 
-    public Atendimento(int idChamado, String assunto, String descricao,
-            String data, String status, String nome, String email, String telefone, int idSuporte) {
+    public Atendimento(int idChamado, String assunto, String descricao,String data, String status, String nome, String email, String telefone, int idSuporte) {
         this(idChamado, assunto, descricao, data, status, nome, email, telefone, idSuporte, false);
     }
 
-    public Atendimento(int idChamado, String assunto, String descricao, String data, String status,
-            String nome, String email, String telefone, int idSuporte, boolean modoHistorico) {
+    public Atendimento(int idChamado, String assunto, String descricao, String data, String status,String nome, String email, String telefone, int idSuporte, boolean modoHistorico) {
         initComponents();
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         configurarVisual();
@@ -688,9 +686,7 @@ public class Atendimento extends javax.swing.JFrame {
 
             String resposta = api.buscarUsuarioDoChamado(idChamado);
 
-            com.google.gson.JsonObject usuario
-                    = com.google.gson.JsonParser.parseString(resposta)
-                            .getAsJsonObject();
+            com.google.gson.JsonObject usuario = com.google.gson.JsonParser.parseString(resposta).getAsJsonObject();
 
             int idUsuario = usuario.get("idUsuario").getAsInt();
 
@@ -707,20 +703,16 @@ public class Atendimento extends javax.swing.JFrame {
 
             } else if ("CLIENTE".equalsIgnoreCase(tipoUsuario)) {
 
-                TelaPerfilCliente tela
-                        = new TelaPerfilCliente(
-                                idUsuario, nome, email, telefone);
+                TelaPerfilCliente tela = new TelaPerfilCliente(idUsuario, nome, email, telefone);
 
                 abrirPerfil(tela);
 
             } else {
-                JOptionPane.showMessageDialog(this,
-                        "Tipo de usuário não reconhecido.");
+                JOptionPane.showMessageDialog(this,"Tipo de usuário não reconhecido.");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao consultar perfil: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,"Erro ao consultar perfil: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

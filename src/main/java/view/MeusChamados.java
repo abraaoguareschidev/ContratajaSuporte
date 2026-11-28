@@ -719,24 +719,11 @@ public class MeusChamados extends javax.swing.JFrame {
 
         JsonObject usuario = chamado.getAsJsonObject("usuario");
 
-        String email = usuario.has("email") && !usuario.get("email").isJsonNull()
-                ? usuario.get("email").getAsString() : "";
+        String email = usuario.has("email") && !usuario.get("email").isJsonNull()? usuario.get("email").getAsString() : "";
 
-        String telefone = usuario.has("telefone") && !usuario.get("telefone").isJsonNull()
-                ? usuario.get("telefone").getAsString() : "";
+        String telefone = usuario.has("telefone") && !usuario.get("telefone").isJsonNull()? usuario.get("telefone").getAsString() : "";
 
-        Atendimento tela = new Atendimento(
-                idChamado,
-                txtAssunto.getText(),
-                txtDescricao.getText(),
-                txtDataAbertura.getText(),
-                status,
-                txtUsuario.getText(),
-                email,
-                telefone,
-                idSuporte,
-                true
-        );
+        Atendimento tela = new Atendimento(idChamado,txtAssunto.getText(),txtDescricao.getText(),txtDataAbertura.getText(),status,txtUsuario.getText(),email,telefone,idSuporte,true);
 
         tela.exibirSolucao(txtSolucao.getText());
         tela.setVeioDeMeusChamados(true);
@@ -966,15 +953,9 @@ public class MeusChamados extends javax.swing.JFrame {
 
         if (chamado != null) {
 
-            txtDescricao.setText(
-                    chamado.has("descricao") && !chamado.get("descricao").isJsonNull()
-                    ? chamado.get("descricao").getAsString() : ""
-            );
+            txtDescricao.setText(chamado.has("descricao") && !chamado.get("descricao").isJsonNull()? chamado.get("descricao").getAsString() : "");
 
-            txtSolucao.setText(
-                    chamado.has("solucao") && !chamado.get("solucao").isJsonNull()
-                    ? chamado.get("solucao").getAsString() : ""
-            );
+            txtSolucao.setText(chamado.has("solucao") && !chamado.get("solucao").isJsonNull()? chamado.get("solucao").getAsString() : "");
 
         } else {
             txtDescricao.setText("");
@@ -993,9 +974,7 @@ public class MeusChamados extends javax.swing.JFrame {
             return;
         }
 
-        int idChamado = Integer.parseInt(
-                tblMeusChamados.getValueAt(linha, 0).toString()
-        );
+        int idChamado = Integer.parseInt(tblMeusChamados.getValueAt(linha, 0).toString());
 
         JsonObject chamado = detalhesChamados.get(idChamado);
 
@@ -1014,20 +993,9 @@ public class MeusChamados extends javax.swing.JFrame {
         String email = usuario.has("email") && !usuario.get("email").isJsonNull()
                 ? usuario.get("email").getAsString() : "";
 
-        String telefone = usuario.has("telefone") && !usuario.get("telefone").isJsonNull()
-                ? usuario.get("telefone").getAsString() : "";
+        String telefone = usuario.has("telefone") && !usuario.get("telefone").isJsonNull()? usuario.get("telefone").getAsString() : "";
 
-        Atendimento tela = new Atendimento(
-                idChamado,
-                txtAssunto.getText(),
-                txtDescricao.getText(),
-                txtDataAbertura.getText(),
-                status,
-                txtUsuario.getText(),
-                email,
-                telefone,
-                idSuporte
-        );
+        Atendimento tela = new Atendimento(idChamado,txtAssunto.getText(),txtDescricao.getText(),txtDataAbertura.getText(),status,txtUsuario.getText(),email,telefone,idSuporte);
 
         tela.setVeioDeMeusChamados(true);
         tela.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -1059,8 +1027,7 @@ public class MeusChamados extends javax.swing.JFrame {
             websocketChamados.connect();
 
         } catch (Exception e) {
-            System.out.println("Erro ao conectar WebSocket: "
-                    + e.getMessage());
+            System.out.println("Erro ao conectar WebSocket: "+ e.getMessage());
         }
     }
 

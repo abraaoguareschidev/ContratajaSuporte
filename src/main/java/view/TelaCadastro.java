@@ -586,7 +586,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         boolean valido = true;
 
-        // VALIDAÇÃO DE CAMPOS
+        // validaçãp de campos
         if (txtNomeSuporte.getText().trim().isEmpty()) {
             txtNomeSuporte.setBorder(BorderFactory.createLineBorder(Color.RED));
             valido = false;
@@ -684,7 +684,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        // PEGA OS VALORES
+        // pega os valores
         String nome = txtNomeSuporte.getText();
         String cpf = fmtCPF.getText();
         String email = txtEmail.getText();
@@ -699,7 +699,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         String senha = new String(pswSenha.getPassword());
         String confirmarSenha = new String(pswCfSenha.getPassword());
 
-        // DATA DE NASCIMENTO 
+        // data nascimento
         String dataNascTexto = fmtDataNasc.getText();
         DateTimeFormatter formatoData
                 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -716,7 +716,7 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         String dataNasc = data.toString();
 
-        // ===== IDADE MÍNIMA =====
+        // idade minima
         int idade = Period.between(data, LocalDate.now()).getYears();
 
         if (idade < 18) {
@@ -728,7 +728,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             return;
         }
 
-        //  CPF 
+        //  cpf 
         if (!validarCPF(cpf)) {
             fmtCPF.setBorder(BorderFactory.createLineBorder(Color.RED));
             JOptionPane.showMessageDialog(this, "CPF inválido.");
@@ -902,10 +902,7 @@ public class TelaCadastro extends javax.swing.JFrame {
             String digitado = fmtCEP.getText().replaceAll("\\D", "");
 
             if (!digitado.isEmpty()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Digite um CEP com 8 números."
-                );
+                JOptionPane.showMessageDialog(this,"Digite um CEP com 8 números.");
             }
 
             return;
@@ -928,8 +925,7 @@ public class TelaCadastro extends javax.swing.JFrame {
                     JsonObject endereco = get();
 
                     // Verifica se o ViaCEP não encontrou o endereço
-                    if (endereco.has("erro")
-                            && endereco.get("erro").getAsBoolean()) {
+                    if (endereco.has("erro") && endereco.get("erro").getAsBoolean()) {
 
                         JOptionPane.showMessageDialog(TelaCadastro.this, "CEP não encontrado.");
 
@@ -943,19 +939,13 @@ public class TelaCadastro extends javax.swing.JFrame {
 
                     Thread.currentThread().interrupt();
 
-                    JOptionPane.showMessageDialog(
-                            TelaCadastro.this,
-                            "Consulta de CEP interrompida."
-                    );
+                    JOptionPane.showMessageDialog(TelaCadastro.this,"Consulta de CEP interrompida.");
 
                 } catch (java.util.concurrent.ExecutionException e) {
 
                     e.printStackTrace();
 
-                    JOptionPane.showMessageDialog(
-                            TelaCadastro.this,
-                            "Não foi possível consultar o CEP. Verifique sua conexão."
-                    );
+                    JOptionPane.showMessageDialog(TelaCadastro.this,"Não foi possível consultar o CEP. Verifique sua conexão.");
                 }
             }
 

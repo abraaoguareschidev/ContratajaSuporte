@@ -101,12 +101,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         Background.setOpaque(false);
 
         // Aplica a imagem como fundo do painel
-        Background.setBorder(
-                javax.swing.BorderFactory.createCompoundBorder(
-                        bordaImagem,
-                        bordaOriginal
-                )
-        );
+        Background.setBorder(javax.swing.BorderFactory.createCompoundBorder(bordaImagem,bordaOriginal));
 
         Background.repaint();
 
@@ -379,8 +374,7 @@ public class LoginSuporte extends javax.swing.JFrame {
         String email = txtLogin.getText().trim();
 
         if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Informe seu e-mail.");
+            JOptionPane.showMessageDialog(this,"Informe seu e-mail.");
             return;
         }
 
@@ -392,8 +386,7 @@ public class LoginSuporte extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, resposta);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao solicitar reenvio: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,"Erro ao solicitar reenvio: " + e.getMessage());
         }
     }//GEN-LAST:event_lblReenviarVerificacaoMouseClicked
 

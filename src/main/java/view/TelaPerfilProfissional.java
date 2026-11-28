@@ -611,12 +611,7 @@ public class TelaPerfilProfissional extends javax.swing.JFrame {
         int idCliente = c.get("id_cliente").getAsInt();
         int idProfissional = c.get("id_profissional").getAsInt();
 
-        TelaConsultaConversa tela = new TelaConsultaConversa(
-                idCliente,
-                idProfissional,
-                texto(c, "nome_cliente"),
-                texto(c, "nome_profissional")
-        );
+        TelaConsultaConversa tela = new TelaConsultaConversa(idCliente,idProfissional,texto(c, "nome_cliente"),texto(c, "nome_profissional"));
 
         abrirTela(tela);
     }//GEN-LAST:event_btnConsultarConversaActionPerformed
