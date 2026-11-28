@@ -339,6 +339,11 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jFormattedTextFieldCEPActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        if (!TelaCadastro.validarEmail(jTextFieldEmail.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "E-mail inválido.");
+            jTextFieldEmail.requestFocus();
+            return;
+        }
         try {
             com.google.gson.JsonObject dados = new com.google.gson.JsonObject();
             dados.addProperty("nome", jTextFieldNomeUsuario.getText().trim());
@@ -436,7 +441,8 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
                 p.drawArc(48, 57, 31, 30, 270, 90);
                 p.fillRoundRect(48, 83, 13, 6, 5, 5);
                 p.dispose();
-            }});
+            }
+        });
         lblAvatar.setToolTipText("Avatar institucional do suporte ContrataJá");
         setMinimumSize(new Dimension(850, 680));
         setLocationRelativeTo(null);
@@ -465,7 +471,8 @@ public class TelaMeuPerfilUsuario extends javax.swing.JFrame {
                 }
                 g2.dispose();
                 super.paint(g, c);
-            }});
+            }
+        });
         b.setOpaque(false);
         b.setContentAreaFilled(false);
         b.setBorderPainted(false);

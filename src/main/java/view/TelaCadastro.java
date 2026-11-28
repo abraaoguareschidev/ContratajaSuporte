@@ -790,14 +790,14 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarActionPerformed
     public static boolean validarEmail(String email) {
 
-        if (email == null || email.isEmpty()) {
-            return false;
-        }
-
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-
-        return email.matches(regex);
+    if (email == null || email.isBlank()) {
+        return false;
     }
+
+    String regex = "^(?=.{1,64}@)[A-Za-z0-9_%+-]+(?:\\.[A-Za-z0-9_%+-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}$";
+
+    return email.length() <= 150 && email.matches(regex);
+}
 
     public static boolean validarCPF(String cpf) {
 

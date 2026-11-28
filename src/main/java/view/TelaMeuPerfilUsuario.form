@@ -972,16 +972,16 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonSalvar">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Salvar altera&#xe7;&#xf5;es"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="d8" green="54" red="7" type="rgb"/>
+                    </Property>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="13" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="d8" green="54" red="7" type="rgb"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="Salvar altera&#xe7;&#xf5;es"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSalvarActionPerformed"/>
